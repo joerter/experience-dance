@@ -15,5 +15,9 @@ class Permission extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
-}
 
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+}
