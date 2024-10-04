@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /* Schema::table('permissions', function (Blueprint $table) { */
-        /*     $table->foreignId('event_id')->nullable()->constrained(); */
-        /* }); */
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->foreignId('organization_id')->nullable()->constrained();
+        });
     }
 
     /**

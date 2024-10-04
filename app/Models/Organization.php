@@ -13,4 +13,9 @@ class Organization extends Model
     {
         return $this->hasMany(Event::class);
     }
+
+    public function permissions()
+    {
+        return $this->hasMany(Permission::class);
+    }
 }
