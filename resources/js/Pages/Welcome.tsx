@@ -1,3 +1,4 @@
+import NavBar from '@/Components/NavBar';
 import BaseLayout from '@/Layouts/BaseLayout';
 import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
@@ -10,7 +11,7 @@ function Welcome({
 }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
   return (
     <>
-      <Head title="Welcome" />
+      <NavBar />
     </>
   );
 }
