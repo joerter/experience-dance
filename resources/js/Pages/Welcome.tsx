@@ -1,8 +1,8 @@
 import NavBar from '@/Components/NavBar';
 import BaseLayout from '@/Layouts/BaseLayout';
 import { PageProps } from '@/types';
-import { Head, Link } from '@inertiajs/react';
-import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from 'react';
+import { Box } from '@mui/material';
+import { JSXElementConstructor, ReactElement, ReactNode } from 'react';
 
 function Welcome({
   auth,
@@ -11,7 +11,9 @@ function Welcome({
 }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
   return (
     <>
-      <NavBar />
+      <Box sx={{ height: '500px', background: 'black' }}>
+        <NavBar />
+      </Box>
     </>
   );
 }

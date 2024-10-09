@@ -5,7 +5,6 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <CssBaseline />
-      <h1>Sup Bro</h1>
       {children}
     </>
   );

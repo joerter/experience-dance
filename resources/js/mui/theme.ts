@@ -1,16 +1,39 @@
 import { createTheme } from '@mui/material/styles';
 
+const orange = '#E2481C';
+const black = '#000000';
+const white = '#FFFFFF';
+const gray1 = '#CBCBCB';
+const gray2 = '#2D2D2D';
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    gray1: Palette['primary'];
+    gray2: Palette['primary'];
+  }
+  interface PaletteOptions {
+    gray1?: PaletteOptions['primary'];
+    gray2?: PaletteOptions['primary'];
+  }
+}
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#E2481C',
+      main: orange,
     },
     secondary: {
-      main: '#000000',
+      main: black,
     },
     background: {
-      default: '#FFFFFF',
+      default: white,
     },
+    gray1: {
+      main: gray1,
+    },
+    gray2: {
+      main: gray2,
+    }
   },
   typography: {
     fontFamily: '"Plus Jakarta Sans", Roboto, "Helvetica Neue", Arial, sans-serif',
@@ -39,6 +62,28 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
+          borderRadius: '30px',
+          padding: '0.5rem 2.5rem',
+          color: gray1,
+          variants: [
+            {
+              props: { variant: 'contained' },
+              style: {
+                fontWeight: 600,
+              },
+            },
+            {
+              props: { variant: 'outlined' },
+              style: {
+                border: `1px solid ${gray2}`,
+                '&:hover': {
+                  border: `1px solid ${gray2}`,
+                  backgroundColor: orange,
+                },
+                color: gray1,
+              }
+            }
+          ],
         },
       },
     },
