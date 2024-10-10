@@ -63,7 +63,7 @@ const theme = createTheme({
         root: {
           textTransform: 'none',
           borderRadius: '30px',
-          padding: '0.5rem 2.5rem',
+          padding: '0.25rem 2.25rem',
           color: gray1,
           variants: [
             {
