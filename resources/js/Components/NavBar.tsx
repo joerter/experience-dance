@@ -8,6 +8,17 @@ const navItems = [
   { text: 'Contact', href: '/contact' },
 ]
 
+function HamburgerIcon({ sideNavIsOpen }: { sideNavIsOpen: boolean }
+) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height={24} width={24}>
+      <line x1="4" y1="6" x2="20" y2="6" stroke="white" stroke-width="2" stroke-linecap="round" />
+      <line x1="12" y1="12" x2="20" y2="12" stroke="white" stroke-width="2" stroke-linecap="round" />
+      <line x1="4" y1="18" x2="20" y2="18" stroke="white" stroke-width="2" stroke-linecap="round" />
+    </svg>
+  )
+}
+
 function SideNav({ onToggleSideNav }: { onToggleSideNav: () => void }) {
   return (
     <Box onClick={onToggleSideNav} sx={{ px: 6 }}>
@@ -57,11 +68,7 @@ export default function NavBar() {
             sx={{ display: { xs: 'block', lg: 'none' } }}
             onClick={() => { handleToggleSideNav(); }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height={24} width={24}>
-              <line x1="4" y1="6" x2="20" y2="6" stroke="white" stroke-width="2" stroke-linecap="round" />
-              <line x1="12" y1="12" x2="20" y2="12" stroke="white" stroke-width="2" stroke-linecap="round" />
-              <line x1="4" y1="18" x2="20" y2="18" stroke="white" stroke-width="2" stroke-linecap="round" />
-            </svg>
+            <HamburgerIcon sideNavIsOpen={sideNavOpen} />
           </IconButton>
         </Toolbar>
       </AppBar>
