@@ -11,7 +11,7 @@ function Welcome({
 }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
   return (
     <>
-      <Box sx={{ height: '500px', background: 'black' }}>
+      <Box sx={{ height: '100vh', background: 'black' }}>
       </Box>
     </>
   );
