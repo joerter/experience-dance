@@ -12,7 +12,6 @@ function Welcome({
   return (
     <>
       <Box sx={{ height: '500px', background: 'black' }}>
-        <NavBar />
       </Box>
     </>
   );

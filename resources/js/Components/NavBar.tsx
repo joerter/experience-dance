@@ -73,7 +73,7 @@ export default function NavBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, p: 4 }}>
+    <Box sx={{ flexGrow: 1, p: 4, position: 'fixed', top: 0, left: 0, right: 0 }}>
       <AppBar position="static" color="transparent">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <img width="160px" height="44px" src="/images/logo-white.svg" />
