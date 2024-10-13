@@ -29,10 +29,19 @@ function Welcome({
           spacing={4}
         >
           <Stack spacing={2}>
-            <Typography variant="h1" textAlign="center">
+            <Typography
+              variant="h1"
+              textAlign="center"
+              fontSize={(theme) => theme.typography.pxToRem(100)}
+              fontWeight={(theme) => theme.typography.fontWeightRegular}
+            >
               Find Dance Events Near You.
             </Typography>
-            <Typography variant="body1" textAlign="center">
+            <Typography
+              variant="subtitle1"
+              textAlign="center"
+              fontSize={(theme) => theme.typography.pxToRem(24)}
+            >
               Your gateway to an immersive dance experience
             </Typography>
           </Stack>
