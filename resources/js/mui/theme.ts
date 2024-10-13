@@ -26,24 +26,29 @@ const theme = createTheme({
       main: black,
     },
     background: {
-      default: white,
+      default: black,
     },
     gray1: {
       main: gray1,
     },
     gray2: {
       main: gray2,
-    }
+    },
+    text: {
+      primary: white,
+      secondary: black,
+    },
   },
   typography: {
-    fontFamily: '"Plus Jakarta Sans", Roboto, "Helvetica Neue", Arial, sans-serif',
+    fontFamily:
+      '"Plus Jakarta Sans", Roboto, "Helvetica Neue", Arial, sans-serif',
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
     h1: {
       fontSize: '2.5rem',
-      fontWeight: 800,
+      fontWeight: 500,
     },
     h2: {
       fontSize: '2rem',
@@ -81,8 +86,8 @@ const theme = createTheme({
                   backgroundColor: orange,
                 },
                 color: gray1,
-              }
-            }
+              },
+            },
           ],
         },
       },

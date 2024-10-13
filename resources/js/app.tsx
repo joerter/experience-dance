@@ -18,10 +18,12 @@ createInertiaApp({
   setup({ el, App, props }) {
     const root = createRoot(el);
 
-    root.render(<ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App {...props} />
-    </ThemeProvider>);
+    root.render(
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App {...props} />
+      </ThemeProvider>,
+    );
   },
   progress: {
     color: '#4B5563',
