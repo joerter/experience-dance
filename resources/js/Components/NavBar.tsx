@@ -10,11 +10,39 @@ const navItems = [
 
 function HamburgerIcon({ sideNavIsOpen }: { sideNavIsOpen: boolean }
 ) {
+  const lineStyles = {
+    transition: 'all 0.3s',
+    transformOrigin: 'center center',
+  };
+
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height={24} width={24}>
-      <line x1="4" y1="6" x2="20" y2="6" stroke="white" stroke-width="2" stroke-linecap="round" />
-      <line x1="12" y1="12" x2="20" y2="12" stroke="white" stroke-width="2" stroke-linecap="round" />
-      <line x1="4" y1="18" x2="20" y2="18" stroke="white" stroke-width="2" stroke-linecap="round" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      height={24}
+      width={24}
+      strokeWidth={2}
+      stroke="white"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{
+        ...lineStyles,
+        rotate: sideNavIsOpen ? '180deg' : 'none',
+      }}
+    >
+      <path d="M4 6h16" style={{
+        ...lineStyles,
+        transform: sideNavIsOpen ? 'translate(-4px, 4px) rotate(45deg)' : 'none'
+      }} />
+      <path d="M12 12h8" style={{
+        ...lineStyles,
+        opacity: sideNavIsOpen ? 0 : 1,
+      }} />
+      <path d="M4 18h16" style={{
+        ...lineStyles,
+        transform: sideNavIsOpen ? 'translate(-4px, -4px) rotate(-45deg)' : 'none',
+      }} />
     </svg>
   )
 }
