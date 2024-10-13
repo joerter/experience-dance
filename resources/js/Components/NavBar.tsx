@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar } from "@mui/material";
+import { AppBar, Box, Button, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, useTheme } from "@mui/material";
 import { useState } from "react";
 
 const navItems = [
@@ -10,8 +10,9 @@ const navItems = [
 
 function HamburgerIcon({ sideNavIsOpen }: { sideNavIsOpen: boolean }
 ) {
+  const theme = useTheme();
   const lineStyles = {
-    transition: 'all 0.3s',
+    transition: theme.transitions.create(['opacity', 'transform'], { duration: theme.transitions.duration.standard }),
     transformOrigin: 'center center',
   };
 
@@ -28,7 +29,7 @@ function HamburgerIcon({ sideNavIsOpen }: { sideNavIsOpen: boolean }
       strokeLinejoin="round"
       style={{
         ...lineStyles,
-        rotate: sideNavIsOpen ? '180deg' : 'none',
+        transform: sideNavIsOpen ? 'rotate(180deg)' : 'none',
       }}
     >
       <path d="M4 6h16" style={{
