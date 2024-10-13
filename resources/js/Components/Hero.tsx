@@ -23,7 +23,12 @@ export default function Hero() {
           <Typography
             variant="h1"
             textAlign="center"
-            fontSize={(theme) => theme.typography.pxToRem(100)}
+            fontSize={(theme) => ({
+              xs: theme.typography.pxToRem(32),
+              sm: theme.typography.pxToRem(64),
+              md: theme.typography.pxToRem(84),
+              lg: theme.typography.pxToRem(100),
+            })}
             fontWeight={(theme) => theme.typography.fontWeightRegular}
           >
             Find Dance Events Near You.
@@ -31,7 +36,10 @@ export default function Hero() {
           <Typography
             variant="subtitle1"
             textAlign="center"
-            fontSize={(theme) => theme.typography.pxToRem(24)}
+            fontSize={(theme) => ({
+              xs: theme.typography.pxToRem(16),
+              sm: theme.typography.pxToRem(32),
+            })}
           >
             Your gateway to an immersive dance experience
           </Typography>
