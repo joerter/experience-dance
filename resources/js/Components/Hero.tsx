@@ -1,11 +1,6 @@
-import NearMeIcon from '@mui/icons-material/NearMe';
-import {
-  Autocomplete,
-  Button,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import EventSearch from './EventSearch';
+
 export default function Hero() {
   return (
     <Stack
@@ -44,30 +39,7 @@ export default function Hero() {
             Your gateway to an immersive dance experience
           </Typography>
         </Stack>
-        <Autocomplete
-          id="location"
-          freeSolo
-          fullWidth
-          options={['Hartford', 'Omaha']}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              fullWidth
-              placeholder="Enter location..."
-              slotProps={{
-                input: {
-                  startAdornment: <NearMeIcon />,
-                  endAdornment: <Button>Search</Button>,
-                  sx: {
-                    borderRadius: 170,
-                    border: '1px solid rgba(255, 255, 255, .3)',
-                    background: 'rgba(255, 255, 255, .1)',
-                  },
-                },
-              }}
-            />
-          )}
-        />
+        <EventSearch variant="dark" />
       </Stack>
     </Stack>
   );
