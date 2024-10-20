@@ -106,7 +106,7 @@ export default function NavBar() {
     <Box
       sx={{ flexGrow: 1, p: 4, position: 'fixed', top: 0, left: 0, right: 0 }}
     >
-      <AppBar position="static" color="transparent">
+      <AppBar position="static" color="transparent" sx={{ boxShadow: 'none' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>
           <img width="160px" height="44px" src="/images/logo-white.svg" />
           <Stack

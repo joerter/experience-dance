@@ -42,7 +42,11 @@ export default function Hero() {
     <Stack
       justifyContent="center"
       alignItems="center"
-      sx={{ height: '100vh', background: 'black' }}
+      sx={{
+        height: '100vh',
+        background: 'url(/images/hero-1.jpg) top no-repeat',
+        backgroundSize: 'cover',
+      }}
     >
       <Stack
         justifyContent="center"
