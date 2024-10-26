@@ -40,7 +40,7 @@ const marquee = keyframes`
 export default function Hero() {
   return (
     <Stack
-      justifyContent="center"
+      justifyContent="flex-start"
       alignItems="center"
       sx={{
         height: '100vh',
@@ -51,7 +51,7 @@ export default function Hero() {
       <Stack
         justifyContent="center"
         alignItems="center"
-        sx={{ color: 'primary', px: 4, maxWidth: 'md' }}
+        sx={{ color: 'primary', px: 4, maxWidth: 'md', flex: 1 }}
         spacing={4}
       >
         <Stack spacing={2}>
@@ -83,45 +83,47 @@ export default function Hero() {
       </Stack>
 
       <Stack
-        direction="row"
-        alignItems="center"
         sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
           overflow: 'hidden',
-          animation: `${marquee} 60s linear infinite`,
-          '&:hover': {
-            animationPlayState: 'paused',
-          },
+          width: '100%',
         }}
       >
-        {featuredEvents.map((fe) => (
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ width: '300px', p: 2 }}
-          >
-            <Stack>
-              <Typography variant="body1">{fe.name}</Typography>
-              <Typography
-                variant="body2"
-                fontSize={(theme) => theme.typography.pxToRem(10)}
-              >
-                {fe.organization}
-              </Typography>
-              <Typography
-                variant="body2"
-                fontSize={(theme) => theme.typography.pxToRem(10)}
-              >
-                {fe.location}
-              </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          sx={{
+            animation: `${marquee} 60s linear infinite`,
+            '&:hover': {
+              animationPlayState: 'paused',
+            },
+          }}
+        >
+          {featuredEvents.map((fe) => (
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ width: '300px', flexShrink: 0, p: 2 }}
+            >
+              <Stack>
+                <Typography variant="body1">{fe.name}</Typography>
+                <Typography
+                  variant="body2"
+                  fontSize={(theme) => theme.typography.pxToRem(10)}
+                >
+                  {fe.organization}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  fontSize={(theme) => theme.typography.pxToRem(10)}
+                >
+                  {fe.location}
+                </Typography>
+              </Stack>
+              <img height="24px" width="24px" src="/images/logo-small.svg" />
             </Stack>
-            <img height="24px" width="24px" src="/images/logo-small.svg" />
-          </Stack>
-        ))}
+          ))}
+        </Stack>
       </Stack>
     </Stack>
   );

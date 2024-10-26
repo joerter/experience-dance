@@ -104,7 +104,14 @@ export default function NavBar() {
 
   return (
     <Box
-      sx={{ flexGrow: 1, p: 4, position: 'fixed', top: 0, left: 0, right: 0 }}
+      sx={{
+        flexGrow: 1,
+        p: 4,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+      }}
     >
       <AppBar position="static" color="transparent" sx={{ boxShadow: 'none' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>
