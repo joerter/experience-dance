@@ -5,15 +5,18 @@ const black = '#000000';
 const white = '#FFFFFF';
 const gray1 = '#CBCBCB';
 const gray2 = '#2D2D2D';
+const gray3 = '#ECF0F1';
 
 declare module '@mui/material/styles' {
   interface Palette {
     gray1: Palette['primary'];
     gray2: Palette['primary'];
+    gray3: Palette['primary'];
   }
   interface PaletteOptions {
     gray1?: PaletteOptions['primary'];
     gray2?: PaletteOptions['primary'];
+    gray3?: PaletteOptions['primary'];
   }
 }
 
@@ -33,6 +36,9 @@ const theme = createTheme({
     },
     gray2: {
       main: gray2,
+    },
+    gray3: {
+      main: gray3,
     },
     text: {
       primary: white,

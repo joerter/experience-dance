@@ -107,7 +107,7 @@ export default function NavBar() {
       sx={{
         flexGrow: 1,
         p: 4,
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,

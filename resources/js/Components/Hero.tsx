@@ -98,8 +98,9 @@ export default function Hero() {
             },
           }}
         >
-          {featuredEvents.map((fe) => (
+          {featuredEvents.map((fe, i) => (
             <Stack
+              key={i}
               direction="row"
               justifyContent="space-between"
               alignItems="center"
