@@ -43,9 +43,10 @@ export default function Hero() {
       justifyContent="flex-start"
       alignItems="center"
       sx={{
-        height: '100vh',
+        minHeight: '100vh',
         background: 'url(/images/hero-1.jpg) top no-repeat',
         backgroundSize: 'cover',
+        overflowY: 'auto',
       }}
     >
       <Stack
