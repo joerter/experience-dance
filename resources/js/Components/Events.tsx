@@ -1,4 +1,6 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import {
   Button,
   Card,
@@ -6,6 +8,7 @@ import {
   CardMedia,
   Container,
   Divider,
+  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
@@ -53,17 +56,18 @@ export default function Events() {
   return (
     <Stack sx={{ p: 4, backgroundColor: 'common.white', height: '1000px' }}>
       <Container maxWidth="lg">
+        <Typography variant="h1" color="textSecondary" sx={{ m: 2 }}>
+          Events
+        </Typography>
+
+        <EventSearch variant="light" />
         <Stack
           direction="row"
           justifyContent="center"
           alignContent="flex-start"
+          sx={{ mt: 2 }}
         >
           <Stack flexBasis="50%">
-            <Typography variant="h1" color="textSecondary">
-              Events
-            </Typography>
-            <EventSearch variant="light" />
-
             {events.map((e, i, arr) => (
               <>
                 <Card
@@ -80,6 +84,7 @@ export default function Events() {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'flex-start',
+                      flex: 1,
                     }}
                   >
                     <Stack spacing={4}>
@@ -107,11 +112,18 @@ export default function Events() {
                         </Typography>
                       </Stack>
 
-                      <Button variant="text" endIcon={<ArrowForwardIcon />}>
+                      <Button variant="outlined" endIcon={<ArrowForwardIcon />}>
                         View Details
                       </Button>
                     </Stack>
-                    <Stack></Stack>
+                    <Stack direction="row" alignItems="center">
+                      <IconButton size="small">
+                        <TurnedInNotIcon />
+                      </IconButton>
+                      <IconButton size="small">
+                        <CalendarTodayIcon />
+                      </IconButton>
+                    </Stack>
                   </CardContent>
                 </Card>
                 {i !== arr.length - 1 ? <Divider /> : null}

@@ -90,7 +90,7 @@ const theme = createTheme({
               },
             },
             {
-              props: { variant: 'outlined' },
+              props: { variant: 'outlined', color: 'inherit' },
               style: {
                 border: `1px solid ${gray2}`,
                 '&:hover': {
