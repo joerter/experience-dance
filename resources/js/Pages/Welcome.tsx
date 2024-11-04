@@ -2,6 +2,7 @@ import Events from '@/Components/Events';
 import Hero from '@/Components/Hero';
 import BaseLayout from '@/Layouts/BaseLayout';
 import { PageProps } from '@/types';
+import { Head } from '@inertiajs/react';
 import { Box } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode } from 'react';
 
@@ -11,10 +12,13 @@ function Welcome({
   phpVersion,
 }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
   return (
-    <Box>
-      <Hero />
-      <Events />
-    </Box>
+    <>
+      <Head title="Welcome"></Head>
+      <Box>
+        <Hero />
+        <Events />
+      </Box>
+    </>
   );
 }
 

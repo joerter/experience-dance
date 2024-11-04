@@ -54,7 +54,7 @@ const events: {
 
 export default function Events() {
   return (
-    <Stack sx={{ p: 4, backgroundColor: 'common.white', height: '1000px' }}>
+    <Stack sx={{ p: 4, backgroundColor: 'common.white' }}>
       <Container maxWidth="lg">
         <Typography variant="h1" color="textSecondary" sx={{ m: 2 }}>
           Events
@@ -69,7 +69,7 @@ export default function Events() {
         >
           <Stack flexBasis="50%">
             {events.map((e, i, arr) => (
-              <>
+              <div key={i}>
                 <Card
                   sx={{ display: 'flex', border: 'none', m: 2 }}
                   variant="outlined"
@@ -127,7 +127,7 @@ export default function Events() {
                   </CardContent>
                 </Card>
                 {i !== arr.length - 1 ? <Divider /> : null}
-              </>
+              </div>
             ))}
           </Stack>
           <Stack flexBasis="50%">
