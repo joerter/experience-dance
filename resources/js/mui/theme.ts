@@ -6,17 +6,20 @@ const white = '#FFFFFF';
 const gray1 = '#CBCBCB';
 const gray2 = '#2D2D2D';
 const gray3 = '#ECF0F1';
+const gray4 = '#525252';
 
 declare module '@mui/material/styles' {
   interface Palette {
     gray1: Palette['primary'];
     gray2: Palette['primary'];
     gray3: Palette['primary'];
+    gray4: Palette['primary'];
   }
   interface PaletteOptions {
     gray1?: PaletteOptions['primary'];
     gray2?: PaletteOptions['primary'];
     gray3?: PaletteOptions['primary'];
+    gray4?: PaletteOptions['primary'];
   }
 }
 
@@ -39,6 +42,9 @@ const theme = createTheme({
     },
     gray3: {
       main: gray3,
+    },
+    gray4: {
+      main: gray4,
     },
     text: {
       primary: white,
@@ -75,12 +81,12 @@ const theme = createTheme({
           textTransform: 'none',
           borderRadius: '30px',
           padding: '0.25rem 2.25rem',
-          color: gray1,
           variants: [
             {
               props: { variant: 'contained' },
               style: {
                 fontWeight: 600,
+                color: gray1,
               },
             },
             {
