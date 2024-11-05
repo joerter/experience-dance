@@ -8,10 +8,15 @@ import {
   CardMedia,
   Container,
   Divider,
+  FormControlLabel,
   IconButton,
   Stack,
+  Switch,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
+import { useState } from 'react';
 import EventSearch from './EventSearch';
 import EventsMap from './EventsMap';
 
@@ -53,12 +58,35 @@ const events: {
 ];
 
 export default function Events() {
+  const [mapViewEnabled, setMapViewEnabled] = useState(false);
+  const theme = useTheme();
+  const isLargeBreakpoint = useMediaQuery(theme.breakpoints.up('lg'));
+
   return (
     <Stack sx={{ p: 4, backgroundColor: 'common.white' }}>
       <Container maxWidth="lg">
-        <Typography variant="h1" color="textSecondary" sx={{ m: 2 }}>
-          Events
-        </Typography>
+        <Stack
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Typography variant="h1" color="textSecondary" sx={{ m: 2 }}>
+            Events
+          </Typography>
+          <FormControlLabel
+            slotProps={{ typography: { color: 'textSecondary' } }}
+            control={
+              <Switch
+                checked={mapViewEnabled}
+                onChange={() => {
+                  setMapViewEnabled((prev) => !prev);
+                }}
+              />
+            }
+            label="View Map"
+            sx={{ display: { xs: 'block', lg: 'none' } }}
+          />
+        </Stack>
 
         <EventSearch variant="light" />
         <Stack
@@ -67,7 +95,12 @@ export default function Events() {
           alignContent="flex-start"
           sx={{ mt: 2 }}
         >
-          <Stack sx={{ flexBasis: { xs: '100%', lg: '50%' } }}>
+          <Stack
+            sx={{
+              display: { xs: mapViewEnabled ? 'none' : 'flex', lg: 'flex' },
+              flexBasis: { xs: '100%', lg: '50%' },
+            }}
+          >
             {events.map((e, i, arr) => (
               <div key={i}>
                 <Card
@@ -139,11 +172,11 @@ export default function Events() {
           </Stack>
           <Stack
             sx={{
-              display: { xs: 'none', lg: 'flex' },
+              display: { xs: mapViewEnabled ? 'flex' : 'none', lg: 'flex' },
               flexBasis: { xs: '100%', lg: '50%' },
             }}
           >
-            <EventsMap />
+            {mapViewEnabled || isLargeBreakpoint ? <EventsMap /> : null}
           </Stack>
         </Stack>
       </Container>
