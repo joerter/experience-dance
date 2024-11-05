@@ -67,11 +67,17 @@ export default function Events() {
           alignContent="flex-start"
           sx={{ mt: 2 }}
         >
-          <Stack flexBasis="50%">
+          <Stack sx={{ flexBasis: { xs: '100%', lg: '50%' } }}>
             {events.map((e, i, arr) => (
               <div key={i}>
                 <Card
-                  sx={{ display: 'flex', border: 'none', m: 2 }}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    alignItems: 'center',
+                    border: 'none',
+                    m: 2,
+                  }}
                   variant="outlined"
                 >
                   <CardMedia
@@ -85,6 +91,7 @@ export default function Events() {
                       justifyContent: 'space-between',
                       alignItems: 'flex-start',
                       flex: 1,
+                      flexDirection: { xs: 'column-reverse', sm: 'row' },
                     }}
                   >
                     <Stack spacing={4}>
@@ -130,7 +137,12 @@ export default function Events() {
               </div>
             ))}
           </Stack>
-          <Stack flexBasis="50%">
+          <Stack
+            sx={{
+              display: { xs: 'none', lg: 'flex' },
+              flexBasis: { xs: '100%', lg: '50%' },
+            }}
+          >
             <EventsMap />
           </Stack>
         </Stack>
