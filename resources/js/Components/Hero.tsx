@@ -1,4 +1,5 @@
 import { keyframes, Stack, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
 import EventSearch from './EventSearch';
 
 const featuredEvents: {

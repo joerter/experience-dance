@@ -37,6 +37,8 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.1",
     "@mui/material": "^6.1.1",
+    "@mui/x-date-pickers": "^7.22.1",
+    "dayjs": "^1.11.13",
     "leaflet": "^1.9.4",
     "react-leaflet": "^4.2.1"
   }
