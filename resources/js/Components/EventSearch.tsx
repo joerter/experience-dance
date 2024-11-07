@@ -1,9 +1,9 @@
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Autocomplete,
   FormControl,
   InputAdornment,
-  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -32,18 +32,29 @@ export default function EventSearch({
       alignItems="flex-start"
       justifyContent="center"
       sx={{ width: '100%' }}
+      spacing={2}
     >
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <FormControl sx={{ flexBasis: '25%' }}>
-          <InputLabel id="event-date-selector-label">Date</InputLabel>
-
+      <Stack direction="row" justifyContent="flex-start" alignItems="center">
+        <FormControl size="small">
           <Select
-            labelId="event-date-selector-label"
             id="event-date-selector"
             value={dateRange}
-            label="Age"
+            aria-label="Date"
             onChange={(event: SelectChangeEvent<DateRangeOption>) => {
               setDateRange(event.target.value as DateRangeOption);
+            }}
+            sx={{
+              color: 'text.primary',
+              '.MuiSelect-icon': { color: 'text.primary' },
+            }}
+            IconComponent={ExpandMoreIcon}
+            inputProps={{
+              sx: {
+                color: 'text.primary',
+                borderRadius: 170,
+                border: '1px solid rgba(255, 255, 255, .3)',
+                background: 'rgba(255, 255, 255, .1)',
+              },
             }}
           >
             <MenuItem value="week">This Week</MenuItem>
