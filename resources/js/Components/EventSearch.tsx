@@ -56,6 +56,13 @@ export default function EventSearch({
                 background: 'rgba(255, 255, 255, .1)',
               },
             }}
+            MenuProps={{
+              slotProps: {
+                paper: {
+                  sx: { color: 'text.secondary' },
+                },
+              },
+            }}
           >
             <MenuItem value="week">This Week</MenuItem>
             <MenuItem value="month">This Month</MenuItem>
@@ -69,6 +76,7 @@ export default function EventSearch({
         freeSolo
         fullWidth
         options={['Hartford', 'Omaha']}
+        slotProps={{ paper: { sx: { color: 'text.secondary' } } }}
         sx={{
           color: 'text.primary',
           borderRadius: 170,
@@ -82,6 +90,8 @@ export default function EventSearch({
             variant="standard"
             slotProps={{
               input: {
+                ...params.InputProps,
+                type: 'search',
                 sx: { color: 'text.primary', border: 'none' },
                 endAdornment: (
                   <InputAdornment position="end" sx={{ color: 'text.primary' }}>
