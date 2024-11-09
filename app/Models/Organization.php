@@ -9,6 +9,15 @@ class Organization extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+    ];
+
+    public function address()
+    {
+        return $this->morphOne(Address::class, 'addressable');
+    }
+
     public function events()
     {
         return $this->hasMany(Event::class);

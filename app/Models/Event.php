@@ -15,19 +15,15 @@ class Event extends Model
         'description',
         'start_datetime',
         'end_datetime',
-        'address_1',
-        'address_2',
-        'address_3',
-        'city',
-        'state',
-        'zip',
-        'url',
-        'email',
-        'phone',
     ];
 
     public function categories(): HasMany
     {
         return $this->hasMany(Category::class);
+    }
+
+    public function address()
+    {
+        return $this->morphOne(Address::class, 'addressable');
     }
 }
