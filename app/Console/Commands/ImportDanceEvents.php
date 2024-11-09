@@ -4,10 +4,14 @@ namespace App\Console\Commands;
 
 use App\Models\Event;
 use App\Models\Organization;
-use App\Models\Address;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use League\Csv\Reader;
+
+
+// TODO:
+// - save addresses
+// - tie events to orgs
 
 class ImportDanceEvents extends Command
 {
