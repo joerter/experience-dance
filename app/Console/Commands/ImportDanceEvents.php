@@ -10,8 +10,8 @@ use League\Csv\Reader;
 
 
 // TODO:
-// - save addresses
 // - tie events to orgs
+// - add geocoding
 
 class ImportDanceEvents extends Command
 {
@@ -33,7 +33,7 @@ class ImportDanceEvents extends Command
                     ['name' => $record['organization_name']],
                 );
 
-                $organization->address()->firstOrNew([], [
+                $organizationAddress = $organization->address()->firstOrNew([], [
                     'street_line_1' => $record['organization_street_line_1'],
                     'street_line_2' => $record['organization_street_line_2'] ?? null,
                     'city' => $record['organization_city'],
@@ -41,17 +41,17 @@ class ImportDanceEvents extends Command
                     'postal_code' => $record['organization_postal_code'],
                     'country' => $record['organization_country'] ?? 'US'
                 ]);
+                $organization->address()->save($organizationAddress);
                 $organization->save();
 
-                $event = Event::create([
-                    'organization_id' => $organization->id,
+                $event = $organization->events()->create([
                     'title' => $record['event_title'],
                     'description' => $record['event_description'],
                     'start_datetime' => $record['start_datetime'],
                     'end_datetime' => $record['end_datetime'],
                 ]);
 
-                $event->address()->firstOrNew([], [
+                $eventAddress = $event->address()->firstOrNew([], [
                     'street_line_1' => $record['event_street_line_1'],
                     'street_line_2' => $record['event_street_line_2'] ?? null,
                     'city' => $record['event_city'],
@@ -59,6 +59,7 @@ class ImportDanceEvents extends Command
                     'postal_code' => $record['event_postal_code'],
                     'country' => $record['event_country'] ?? 'US'
                 ]);
+                $event->address()->save($eventAddress);
                 $event->save();
 
                 $this->info("Imported: {$record['event_title']} by {$record['organization_name']}");
