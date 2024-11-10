@@ -2,74 +2,186 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Event;
 use App\Models\Organization;
+use App\Services\GeocodingService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use League\Csv\Reader;
-
-
-// TODO:
-// - tie events to orgs
-// - add geocoding
+use Throwable;
 
 class ImportDanceEvents extends Command
 {
-    protected $signature = 'import:dance-events {file}';
+    protected $signature = 'import:dance-events {file} {--chunk=100} {--log-file=dance-import-errors.log}';
     protected $description = 'Import dance events from CSV file';
+
+    private array $failedRecords = [];
+    private int $successCount = 0;
+    private int $failureCount = 0;
+    private GeocodingService $geocoder;
+
+
+    public function __construct(GeocodingService $geocoder)
+    {
+        parent::__construct();
+        $this->geocoder = $geocoder;
+    }
 
     public function handle()
     {
         $csv = Reader::createFromPath($this->argument('file'), 'r');
         $csv->setHeaderOffset(0);
 
-        $records = $csv->getRecords();
+        $records = collect($csv->getRecords());
+        $chunks = $records->chunk($this->option('chunk'));
 
-        DB::beginTransaction();
-        try {
-            foreach ($records as $record) {
-                // Find or create organization
-                $organization = Organization::firstOrCreate(
-                    ['name' => $record['organization_name']],
-                );
+        $this->withProgressBar($chunks, function ($chunk) {
+            DB::transaction(function () use ($chunk) {
+                foreach ($chunk as $index => $record) {
+                    try {
+                        $this->processRecord($record);
+                        $this->successCount++;
+                    } catch (Throwable $e) {
+                        $this->handleFailedRecord($record, $index, $e);
+                    }
+                }
+            });
+        });
 
-                $organizationAddress = $organization->address()->firstOrNew([], [
-                    'street_line_1' => $record['organization_street_line_1'],
-                    'street_line_2' => $record['organization_street_line_2'] ?? null,
-                    'city' => $record['organization_city'],
-                    'state' => $record['organization_state'],
-                    'postal_code' => $record['organization_postal_code'],
-                    'country' => $record['organization_country'] ?? 'US'
-                ]);
-                $organization->address()->save($organizationAddress);
-                $organization->save();
+        $this->newLine(2);
+        $this->displaySummary();
+        $this->writeErrorLog();
+    }
 
-                $event = $organization->events()->create([
-                    'title' => $record['event_title'],
-                    'description' => $record['event_description'],
-                    'start_datetime' => $record['start_datetime'],
-                    'end_datetime' => $record['end_datetime'],
-                ]);
+    private function processRecord(array $record): void
+    {
+        $this->validateRecord($record);
 
-                $eventAddress = $event->address()->firstOrNew([], [
-                    'street_line_1' => $record['event_street_line_1'],
-                    'street_line_2' => $record['event_street_line_2'] ?? null,
-                    'city' => $record['event_city'],
-                    'state' => $record['event_state'],
-                    'postal_code' => $record['event_postal_code'],
-                    'country' => $record['event_country'] ?? 'US'
-                ]);
-                $event->address()->save($eventAddress);
-                $event->save();
+        $organization = Organization::firstOrCreate(
+            ['name' => $record['organization_name']],
+        );
 
-                $this->info("Imported: {$record['event_title']} by {$record['organization_name']}");
-            }
+        $this->updateAddress($organization, $this->getOrganizationAddressData($record));
 
-            DB::commit();
-            $this->info('Import completed successfully!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $this->error("Import failed: {$e->getMessage()}");
+        $event = $organization->events()->create([
+            'title' => $record['event_title'],
+            'description' => $record['event_description'],
+            'start_datetime' => $record['start_datetime'],
+            'end_datetime' => $record['end_datetime'],
+        ]);
+
+        $this->updateAddress($event, $this->getEventAddressData($record));
+    }
+
+    private function validateRecord(array $record): void
+    {
+        $requiredFields = [
+            'organization_name',
+            'organization_street_line_1',
+            'organization_city',
+            'organization_state',
+            'organization_postal_code',
+            'event_title',
+            'event_description',
+            'event_street_line_1',
+            'event_city',
+            'event_state',
+            'event_postal_code',
+            'start_datetime',
+            'end_datetime'
+        ];
+
+        $missingFields = array_filter(
+            $requiredFields,
+            fn($field) =>
+            !isset($record[$field]) || empty(trim($record[$field]))
+        );
+
+        if (!empty($missingFields)) {
+            throw new \InvalidArgumentException(
+                'Missing required fields: ' . implode(', ', $missingFields)
+            );
         }
+    }
+
+    private function handleFailedRecord(array $record, int $index, Throwable $e): void
+    {
+        $this->failureCount++;
+        $this->failedRecords[] = [
+            'index' => $index + 2, // Adding 2 to account for 0-based index and header row
+            'record' => $record,
+            'error' => $e->getMessage(),
+            'timestamp' => now()->toDateTimeString(),
+        ];
+
+        // Log to Laravel's error log as well
+        Log::error("Dance event import failed for record " . ($index + 2), [
+            'error' => $e->getMessage(),
+            'record' => $record,
+        ]);
+    }
+
+    private function displaySummary(): void
+    {
+        $this->info('Import Summary:');
+        $this->line("✓ Successfully imported: {$this->successCount} records");
+
+        if ($this->failureCount > 0) {
+            $this->warn("⚠ Failed to import: {$this->failureCount} records");
+            $this->line("  Details written to: " . $this->option('log-file'));
+        }
+    }
+
+    private function writeErrorLog(): void
+    {
+        if (empty($this->failedRecords)) {
+            return;
+        }
+
+        $logFile = storage_path('logs/' . $this->option('log-file'));
+        $content = "Dance Events Import Errors - " . now()->toDateTimeString() . "\n\n";
+
+        foreach ($this->failedRecords as $record) {
+            $content .= "Row {$record['index']}:\n";
+            $content .= "Error: {$record['error']}\n";
+            $content .= "Record Data:\n";
+            $content .= json_encode($record['record'], JSON_PRETTY_PRINT) . "\n\n";
+        }
+
+        file_put_contents($logFile, $content, FILE_APPEND);
+    }
+
+    private function updateAddress($model, array $addressData): void
+    {
+        $address = $model->address()->firstOrNew([], $addressData);
+        $geocodeData = $this->geocoder->geocode($addressData);
+
+        if ($geocodeData) {
+            $address->latitude = $geocodeData['latitude'];
+            $address->longitude = $geocodeData['longitude'];
+        }
+        $model->address()->save($address);
+    }
+
+    private function getOrganizationAddressData(array $record): array
+    {
+        return $this->formatAddressData($record, 'organization');
+    }
+
+    private function getEventAddressData(array $record): array
+    {
+        return $this->formatAddressData($record, 'event');
+    }
+
+    private function formatAddressData(array $record, string $prefix): array
+    {
+        return [
+            'street_line_1' => $record["{$prefix}_street_line_1"],
+            'street_line_2' => $record["{$prefix}_street_line_2"] ?? null,
+            'city' => $record["{$prefix}_city"],
+            'state' => $record["{$prefix}_state"],
+            'postal_code' => $record["{$prefix}_postal_code"],
+            'country' => $record["{$prefix}_country"] ?? 'US'
+        ];
     }
 }
