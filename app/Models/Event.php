@@ -14,8 +14,11 @@ class Event extends Model
     protected $fillable = [
         'title',
         'description',
-        'start_datetime',
-        'end_datetime',
+        'venue_name',
+        'date',
+        'time',
+        'timezone',
+        'is_all_day',
     ];
 
     public function categories(): HasMany

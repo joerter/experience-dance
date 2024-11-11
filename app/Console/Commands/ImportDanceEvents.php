@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Organization;
 use App\Services\GeocodingService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -63,12 +64,23 @@ class ImportDanceEvents extends Command
 
         $this->updateAddress($organization, $this->getOrganizationAddressData($record));
 
-        $event = $organization->events()->create([
+        $eventData = $this->processDateTime(
+            $record['event_date'],
+            $record['event_time'] ?? null,
+            $record['event_timezone'] ?? null
+        );
+        $eventToInsert = [
             'title' => $record['event_title'],
             'description' => $record['event_description'],
-            'start_datetime' => $record['start_datetime'],
-            'end_datetime' => $record['end_datetime'],
-        ]);
+            'venue_name' => $record['event_venue_name'],
+            'date' => $eventData['date'],
+            'time' => $eventData['time'],
+            'timezone' => $eventData['timezone'],
+            'is_all_day' => $eventData['is_all_day'],
+        ];
+        //dd($eventToInsert);
+
+        $event = $organization->events()->create($eventToInsert);
 
         $this->updateAddress($event, $this->getEventAddressData($record));
     }
@@ -83,12 +95,13 @@ class ImportDanceEvents extends Command
             'organization_postal_code',
             'event_title',
             'event_description',
+            'event_date',
+            'event_timezone',
             'event_street_line_1',
             'event_city',
             'event_state',
             'event_postal_code',
-            'start_datetime',
-            'end_datetime'
+            'event_venue_name',
         ];
 
         $missingFields = array_filter(
@@ -183,5 +196,45 @@ class ImportDanceEvents extends Command
             'postal_code' => $record["{$prefix}_postal_code"],
             'country' => $record["{$prefix}_country"] ?? 'US'
         ];
+    }
+
+    private function processDateTime(
+        string $date,
+        ?string $time,
+        string $timezone
+    ): array {
+        $parsedDate = Carbon::parse($date)->format('Y-m-d');
+        $validatedTimezone = $this->validateAndGetTimezone($timezone);
+
+        if (empty($time)) {
+            return [
+                'date' => $parsedDate,
+                'time' => null,
+                'timezone' => $validatedTimezone,
+                'is_all_day' => true,
+            ];
+        }
+
+        $dateTime = Carbon::parse("$date $time", $validatedTimezone)->utc();
+
+        return [
+            'date' => $dateTime->format('Y-m-d'),
+            'time' => $dateTime->format('H:i:s'),
+            'timezone' => $validatedTimezone,
+            'is_all_day' => false,
+        ];
+    }
+
+    private function validateAndGetTimezone(string $timezone): string
+    {
+        $validTimezones = \DateTimeZone::listIdentifiers();
+
+        if (!in_array($timezone, $validTimezones)) {
+            throw new \InvalidArgumentException(
+                "Invalid timezone: {$timezone}. Please use a valid PHP timezone identifier."
+            );
+        }
+
+        return $timezone;
     }
 }
