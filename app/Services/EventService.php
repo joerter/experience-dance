@@ -2,14 +2,16 @@
 
 namespace App\Services;
 
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 
 class EventService
 {
     public function getFeatured()
     {
-        return Event::where('date', '>=', now())
+        $featured = Event::where('date', '>=', now())
             ->select([
+                'id',
                 'title',
                 'venue_name',
                 'date',
@@ -20,5 +22,7 @@ class EventService
             ->orderBy('date', 'asc')
             ->take(20)
             ->get();
+
+        return EventResource::collection($featured);
     }
 }
