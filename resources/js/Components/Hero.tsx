@@ -31,6 +31,7 @@ export default function Hero(props: HeroProps) {
       .slice(0, TARGET_FEATURED_EVENT_LENGTH);
     return expanded;
   }, [props.featuredEvents]);
+  console.log(expandedFeaturedEvents);
   return (
     <Stack
       justifyContent="flex-start"
@@ -85,8 +86,10 @@ export default function Hero(props: HeroProps) {
         <Stack
           direction="row"
           alignItems="center"
+          justifyContent="flex-start"
           sx={{
-            animation: `${marquee} 60s linear infinite`,
+            width: 'fit-content',
+            animation: `${marquee} 3000s linear infinite`,
             '&:hover': {
               animationPlayState: 'paused',
             },
