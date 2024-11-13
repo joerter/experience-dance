@@ -27,6 +27,14 @@ class EventResource extends JsonResource
                 'id' => $this->whenLoaded('organization')?->id,
                 'name' => $this->whenLoaded('organization')?->name,
             ],
+            'address' => $this->address ? [
+                'streetLine1' => $this->address->street_line_1,
+                'streetLine2' => $this->address->street_line_2,
+                'city' => $this->address->city,
+                'state' => $this->address->state,
+                'postalCode' => $this->address->postal_code,
+                'country' => $this->address->country,
+            ] : null
         ];
     }
 }

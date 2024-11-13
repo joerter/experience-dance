@@ -1,33 +1,7 @@
+import { FeaturedEvent } from '@/types/Events/FeaturedEvent';
 import { keyframes, Stack, Typography } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
+import { useMemo } from 'react';
 import EventSearch from './EventSearch';
-
-const featuredEvents: {
-  name: string;
-  organization: string;
-  location: string;
-}[] = [
-  {
-    name: 'The Long Black Veil',
-    organization: 'New England Ballet Theatre',
-    location: 'West Hartford, CT',
-  },
-  {
-    name: 'The Fantastic Toy Shop',
-    organization: 'New England Ballet Theatre',
-    location: 'West Hartford, CT',
-  },
-  {
-    name: 'Emerging Works',
-    organization: 'New England Ballet Theatre',
-    location: 'West Hartford, CT',
-  },
-  {
-    name: 'La Sylphide',
-    organization: 'New England Ballet Theatre',
-    location: 'West Hartford, CT',
-  },
-];
 
 const marquee = keyframes`
   0% {
@@ -38,7 +12,12 @@ const marquee = keyframes`
   }
 `;
 
-export default function Hero() {
+export interface HeroProps {
+  featuredEvents: FeaturedEvent[];
+}
+
+export default function Hero(props: HeroProps) {
+  const expandedFeaturedEvents = useMemo(() => { }, []);
   return (
     <Stack
       justifyContent="flex-start"
@@ -100,32 +79,38 @@ export default function Hero() {
             },
           }}
         >
-          {featuredEvents.map((fe, i) => (
-            <Stack
-              key={i}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ width: '300px', flexShrink: 0, p: 2 }}
-            >
-              <Stack>
-                <Typography variant="body1">{fe.name}</Typography>
-                <Typography
-                  variant="body2"
-                  fontSize={(theme) => theme.typography.pxToRem(10)}
-                >
-                  {fe.organization}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  fontSize={(theme) => theme.typography.pxToRem(10)}
-                >
-                  {fe.location}
-                </Typography>
+          {props.featuredEvents != null
+            ? props.featuredEvents.map((fe, i) => (
+              <Stack
+                key={i}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ width: '300px', flexShrink: 0, p: 2 }}
+              >
+                <Stack>
+                  <Typography variant="body1">{fe.title}</Typography>
+                  <Typography
+                    variant="body2"
+                    fontSize={(theme) => theme.typography.pxToRem(10)}
+                  >
+                    {fe.organization?.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    fontSize={(theme) => theme.typography.pxToRem(10)}
+                  >
+                    {fe.venueName}
+                  </Typography>
+                </Stack>
+                <img
+                  height="24px"
+                  width="24px"
+                  src="/images/logo-small.svg"
+                />
               </Stack>
-              <img height="24px" width="24px" src="/images/logo-small.svg" />
-            </Stack>
-          ))}
+            ))
+            : null}
         </Stack>
       </Stack>
     </Stack>

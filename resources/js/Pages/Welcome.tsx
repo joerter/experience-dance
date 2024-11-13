@@ -9,15 +9,16 @@ import { JSXElementConstructor, ReactElement, ReactNode } from 'react';
 
 function Welcome({
   auth,
-  featuredEvents,
+  featuredEventsData,
 }: PageProps<{
-  featuredEvents: FeaturedEvent[];
+  featuredEventsData: { data: FeaturedEvent[] };
 }>) {
+  console.log('featuredEventsData', featuredEventsData);
   return (
     <>
       <Head title="Welcome"></Head>
       <Box>
-        <Hero />
+        <Hero featuredEvents={featuredEventsData.data} />
         <Events />
       </Box>
     </>

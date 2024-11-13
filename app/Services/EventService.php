@@ -18,7 +18,10 @@ class EventService
                 'time',
                 'organization_id',
             ])
-            ->with(['organization:id,name'])
+            ->with([
+                'organization:id,name',
+                'address:id,addressable_id,addressable_type,city,state'
+            ])
             ->orderBy('date', 'asc')
             ->take(20)
             ->get();
