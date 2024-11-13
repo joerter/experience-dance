@@ -15,9 +15,22 @@ const marquee = keyframes`
 export interface HeroProps {
   featuredEvents: FeaturedEvent[];
 }
+const TARGET_FEATURED_EVENT_LENGTH = 100;
 
 export default function Hero(props: HeroProps) {
-  const expandedFeaturedEvents = useMemo(() => { }, []);
+  const expandedFeaturedEvents = useMemo(() => {
+    const events = props.featuredEvents;
+    if (events.length >= TARGET_FEATURED_EVENT_LENGTH) {
+      return events.slice(0, TARGET_FEATURED_EVENT_LENGTH);
+    }
+
+    const repetitions = Math.ceil(TARGET_FEATURED_EVENT_LENGTH / events.length);
+    const expanded = Array(repetitions)
+      .fill(events)
+      .flat()
+      .slice(0, TARGET_FEATURED_EVENT_LENGTH);
+    return expanded;
+  }, [props.featuredEvents]);
   return (
     <Stack
       justifyContent="flex-start"
@@ -79,8 +92,8 @@ export default function Hero(props: HeroProps) {
             },
           }}
         >
-          {props.featuredEvents != null
-            ? props.featuredEvents.map((fe, i) => (
+          {expandedFeaturedEvents != null
+            ? expandedFeaturedEvents.map((fe, i) => (
               <Stack
                 key={i}
                 direction="row"
