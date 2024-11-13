@@ -90,9 +90,6 @@ export default function Hero(props: HeroProps) {
           sx={{
             width: 'fit-content',
             animation: `${marquee} 3000s linear infinite`,
-            '&:hover': {
-              animationPlayState: 'paused',
-            },
           }}
         >
           {expandedFeaturedEvents != null
