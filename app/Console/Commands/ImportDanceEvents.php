@@ -170,8 +170,7 @@ class ImportDanceEvents extends Command
         $geocodeData = $this->geocoder->geocode($addressData);
 
         if ($geocodeData) {
-            $address->latitude = $geocodeData['latitude'];
-            $address->longitude = $geocodeData['longitude'];
+            $address->location = ['latitude' => $geocodeData['latitude'], 'longitude' => $geocodeData['longitude']];
         }
         $model->address()->save($address);
     }
