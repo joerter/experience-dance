@@ -2,6 +2,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Autocomplete,
+  debounce,
   FormControl,
   InputAdornment,
   MenuItem,
@@ -10,7 +11,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 enum DateRangeOption {
   Week = 'week',
@@ -18,14 +19,62 @@ enum DateRangeOption {
   Year = 'year',
 }
 
+function getSuggestedResults(request: any, callback: any) { }
+
 export default function EventSearch({
   variant,
 }: {
   variant: 'dark' | 'light';
 }) {
+  const [value, setValue] = useState<any | null>(null);
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState<readonly any[]>([]);
   const [dateRange, setDateRange] = useState<DateRangeOption>(
     DateRangeOption.Week,
   );
+
+  const fetch = useMemo(
+    () =>
+      debounce(
+        (
+          request: { input: string },
+          callback: (results?: readonly any[]) => void,
+        ) => {
+          getSuggestedResults(request, callback);
+        },
+        400,
+      ),
+    [],
+  );
+
+  useEffect(() => {
+    let active = true;
+
+    if (inputValue === '') {
+      setOptions(value ? [value] : []);
+      return undefined;
+    }
+
+    fetch({ input: inputValue }, (results?: readonly any[]) => {
+      if (active) {
+        let newOptions: readonly any[] = [];
+
+        if (value) {
+          newOptions = [value];
+        }
+
+        if (results) {
+          newOptions = [...newOptions, ...results];
+        }
+
+        setOptions(newOptions);
+      }
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [value, inputValue, fetch]);
 
   const textColor = variant === 'dark' ? 'text.primary' : 'text.secondary';
   const borderColor =
@@ -86,8 +135,24 @@ export default function EventSearch({
         disableClearable
         freeSolo
         fullWidth
-        options={['Hartford', 'Omaha']}
+        options={options}
+        autoComplete
+        getOptionLabel={(option: any) =>
+          typeof option === 'string' ? option : option.description
+        }
+        includeInputInList
+        filterSelectedOptions
+        value={value}
+        noOptionsText="No locations"
         slotProps={{ paper: { sx: { color: 'text.secondary' } } }}
+        filterOptions={(x) => x}
+        onChange={(event: any, newValue: any | null) => {
+          setOptions(newValue ? [newValue, ...options] : options);
+          setValue(newValue);
+        }}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
         sx={{
           color: textColor,
           '.MuiSelect-icon': { color: textColor },
