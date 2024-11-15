@@ -13,7 +13,6 @@ function Welcome({
 }: PageProps<{
   featuredEventsData: { data: FeaturedEvent[] };
 }>) {
-  console.log('featuredEventsData', featuredEventsData);
   return (
     <>
       <Head title="Welcome"></Head>

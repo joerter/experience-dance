@@ -19,7 +19,10 @@ enum DateRangeOption {
   Year = 'year',
 }
 
-function getSuggestedResults(request: any, callback: any) { }
+function getSuggestedResults(request: any, callback: any) {
+  console.log('make the request with', request);
+  callback([]);
+}
 
 export default function EventSearch({
   variant,
