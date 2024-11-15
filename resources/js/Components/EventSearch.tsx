@@ -19,9 +19,26 @@ enum DateRangeOption {
   Year = 'year',
 }
 
-function getSuggestedResults(request: any, callback: any) {
-  console.log('make the request with', request);
-  callback([]);
+async function getSuggestedResults(request: any, callback: any) {
+  try {
+    console.log('make the request with', request);
+    const response = await fetch(
+      `/api/event-search?query=${encodeURIComponent(request)}`,
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    );
+    if (!response.ok) throw new Error('Search failed');
+
+    const data = await response.json();
+    console.log('Got response: ', data);
+    callback([]);
+  } catch (error: any) {
+    console.error('failed to search', error);
+    callback([]);
+  }
 }
 
 export default function EventSearch({
