@@ -181,6 +181,9 @@ export default function EventSearch({
         }}
         sx={{
           color: textColor,
+          '.MuiOutlinedInput-root': {
+            px: 2,
+          },
           '.MuiSelect-icon': { color: textColor },
           ...notchedOutlineStyles,
           '.Mui-focused .MuiOutlinedInput-notchedOutline': {
