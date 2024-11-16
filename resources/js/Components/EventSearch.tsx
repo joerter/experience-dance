@@ -1,3 +1,7 @@
+import {
+  EventSearchResult,
+  EventSearchSuggestion,
+} from '@/types/Events/EventSearchResult';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -5,11 +9,13 @@ import {
   debounce,
   FormControl,
   InputAdornment,
+  ListItem,
   MenuItem,
   Select,
   SelectChangeEvent,
   Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -21,7 +27,10 @@ enum DateRangeOption {
 
 const sessionToken = crypto.randomUUID();
 
-async function getSuggestedResults(request: { input: string }, callback: any) {
+async function getSuggestedResults(
+  request: { input: string },
+  callback: (suggestions: EventSearchSuggestion[]) => void,
+) {
   try {
     console.log('make the request with', request);
     const searchParams = new URLSearchParams([
@@ -38,9 +47,8 @@ async function getSuggestedResults(request: { input: string }, callback: any) {
     );
     if (!response.ok) throw new Error('Search failed');
 
-    const data = await response.json();
-    console.log('Got response: ', data);
-    callback([]);
+    const data = (await response.json()) as EventSearchResult;
+    callback(data.suggestions);
   } catch (error: any) {
     console.error('failed to search', error);
     callback([]);
@@ -54,7 +62,7 @@ export default function EventSearch({
 }) {
   const [value, setValue] = useState<any | null>(null);
   const [inputValue, setInputValue] = useState('');
-  const [options, setOptions] = useState<readonly any[]>([]);
+  const [options, setOptions] = useState<readonly EventSearchSuggestion[]>([]);
   const [dateRange, setDateRange] = useState<DateRangeOption>(
     DateRangeOption.Week,
   );
@@ -64,7 +72,7 @@ export default function EventSearch({
       debounce(
         (
           request: { input: string },
-          callback: (results?: readonly any[]) => void,
+          callback: (results?: readonly EventSearchSuggestion[]) => void,
         ) => {
           getSuggestedResults(request, callback);
         },
@@ -81,21 +89,24 @@ export default function EventSearch({
       return undefined;
     }
 
-    fetch({ input: inputValue }, (results?: readonly any[]) => {
-      if (active) {
-        let newOptions: readonly any[] = [];
+    fetch(
+      { input: inputValue },
+      (results?: readonly EventSearchSuggestion[]) => {
+        if (active) {
+          let newOptions: readonly EventSearchSuggestion[] = [];
 
-        if (value) {
-          newOptions = [value];
+          if (value) {
+            newOptions = [value];
+          }
+
+          if (results) {
+            newOptions = [...newOptions, ...results];
+          }
+
+          setOptions(newOptions);
         }
-
-        if (results) {
-          newOptions = [...newOptions, ...results];
-        }
-
-        setOptions(newOptions);
-      }
-    });
+      },
+    );
 
     return () => {
       active = false;
@@ -163,8 +174,8 @@ export default function EventSearch({
         fullWidth
         options={options}
         autoComplete
-        getOptionLabel={(option: any) =>
-          typeof option === 'string' ? option : option.description
+        getOptionLabel={(option: EventSearchSuggestion | string) =>
+          typeof option === 'string' ? option : option.place_formatted
         }
         includeInputInList
         filterSelectedOptions
@@ -196,7 +207,7 @@ export default function EventSearch({
         renderInput={(params) => (
           <TextField
             {...params}
-            placeholder="Enter location..."
+            placeholder="Enter a city, state, or zip code"
             variant="outlined"
             slotProps={{
               input: {
@@ -212,6 +223,26 @@ export default function EventSearch({
             }}
           />
         )}
+        renderOption={(props, option) => {
+          const { key, ...optionProps } = props;
+          const asSuggestion = option as EventSearchSuggestion;
+          if (!asSuggestion) {
+            return null;
+          }
+
+          return (
+            <ListItem key={key} {...optionProps} divider>
+              <Stack>
+                <Typography variant="body1" sx={{ fontWeight: '700' }}>
+                  {asSuggestion.name}
+                </Typography>
+                <Typography variant="body1">
+                  {asSuggestion.place_formatted}
+                </Typography>
+              </Stack>
+            </ListItem>
+          );
+        }}
       />
     </Stack>
   );
