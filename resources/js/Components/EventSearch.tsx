@@ -19,11 +19,17 @@ enum DateRangeOption {
   Year = 'year',
 }
 
+const sessionToken = crypto.randomUUID();
+
 async function getSuggestedResults(request: { input: string }, callback: any) {
   try {
     console.log('make the request with', request);
+    const searchParams = new URLSearchParams([
+      ['query', request.input],
+      ['sessionToken', sessionToken],
+    ]);
     const response = await fetch(
-      `/api/event-search?query=${encodeURIComponent(request.input)}`,
+      `/api/event-search?${searchParams.toString()}`,
       {
         headers: {
           Accept: 'application/json',
