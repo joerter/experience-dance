@@ -19,11 +19,11 @@ enum DateRangeOption {
   Year = 'year',
 }
 
-async function getSuggestedResults(request: any, callback: any) {
+async function getSuggestedResults(request: { input: string }, callback: any) {
   try {
     console.log('make the request with', request);
     const response = await fetch(
-      `/api/event-search?query=${encodeURIComponent(request)}`,
+      `/api/event-search?query=${encodeURIComponent(request.input)}`,
       {
         headers: {
           Accept: 'application/json',

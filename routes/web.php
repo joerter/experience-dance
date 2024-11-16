@@ -18,8 +18,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/api/event-search', [EventSearchController::class, 'search'])->name('api.event-search');
-});
+Route::get('/api/event-search', [EventSearchController::class, 'search'])->name('api.event-search');
 
 require __DIR__ . '/auth.php';
