@@ -207,7 +207,7 @@ export default function EventSearch({
         renderInput={(params) => (
           <TextField
             {...params}
-            placeholder="Enter a city, state, or zip code"
+            placeholder="Enter a city, state, or zip code to search"
             variant="outlined"
             slotProps={{
               input: {
