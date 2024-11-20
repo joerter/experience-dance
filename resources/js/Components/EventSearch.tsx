@@ -32,6 +32,10 @@ async function getSuggestedResults(
   callback: (suggestions: EventSearchSuggestion[]) => void,
 ) {
   try {
+    if (!request.input) {
+      callback([]);
+      return;
+    }
     console.log('make the request with', request);
     const searchParams = new URLSearchParams([
       ['query', request.input],
@@ -60,9 +64,11 @@ export default function EventSearch({
 }: {
   variant: 'dark' | 'light';
 }) {
-  const [value, setValue] = useState<any | null>(null);
+  //const [value, setValue] = useState<string | undefined>(undefined);
   const [inputValue, setInputValue] = useState('');
-  const [options, setOptions] = useState<readonly EventSearchSuggestion[]>([]);
+  const [options, setOptions] = useState<EventSearchSuggestion[] | string[]>(
+    [],
+  );
   const [dateRange, setDateRange] = useState<DateRangeOption>(
     DateRangeOption.Week,
   );
@@ -84,25 +90,16 @@ export default function EventSearch({
   useEffect(() => {
     let active = true;
 
-    if (inputValue === '') {
-      setOptions(value ? [value] : []);
-      return undefined;
-    }
+    // if (inputValue === '') {
+    //   setOptions(value ? [value] : []);
+    //   return undefined;
+    // }
 
     fetch(
       { input: inputValue },
       (results?: readonly EventSearchSuggestion[]) => {
-        if (active) {
-          let newOptions: readonly EventSearchSuggestion[] = [];
-
-          if (value) {
-            newOptions = [value];
-          }
-
-          if (results) {
-            newOptions = [...newOptions, ...results];
-          }
-
+        if (active && results && results.length) {
+          const newOptions = [...results];
           setOptions(newOptions);
         }
       },
@@ -111,7 +108,7 @@ export default function EventSearch({
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [inputValue, fetch]);
 
   const textColor = variant === 'dark' ? 'text.primary' : 'text.secondary';
   const borderColor =
@@ -179,16 +176,34 @@ export default function EventSearch({
         }
         includeInputInList
         filterSelectedOptions
-        value={value}
+        //value={value}
         noOptionsText="No locations"
         slotProps={{ paper: { sx: { color: 'text.secondary' } } }}
         filterOptions={(x) => x}
-        onChange={(event: any, newValue: any | null) => {
-          setOptions(newValue ? [newValue, ...options] : options);
-          setValue(newValue);
+        onChange={(
+          event: any,
+          newValue: NonNullable<string | EventSearchSuggestion>,
+        ) => {
+          console.log('onChange', newValue);
+          const asEventSuggestion = newValue as EventSearchSuggestion;
+          if (asEventSuggestion == null) {
+            return;
+          }
+          //setOptions(newValue ? [asEventSuggestion, ...options] : options);
+          // setValue(
+          //   `${asEventSuggestion.name} ${asEventSuggestion.place_formatted}`,
+          // );
+          setInputValue(
+            `${asEventSuggestion.name} ${asEventSuggestion.place_formatted}`,
+          );
         }}
         onInputChange={(event, newInputValue) => {
+          console.log('onInputChange', newInputValue);
           setInputValue(newInputValue);
+        }}
+        renderTags={(value: any, getTagProps: any, ownerState: any) => {
+          console.log('renderTags', value, getTagProps, ownerState);
+          return <p>Hi</p>;
         }}
         sx={{
           color: textColor,
