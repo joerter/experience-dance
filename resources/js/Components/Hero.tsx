@@ -34,7 +34,7 @@ export default function Hero(props: HeroProps) {
       .slice(0, TARGET_FEATURED_EVENT_LENGTH);
     return expanded;
   }, [props.featuredEvents]);
-  console.log(expandedFeaturedEvents);
+
   return (
     <Stack
       justifyContent="flex-start"
@@ -77,7 +77,6 @@ export default function Hero(props: HeroProps) {
             Your gateway to an immersive dance experience
           </Typography>
         </Stack>
-        <EventSearch variant="dark" />
       </Stack>
 
       <Stack
