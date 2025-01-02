@@ -20,6 +20,9 @@ const TARGET_FEATURED_EVENT_LENGTH = 100;
 export default function Hero(props: HeroProps) {
   const expandedFeaturedEvents = useMemo(() => {
     const events = props.featuredEvents;
+    if (!events.length) {
+      return [];
+    }
     if (events.length >= TARGET_FEATURED_EVENT_LENGTH) {
       return events.slice(0, TARGET_FEATURED_EVENT_LENGTH);
     }
