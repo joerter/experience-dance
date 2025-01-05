@@ -17,6 +17,8 @@ class Address extends Model
         'state',
         'postal_code',
         'country',
+        'latitude',
+        'longitude',
     ];
 
     public function setLocationAttribute($value)
