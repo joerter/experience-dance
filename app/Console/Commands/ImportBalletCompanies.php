@@ -50,20 +50,15 @@ class ImportBalletCompanies extends Command
                     'website' => $company['website'],
                 ]);
 
-                // Get coordinates using address components
-                $address = implode(', ', array_filter([
-                    $company['street_line_1'],
-                    $company['street_line_2'],
-                    $company['city'],
-                    $company['state'],
-                    $company['postal_code']
-                ]));
-
-                $geocodingResult = $this->geocoder->geocode($address);
-                // Use Google Maps Geocoding API or similar service here to get coordinates
-                // For now, we'll use dummy coordinates based on provided data
-                $latitude = 0; // Replace with actual geocoding
-                $longitude = 0; // Replace with actual geocoding
+                $addressData = [
+                    'street_line_1' => $company['street_line_1'],
+                    'street_line_2' => $company['street_line_2'],
+                    'city' => $company['city'],
+                    'state' => $company['state'],
+                    'postal_code' => $company['postal_code'],
+                    'country' => $company['country'],
+                ];
+                $geocodingResult = $this->geocoder->geocode($addressData);
 
                 // Create address with polymorphic relationship
                 $address = new Address([
@@ -73,13 +68,9 @@ class ImportBalletCompanies extends Command
                     'state' => $company['state'],
                     'postal_code' => $company['postal_code'],
                     'country' => $company['country'],
-                    'latitude' => $latitude,
-                    'longitude' => $longitude,
+                    'latitude' => $geocodingResult['latitude'],
+                    'longitude' => $geocodingResult['longitude'],
                 ]);
-
-                // Set the point location using raw SQL
-                $point = DB::raw("ST_GeomFromText('POINT($longitude $latitude)')");
-                $address->location = $point;
 
                 // Save address with polymorphic relationship
                 $organization->address()->save($address);
