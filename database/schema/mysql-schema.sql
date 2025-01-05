@@ -9,13 +9,14 @@ DROP TABLE IF EXISTS `addresses`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `addresses` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `location` point NOT NULL,
   `addressable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `addressable_id` bigint unsigned NOT NULL,
   `street_line_1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `street_line_2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `postal_code` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `postal_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `country` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'US',
   `latitude` decimal(10,8) DEFAULT NULL,
   `longitude` decimal(11,8) DEFAULT NULL,
@@ -25,7 +26,8 @@ CREATE TABLE `addresses` (
   KEY `addresses_addressable_type_addressable_id_index` (`addressable_type`,`addressable_id`),
   KEY `addresses_latitude_longitude_index` (`latitude`,`longitude`),
   KEY `addresses_postal_code_index` (`postal_code`),
-  KEY `addresses_city_state_index` (`city`,`state`)
+  KEY `addresses_city_state_index` (`city`,`state`),
+  SPATIAL KEY `location` (`location`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `cache`;
@@ -82,8 +84,11 @@ CREATE TABLE `events` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `start_datetime` datetime NOT NULL,
-  `end_datetime` datetime NOT NULL,
+  `venue_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` date NOT NULL,
+  `time` time DEFAULT NULL,
+  `is_all_day` tinyint(1) NOT NULL DEFAULT '0',
+  `timezone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `organization_id` bigint unsigned DEFAULT NULL,
@@ -155,6 +160,7 @@ DROP TABLE IF EXISTS `organizations`;
 CREATE TABLE `organizations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -254,3 +260,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (12,'2024_10_04_022
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (13,'2024_11_09_134343_organizations_events_addresses',2);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (14,'2024_11_09_154417_events_remove_phone',3);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (15,'2024_11_10_110445_postal_code_string',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (16,'2024_11_11_114705_events_timezone',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (17,'2024_11_11_120204_events_endtime',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (18,'2024_11_11_120621_events_time',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (19,'2024_11_14_122728_address_location',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (20,'2025_01_05_165011_add_website_to_organizations_table',5);
