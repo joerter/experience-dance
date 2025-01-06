@@ -19,6 +19,7 @@ class Address extends Model
         'country',
         'latitude',
         'longitude',
+        'location',
     ];
 
     public function setLocationAttribute($value)

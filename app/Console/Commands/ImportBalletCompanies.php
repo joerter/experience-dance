@@ -44,7 +44,6 @@ class ImportBalletCompanies extends Command
 
         try {
             foreach ($data['companies'] as $company) {
-                // Create organization
                 $organization = Organization::create([
                     'name' => $company['name'],
                     'website' => $company['website'],
@@ -60,19 +59,13 @@ class ImportBalletCompanies extends Command
                 ];
                 $geocodingResult = $this->geocoder->geocode($addressData);
 
-                // Create address with polymorphic relationship
                 $address = new Address([
-                    'street_line_1' => $company['street_line_1'],
-                    'street_line_2' => $company['street_line_2'],
-                    'city' => $company['city'],
-                    'state' => $company['state'],
-                    'postal_code' => $company['postal_code'],
-                    'country' => $company['country'],
+                    ...$addressData,
                     'latitude' => $geocodingResult['latitude'],
                     'longitude' => $geocodingResult['longitude'],
+                    'location' => ['latitude' => $geocodingResult['latitude'], 'longitude' => $geocodingResult['longitude']],
                 ]);
 
-                // Save address with polymorphic relationship
                 $organization->address()->save($address);
 
                 $bar->advance();
