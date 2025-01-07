@@ -401,6 +401,16 @@
       "country": "USA"
     },
     {
+      "name": "American Midwest Ballet",
+      "website": "https://amballet.org/",
+      "street_line_1": "1001 S 6th St",
+      "street_line_2": "",
+      "city": "Council Bluffs",
+      "state": "IA",
+      "postal_code": "51501",
+      "country": "USA"
+    },
+    {
       "name": "New England Ballet Theatre of CT",
       "website": "https://www.neballettheatre.com",
       "street_line_1": "302 W Main St",
@@ -411,13 +421,13 @@
       "country": "USA"
     },
     {
-      "name": "American Midwest Ballet",
-      "website": "https://www.amballet.com",
-      "street_line_1": "1001 S 6th Street",
-      "street_line_2": "",
-      "city": "Council Bluffs",
-      "state": "IA",
-      "postal_code": "51501",
+      "name": "Ballet Vero Beach",
+      "website": "https://balletverobeach.org/",
+      "street_line_1": "2135 Windward Way",
+      "street_line_2": "#209",
+      "city": "Vero Beach",
+      "state": "FL",
+      "postal_code": "32963",
       "country": "USA"
     }
   ]
