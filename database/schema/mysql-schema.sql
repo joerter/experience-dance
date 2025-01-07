@@ -84,12 +84,10 @@ CREATE TABLE `events` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `venue_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `time` time DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `venue_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `datetime` datetime DEFAULT NULL,
   `is_all_day` tinyint(1) NOT NULL DEFAULT '0',
-  `timezone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `organization_id` bigint unsigned DEFAULT NULL,
@@ -161,7 +159,7 @@ DROP TABLE IF EXISTS `organizations`;
 CREATE TABLE `organizations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `website` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -267,3 +265,4 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (18,'2024_11_11_120
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (19,'2024_11_14_122728_address_location',4);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (20,'2025_01_05_165011_add_website_to_organizations_table',5);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (21,'2025_01_07_111904_add_url_to_events_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (22,'2025_01_07_115733_modify_events_datetime_fields',7);
