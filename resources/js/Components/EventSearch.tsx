@@ -173,7 +173,9 @@ export default function EventSearch({
         options={options}
         autoComplete
         getOptionLabel={(option: EventSearchSuggestion | string) =>
-          typeof option === 'string' ? option : option.place_formatted
+          typeof option === 'string'
+            ? option
+            : `${option.name}, ${option.place_formatted}`
         }
         includeInputInList
         filterSelectedOptions
@@ -181,23 +183,16 @@ export default function EventSearch({
         slotProps={{ paper: { sx: { color: 'text.secondary' } } }}
         filterOptions={(x) => x}
         onChange={(
-          event: any,
+          _: any,
           newValue: NonNullable<string | EventSearchSuggestion>,
         ) => {
           const asEventSuggestion = newValue as EventSearchSuggestion;
           if (asEventSuggestion == null) {
             return;
           }
-          //setOptions(newValue ? [asEventSuggestion, ...options] : options);
-          // setValue(
-          //   `${asEventSuggestion.name} ${asEventSuggestion.place_formatted}`,
-          // );
-          // setInputValue(
-          //   `${asEventSuggestion.name} ${asEventSuggestion.place_formatted}`,
-          // );
           onSuggestionSelected(asEventSuggestion);
         }}
-        onInputChange={(event, newInputValue) => {
+        onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
         }}
         sx={{
