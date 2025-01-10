@@ -27,35 +27,35 @@ const events: {
   organization: string;
   location: string;
 }[] = [
-  {
-    name: 'The Long Black Veil',
-    date: 'October 20th, 2024',
-    time: '8:00 PM',
-    organization: 'New England Ballet Theatre',
-    location: 'West Hartford, CT',
-  },
-  {
-    name: 'The Fantastic Toy Shop',
-    date: 'December 20th, 2024',
-    time: '8:00 PM',
-    organization: 'New England Ballet Theatre',
-    location: 'West Hartford, CT',
-  },
-  {
-    name: 'Emerging Works',
-    date: 'March 20th, 2024',
-    time: '8:00 PM',
-    organization: 'New England Ballet Theatre',
-    location: 'West Hartford, CT',
-  },
-  {
-    name: 'La Sylphide',
-    date: 'June 20th, 2024',
-    time: '8:00 PM',
-    organization: 'New England Ballet Theatre',
-    location: 'West Hartford, CT',
-  },
-];
+    {
+      name: 'The Long Black Veil',
+      date: 'October 20th, 2024',
+      time: '8:00 PM',
+      organization: 'New England Ballet Theatre',
+      location: 'West Hartford, CT',
+    },
+    {
+      name: 'The Fantastic Toy Shop',
+      date: 'December 20th, 2024',
+      time: '8:00 PM',
+      organization: 'New England Ballet Theatre',
+      location: 'West Hartford, CT',
+    },
+    {
+      name: 'Emerging Works',
+      date: 'March 20th, 2024',
+      time: '8:00 PM',
+      organization: 'New England Ballet Theatre',
+      location: 'West Hartford, CT',
+    },
+    {
+      name: 'La Sylphide',
+      date: 'June 20th, 2024',
+      time: '8:00 PM',
+      organization: 'New England Ballet Theatre',
+      location: 'West Hartford, CT',
+    },
+  ];
 
 export default function Events() {
   const [mapViewEnabled, setMapViewEnabled] = useState(false);
@@ -88,7 +88,12 @@ export default function Events() {
           />
         </Stack>
 
-        <EventSearch variant="light" />
+        <EventSearch
+          variant="light"
+          onSuggestionSelected={(suggestion: any) => {
+            console.log('selected', suggestion);
+          }}
+        />
         <Stack
           direction="row"
           justifyContent="center"

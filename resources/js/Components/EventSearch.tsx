@@ -36,7 +36,6 @@ async function getSuggestedResults(
       callback([]);
       return;
     }
-    console.log('make the request with', request);
     const searchParams = new URLSearchParams([
       ['query', request.input],
       ['sessionToken', sessionToken],
@@ -60,8 +59,10 @@ async function getSuggestedResults(
 }
 
 export default function EventSearch({
+  onSuggestionSelected,
   variant,
 }: {
+  onSuggestionSelected: (suggestion: EventSearchSuggestion) => void;
   variant: 'dark' | 'light';
 }) {
   //const [value, setValue] = useState<string | undefined>(undefined);
@@ -176,7 +177,6 @@ export default function EventSearch({
         }
         includeInputInList
         filterSelectedOptions
-        //value={value}
         noOptionsText="No locations"
         slotProps={{ paper: { sx: { color: 'text.secondary' } } }}
         filterOptions={(x) => x}
@@ -184,7 +184,6 @@ export default function EventSearch({
           event: any,
           newValue: NonNullable<string | EventSearchSuggestion>,
         ) => {
-          console.log('onChange', newValue);
           const asEventSuggestion = newValue as EventSearchSuggestion;
           if (asEventSuggestion == null) {
             return;
@@ -193,17 +192,13 @@ export default function EventSearch({
           // setValue(
           //   `${asEventSuggestion.name} ${asEventSuggestion.place_formatted}`,
           // );
-          setInputValue(
-            `${asEventSuggestion.name} ${asEventSuggestion.place_formatted}`,
-          );
+          // setInputValue(
+          //   `${asEventSuggestion.name} ${asEventSuggestion.place_formatted}`,
+          // );
+          onSuggestionSelected(asEventSuggestion);
         }}
         onInputChange={(event, newInputValue) => {
-          console.log('onInputChange', newInputValue);
           setInputValue(newInputValue);
-        }}
-        renderTags={(value: any, getTagProps: any, ownerState: any) => {
-          console.log('renderTags', value, getTagProps, ownerState);
-          return <p>Hi</p>;
         }}
         sx={{
           color: textColor,
