@@ -65,7 +65,6 @@ export default function EventSearch({
   onSuggestionSelected: (suggestion: EventSearchSuggestion) => void;
   variant: 'dark' | 'light';
 }) {
-  //const [value, setValue] = useState<string | undefined>(undefined);
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<EventSearchSuggestion[] | string[]>(
     [],
@@ -90,11 +89,6 @@ export default function EventSearch({
 
   useEffect(() => {
     let active = true;
-
-    // if (inputValue === '') {
-    //   setOptions(value ? [value] : []);
-    //   return undefined;
-    // }
 
     fetch(
       { input: inputValue },
