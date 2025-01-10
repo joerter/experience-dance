@@ -34,4 +34,9 @@ class EventService
 
         return EventResource::collection($featured);
     }
+
+    public function getUpcomingCount()
+    {
+        return Event::where('datetime', '>=', now())->count();
+    }
 }

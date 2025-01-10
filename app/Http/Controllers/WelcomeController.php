@@ -17,12 +17,14 @@ class WelcomeController extends Controller
 
     public function index()
     {
+        $upcomingEventCount = $this->eventService->getUpcomingCount();
         $featuredEvents = $this->eventService->getFeatured();
 
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'featuredEventsData' => $featuredEvents
+            'featuredEventsData' => $featuredEvents,
+            'showEventAndOrgSearch' => false,
         ]);
     }
 }
