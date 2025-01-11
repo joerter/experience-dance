@@ -9,9 +9,13 @@ import { JSXElementConstructor, ReactElement, ReactNode } from 'react';
 
 function Welcome({
   auth,
+  canLogin,
+  canRegister,
   featuredEventsData,
   showEventAndOrgSearch,
 }: PageProps<{
+  canLogin: boolean;
+  canRegister: boolean;
   featuredEventsData: { data: FeaturedEvent[] };
   showEventAndOrgSearch: boolean;
 }>) {
@@ -19,7 +23,10 @@ function Welcome({
     <>
       <Head title="Welcome"></Head>
       <Box>
-        <Hero featuredEvents={featuredEventsData.data} />
+        <Hero
+          canRegister={canRegister}
+          featuredEvents={featuredEventsData.data}
+        />
         {showEventAndOrgSearch && <Events />}
       </Box>
     </>

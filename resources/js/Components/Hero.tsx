@@ -12,6 +12,7 @@ const marquee = keyframes`
 `;
 
 export interface HeroProps {
+  canRegister: boolean;
   featuredEvents: FeaturedEvent[];
 }
 const TARGET_FEATURED_EVENT_LENGTH = 100;
@@ -72,9 +73,11 @@ export default function Hero(props: HeroProps) {
             Grow your studio and inspire the next generation of dancers
           </Typography>
         </Stack>
-        <Button variant="contained" color="primary">
-          Create Your Free Account
-        </Button>
+        {props.canRegister && (
+          <Button variant="contained" color="primary">
+            Create Your Free Account
+          </Button>
+        )}
       </Stack>
 
       <Stack
