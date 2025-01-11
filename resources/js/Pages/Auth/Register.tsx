@@ -1,12 +1,22 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import BaseLayout from '@/Layouts/BaseLayout';
+import { Head, useForm } from '@inertiajs/react';
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import {
+  FormEventHandler,
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+} from 'react';
 
-export default function Register() {
+function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     email: '',
@@ -23,94 +33,87 @@ export default function Register() {
   };
 
   return (
-    <GuestLayout>
+    <Container maxWidth="sm" sx={{ pt: '140px', pb: 10 }}>
       <Head title="Register" />
 
       <form onSubmit={submit}>
-        <div>
-          <InputLabel htmlFor="name" value="Name" />
-
-          <TextInput
-            id="name"
-            name="name"
-            value={data.name}
-            className="mt-1 block w-full"
-            autoComplete="name"
-            isFocused={true}
-            onChange={(e) => setData('name', e.target.value)}
-            required
-          />
-
-          <InputError message={errors.name} className="mt-2" />
-        </div>
-
-        <div className="mt-4">
-          <InputLabel htmlFor="email" value="Email" />
-
-          <TextInput
-            id="email"
-            type="email"
-            name="email"
-            value={data.email}
-            className="mt-1 block w-full"
-            autoComplete="username"
-            onChange={(e) => setData('email', e.target.value)}
-            required
-          />
-
-          <InputError message={errors.email} className="mt-2" />
-        </div>
-
-        <div className="mt-4">
-          <InputLabel htmlFor="password" value="Password" />
-
-          <TextInput
-            id="password"
-            type="password"
-            name="password"
-            value={data.password}
-            className="mt-1 block w-full"
-            autoComplete="new-password"
-            onChange={(e) => setData('password', e.target.value)}
-            required
-          />
-
-          <InputError message={errors.password} className="mt-2" />
-        </div>
-
-        <div className="mt-4">
-          <InputLabel
-            htmlFor="password_confirmation"
-            value="Confirm Password"
-          />
-
-          <TextInput
-            id="password_confirmation"
-            type="password"
-            name="password_confirmation"
-            value={data.password_confirmation}
-            className="mt-1 block w-full"
-            autoComplete="new-password"
-            onChange={(e) => setData('password_confirmation', e.target.value)}
-            required
-          />
-
-          <InputError message={errors.password_confirmation} className="mt-2" />
-        </div>
-
-        <div className="mt-4 flex items-center justify-end">
-          <Link
-            href={route('login')}
-            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
-            Already registered?
-          </Link>
-
-          <PrimaryButton className="ms-4" disabled={processing}>
-            Register
-          </PrimaryButton>
-        </div>
+        <Stack>
+          <Paper sx={{ px: 4, py: 2 }}>
+            <Typography
+              variant="h4"
+              component="h1"
+              align="center"
+              color="textSecondary"
+            >
+              Register for Experience Dance
+            </Typography>
+            <Box>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="name"
+                label="Full Name"
+                name="name"
+                autoComplete="name"
+                autoFocus
+                error={!!errors.name}
+                helperText={errors.name}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                error={!!errors.email}
+                helperText={errors.email}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+                error={!!errors.password}
+                helperText={errors.password}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                id="confirmPassword"
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Register
+              </Button>
+            </Box>
+          </Paper>
+        </Stack>
       </form>
-    </GuestLayout>
+    </Container>
   );
 }
+
+Register.layout = (
+  page:
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | Iterable<ReactNode>,
+) => <BaseLayout children={page}></BaseLayout>;
+
+export default Register;

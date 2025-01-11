@@ -1,4 +1,5 @@
 import { FeaturedEvent } from '@/types/Events/FeaturedEvent';
+import { Link } from '@inertiajs/react';
 import { Button, keyframes, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
@@ -74,7 +75,7 @@ export default function Hero(props: HeroProps) {
           </Typography>
         </Stack>
         {props.canRegister && (
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" component={Link} href="/register">
             Create Your Free Account
           </Button>
         )}
