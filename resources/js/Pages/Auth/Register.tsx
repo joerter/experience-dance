@@ -1,5 +1,6 @@
 import BaseLayout from '@/Layouts/BaseLayout';
 import { Head, useForm } from '@inertiajs/react';
+import GoogleIcon from '@mui/icons-material/Google';
 import {
   Box,
   Button,
@@ -32,11 +33,24 @@ function Register() {
     });
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = route('auth.google.redirect');
+  };
+
   return (
     <Container maxWidth="sm" sx={{ pt: '140px', pb: 10 }}>
       <Head title="Register" />
 
       <form onSubmit={submit}>
+        <Button
+          variant="contained"
+          startIcon={<GoogleIcon />}
+          fullWidth
+          sx={{ mt: 2, mb: 2 }}
+          onClick={handleGoogleLogin}
+        >
+          Sign in with Google
+        </Button>
         <Stack>
           <Paper sx={{ px: 4, py: 2 }}>
             <Typography

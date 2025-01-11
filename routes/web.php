@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\OauthController;
 use App\Http\Controllers\EventSearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
@@ -17,6 +18,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/auth/google/redirect', [OauthController::class, 'redirect'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [OauthController::class, 'callback'])->name('auth.google.callback');
 
 Route::get('/api/event-search', [EventSearchController::class, 'search'])->name('api.event-search');
 
