@@ -86,7 +86,7 @@ const theme = createTheme({
               props: { variant: 'contained' },
               style: {
                 fontWeight: 600,
-                color: gray1,
+                color: white,
               },
             },
             {

@@ -1,7 +1,6 @@
 import { FeaturedEvent } from '@/types/Events/FeaturedEvent';
-import { keyframes, Stack, Typography } from '@mui/material';
+import { Button, keyframes, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
-import EventSearch from './EventSearch';
 
 const marquee = keyframes`
   0% {
@@ -57,26 +56,25 @@ export default function Hero(props: HeroProps) {
             variant="h1"
             textAlign="center"
             fontSize={(theme) => ({
-              xs: theme.typography.pxToRem(32),
-              sm: theme.typography.pxToRem(64),
-              md: theme.typography.pxToRem(84),
-              lg: theme.typography.pxToRem(100),
+              xs: theme.typography.pxToRem(64),
             })}
             fontWeight={(theme) => theme.typography.fontWeightRegular}
           >
-            Find Dance Events Near You.
+            Transform More Lives Through Dance
           </Typography>
           <Typography
             variant="subtitle1"
             textAlign="center"
             fontSize={(theme) => ({
-              xs: theme.typography.pxToRem(16),
-              sm: theme.typography.pxToRem(32),
+              xs: theme.typography.pxToRem(24),
             })}
           >
-            Your gateway to an immersive dance experience
+            Grow your studio and inspire the next generation of dancers
           </Typography>
         </Stack>
+        <Button variant="contained" color="primary">
+          Create Your Free Account
+        </Button>
       </Stack>
 
       <Stack
@@ -96,35 +94,35 @@ export default function Hero(props: HeroProps) {
         >
           {expandedFeaturedEvents != null
             ? expandedFeaturedEvents.map((fe, i) => (
-              <Stack
-                key={i}
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                sx={{ width: '300px', flexShrink: 0, p: 2 }}
-              >
-                <Stack>
-                  <Typography variant="body1">{fe.title}</Typography>
-                  <Typography
-                    variant="body2"
-                    fontSize={(theme) => theme.typography.pxToRem(10)}
-                  >
-                    {fe.organization?.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    fontSize={(theme) => theme.typography.pxToRem(10)}
-                  >
-                    {fe.venueName}
-                  </Typography>
+                <Stack
+                  key={i}
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ width: '300px', flexShrink: 0, p: 2 }}
+                >
+                  <Stack>
+                    <Typography variant="body1">{fe.title}</Typography>
+                    <Typography
+                      variant="body2"
+                      fontSize={(theme) => theme.typography.pxToRem(10)}
+                    >
+                      {fe.organization?.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      fontSize={(theme) => theme.typography.pxToRem(10)}
+                    >
+                      {fe.venueName}
+                    </Typography>
+                  </Stack>
+                  <img
+                    height="24px"
+                    width="24px"
+                    src="/images/logo-small.svg"
+                  />
                 </Stack>
-                <img
-                  height="24px"
-                  width="24px"
-                  src="/images/logo-small.svg"
-                />
-              </Stack>
-            ))
+              ))
             : null}
         </Stack>
       </Stack>

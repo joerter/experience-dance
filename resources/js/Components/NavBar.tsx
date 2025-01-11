@@ -16,7 +16,6 @@ import { useState } from 'react';
 
 const navItems = [
   { text: 'Home', href: '/' },
-  { text: 'Events', href: '/events' },
   { text: 'About', href: '/about' },
   { text: 'Contact', href: '/contact' },
 ];
@@ -134,11 +133,11 @@ export default function NavBar() {
           </Stack>
           <Stack sx={{ display: { xs: 'none', lg: 'flex' } }}>
             <Button
-              color="inherit"
-              variant="outlined"
+              color="primary"
+              variant="contained"
               sx={{ fontWeight: '600' }}
             >
-              Submit Event
+              Sign In
             </Button>
           </Stack>
           <IconButton
