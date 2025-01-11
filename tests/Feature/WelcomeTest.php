@@ -1,6 +1,11 @@
 <?php
 
+use App\Models\Event;
+use App\Models\Organization;
 use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
 
 test('does not show event and org search unless there are upcoming events and organizations', function () {
     $response = $this->get('/');
@@ -16,9 +21,9 @@ test('does not show event and org search unless there are upcoming events and or
 });
 
 test('shows event and org search when there are upcoming events or organizations', function () {
-    $response = $this->get('/');
+    Organization::factory()->has(Event::factory()->count(1))->create();
 
-    // TODO: Create an organization and an event to test this
+    $response = $this->get('/');
 
     $response->assertInertia(
         fn(Assert $page) => $page

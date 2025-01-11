@@ -10,15 +10,17 @@ import { JSXElementConstructor, ReactElement, ReactNode } from 'react';
 function Welcome({
   auth,
   featuredEventsData,
+  showEventAndOrgSearch,
 }: PageProps<{
   featuredEventsData: { data: FeaturedEvent[] };
+  showEventAndOrgSearch: boolean;
 }>) {
   return (
     <>
       <Head title="Welcome"></Head>
       <Box>
         <Hero featuredEvents={featuredEventsData.data} />
-        <Events />
+        {showEventAndOrgSearch && <Events />}
       </Box>
     </>
   );

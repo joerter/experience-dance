@@ -17,7 +17,12 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->name(),
+            'description' => fake()->text(),
+            'url' => fake()->url(),
+            'venue_name' => fake()->company(),
+            'datetime' => fake()->dateTimeBetween('+1 week', '+2 weeks'),
+            'is_all_day' => false,
         ];
     }
 }
