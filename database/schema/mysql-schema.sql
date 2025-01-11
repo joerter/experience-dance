@@ -228,8 +228,13 @@ CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `oauth_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `oauth_provider` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `oauth_refresh_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `oauth_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -266,3 +271,5 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (19,'2024_11_14_122
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (20,'2025_01_05_165011_add_website_to_organizations_table',5);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (21,'2025_01_07_111904_add_url_to_events_table',6);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (22,'2025_01_07_115733_modify_events_datetime_fields',7);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (23,'2025_01_11_164318_user_oauth_fields',8);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (24,'2025_01_11_170636_user_nullable_password',9);
