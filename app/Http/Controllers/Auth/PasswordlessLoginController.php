@@ -5,14 +5,20 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\LoginToken;
 use App\Models\User;
+use App\Services\PasswordlessLoginService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class PasswordlessLoginController extends Controller
 {
+    protected $passwordlessLoginService;
+
+    public function __construct(PasswordlessLoginService $passwordlessLoginService)
+    {
+        $this->passwordlessLoginService = $passwordlessLoginService;
+    }
+
     public function show()
     {
         return Inertia::render('Auth/PasswordlessLogin');
@@ -24,25 +30,7 @@ class PasswordlessLoginController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-        if (!$user) {
-            return back()->with('status', 'We sent you a login link! Check your email.');
-        }
-
-        $token = LoginToken::create([
-            'user_id' => $user->id,
-            'token' => Str::random(32),
-            'created_at' => now(),
-            'expires_at' => now()->addMinutes(15),
-        ]);
-
-        Mail::send('emails.magic-link', [
-            'url' => route('login.verify', ['token' => $token->token]),
-            'token' => $token->token
-        ], function ($message) use ($request) {
-            $message->to($request->email)
-                ->subject('Your Experience Dance Login Link');
-        });
+        $this->passwordlessLoginService->handleLoginRequest($request->email);
 
         return back()->with('status', 'We sent you a login link! Check your email.');
     }
