@@ -22,13 +22,14 @@ class PasswordlessLoginService
             $token = LoginToken::create([
                 'user_id' => $user->id,
                 'token' => Str::random(32),
+                'code' => str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT),
                 'created_at' => now(),
                 'expires_at' => now()->addMinutes(15),
             ]);
 
             Mail::send('emails.magic-link', [
-                'url' => route('login.verify', ['token' => $token->token]),
-                'token' => $token->token
+                'url' => route('login.verify.token', ['token' => $token->token]),
+                'code' => $token->code,
             ], function ($message) use ($email) {
                 $message->to($email)
                     ->subject('Your Experience Dance Login Link');

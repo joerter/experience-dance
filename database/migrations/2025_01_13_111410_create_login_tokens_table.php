@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('token')->unique();
+            $table->string('code', 6);
             $table->timestamp('created_at');
             $table->timestamp('expires_at');
         });

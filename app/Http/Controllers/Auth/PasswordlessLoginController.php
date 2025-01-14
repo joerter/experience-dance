@@ -32,7 +32,7 @@ class PasswordlessLoginController extends Controller
         return redirect()->intended(route('login'))->with('status', 'We sent you a login link! Check your email.');
     }
 
-    public function verify(Request $request, $token)
+    public function verifyToken(Request $request, $token)
     {
         $isValid = $this->passwordlessLoginService->isValidLoginToken($token);
         if (! $isValid) {

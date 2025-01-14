@@ -29,9 +29,9 @@ describe('login.send-link', function () {
     });
 });
 
-describe('login.verify', function () {
+describe('login.verify.token', function () {
     test('redirects back to login with message when token does not exist', function () {
-        $response = $this->get(route('login.verify', ['token' => 'bad-token']));
+        $response = $this->get(route('login.verify.token', ['token' => 'bad-token']));
 
         $response->assertRedirect(route('login'));
         $response->assertSessionHas('error', 'Invalid or expired login link.');
@@ -42,11 +42,12 @@ describe('login.verify', function () {
         $token = LoginToken::create([
             'user_id' => $user->id,
             'token' => Str::random(32),
+            'code' => '123456',
             'created_at' => now(),
             'expires_at' => now()->addMinutes(15),
         ]);
 
-        $response = $this->get(route('login.verify', ['token' => $token->token]));
+        $response = $this->get(route('login.verify.token', ['token' => $token->token]));
 
         $response->assertRedirect(route('dashboard'));
     });

@@ -16,8 +16,8 @@ Route::middleware('guest')->group(function () {
         ->name('login');
     Route::post('login', [PasswordlessLoginController::class, 'sendLoginLink'])
         ->name('login.send-link');
-    Route::get('login/verify/{token}', [PasswordlessLoginController::class, 'verify'])
-        ->name('login.verify');
+    Route::get('login/verify/token/{token}', [PasswordlessLoginController::class, 'verifyToken'])
+        ->name('login.verify.token');
 
 });
 

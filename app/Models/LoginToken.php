@@ -12,6 +12,7 @@ class LoginToken extends Model
     protected $fillable = [
         'user_id',
         'token',
+        'code',
         'created_at',
         'expires_at'
     ];
