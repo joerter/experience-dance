@@ -65,4 +65,30 @@ class PasswordlessLoginService
             return false;
         }
     }
+
+    public function isValidLoginCode($code)
+    {
+        try {
+            $token = LoginToken::where('code', $code)
+                ->where('expires_at', '>', now())
+                ->first();
+
+            if (! $token) {
+                return false;
+            }
+
+            $user = $token->user;
+            if (! $user) {
+                return false;
+            }
+
+            Auth::login($user);
+
+            $token->delete();
+            return true;
+        } catch (\Exception $e) {
+            Log::error('isValidLoginCode error', ['error' => $e->getMessage()]);
+            return false;
+        }
+    }
 }

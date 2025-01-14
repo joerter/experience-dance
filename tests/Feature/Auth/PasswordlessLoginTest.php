@@ -52,3 +52,27 @@ describe('login.verify.token', function () {
         $response->assertRedirect(route('dashboard'));
     });
 });
+
+describe('login.verify.code', function (){
+    test('redirects back to login with message when code does not exist', function () {
+        $response = $this->post(route('login.verify.code'), ['code' => 'bad-token']);
+
+        $response->assertRedirect(route('login'));
+        $response->assertSessionHas('error', 'Invalid or expired login code.');
+    });
+
+    test('redirects to dashboard when the code is sucessfully verified', function () {
+        $user = User::factory()->create();
+        $token = LoginToken::create([
+            'user_id' => $user->id,
+            'token' => Str::random(32),
+            'code' => '123456',
+            'created_at' => now(),
+            'expires_at' => now()->addMinutes(15),
+        ]);
+
+        $response = $this->post(route('login.verify.code', ['code' => $token->code]));
+
+        $response->assertRedirect(route('dashboard'));
+    });
+});

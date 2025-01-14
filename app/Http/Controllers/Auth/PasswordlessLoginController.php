@@ -41,4 +41,16 @@ class PasswordlessLoginController extends Controller
         }
         return redirect()->intended(route('dashboard'));
     }
+
+    public function verifyCode(Request $request)
+    {
+        $request->validate(['code' => 'required']);
+
+        $isValid = $this->passwordlessLoginService->isValidLoginCode($request->code);
+        if (! $isValid) {
+            return redirect()->route('login')
+                ->with('error', 'Invalid or expired login code.');
+        }
+        return redirect()->intended(route('dashboard'));
+    }
 }
