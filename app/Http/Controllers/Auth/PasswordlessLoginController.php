@@ -18,7 +18,7 @@ class PasswordlessLoginController extends Controller
 
     public function show()
     {
-        return Inertia::render('Auth/PasswordlessLogin');
+        return Inertia::render('Auth/Login');
     }
 
     public function sendLoginLink(Request $request)

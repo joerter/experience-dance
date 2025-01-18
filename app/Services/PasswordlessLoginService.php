@@ -9,9 +9,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class PasswordlessLoginService
 {
+    public function show()
+    {
+        return Inertia::render('Login');
+    }
+
     public function handleLoginRequest($email)
     {
         try {

@@ -7,6 +7,8 @@ import {
   Typography,
 } from '@mui/material';
 
+const year = new Date().getFullYear();
+
 export default function Footer() {
   return (
     <Box sx={{ bgcolor: 'background.default' }}>
@@ -40,7 +42,7 @@ export default function Footer() {
         <Toolbar>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="body1">
-              ©2024 Experience Dance, Inc. All rights reserved
+              ©{year} Simple Velocity, LLC DBA Experience Dance All rights reserved
             </Typography>
           </Stack>
         </Toolbar>

@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import {
   AppBar,
   Box,
@@ -136,6 +137,8 @@ export default function NavBar() {
               color="primary"
               variant="contained"
               sx={{ fontWeight: '600' }}
+              component={Link}
+              href={route('login')}
             >
               Sign In
             </Button>
