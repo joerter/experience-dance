@@ -47,8 +47,8 @@ const theme = createTheme({
       main: gray4,
     },
     text: {
-      primary: white,
-      secondary: black,
+      primary: black,
+      secondary: white,
     },
   },
   typography: {
