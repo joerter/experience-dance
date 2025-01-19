@@ -21,6 +21,11 @@ class PasswordlessLoginController extends Controller
         return Inertia::render('Auth/Login');
     }
 
+    public function showVefiyCode()
+    {
+        return Inertia::render('Auth/VerifyCode');
+    }
+
     public function sendLoginLink(Request $request)
     {
         $request->validate([
@@ -29,7 +34,7 @@ class PasswordlessLoginController extends Controller
 
         $this->passwordlessLoginService->handleLoginRequest($request->email);
 
-        return redirect()->intended(route('login'))->with('status', 'We sent you a login link! Check your email.');
+        return redirect()->intended(route('login.verify.code.show'));
     }
 
     public function verifyToken(Request $request, $token)
