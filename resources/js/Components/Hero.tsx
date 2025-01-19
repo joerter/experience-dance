@@ -56,6 +56,7 @@ export default function Hero(props: HeroProps) {
         <Stack spacing={2}>
           <Typography
             variant="h1"
+            color="text.secondary"
             textAlign="center"
             fontSize={(theme) => ({
               xs: theme.typography.pxToRem(64),
@@ -65,6 +66,7 @@ export default function Hero(props: HeroProps) {
             Transform More Lives Through Dance
           </Typography>
           <Typography
+            color="text.secondary"
             variant="subtitle1"
             textAlign="center"
             fontSize={(theme) => ({
