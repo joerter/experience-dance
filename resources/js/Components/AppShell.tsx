@@ -244,6 +244,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           component={Link}
           href={route('logout')}
           onClick={() => setStudioMenuAnchor(null)}
+          method="post"
         >
           <ListItemIcon>
             <Logout fontSize="small" />
