@@ -37,6 +37,35 @@ interface User {
   studios: Studio[];
 }
 
+function UserInformation(props: {
+  user: User;
+  onStudioMenuClick: (e: React.MouseEvent<HTMLElement>) => void;
+  variant: 'light' | 'dark';
+}) {
+  return (
+    <Stack direction="row" spacing={1} alignItems="center">
+      <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>
+        {props.user.name.charAt(0)}
+      </Avatar>
+      <Stack direction="column" alignItems="flex-end">
+        <Typography variant="body2">{props.user.name}</Typography>
+        <Button
+          variant="text"
+          size="small"
+          endIcon={<KeyboardArrowDownIcon />}
+          onClick={(e) => props.onStudioMenuClick(e)}
+          sx={{
+            color: props.variant === 'dark' ? 'common.white' : 'common.black',
+            pr: 0,
+          }}
+        >
+          {props.user.selectedStudio.name}
+        </Button>
+      </Stack>
+    </Stack>
+  );
+}
+
 const AppShell = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
@@ -111,21 +140,11 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
           <Stack direction="row" spacing={2} alignItems="center">
             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Typography variant="body2">{user.name}</Typography>
-                <Button
-                  variant="text"
-                  size="small"
-                  endIcon={<KeyboardArrowDownIcon />}
-                  onClick={(e) => setStudioMenuAnchor(e.currentTarget)}
-                  sx={{ color: 'common.white' }}
-                >
-                  {user.selectedStudio.name}
-                </Button>
-                <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>
-                  {user.name.charAt(0)}
-                </Avatar>
-              </Stack>
+              <UserInformation
+                variant="dark"
+                user={user}
+                onStudioMenuClick={(e) => setStudioMenuAnchor(e.currentTarget)}
+              />
             </Box>
 
             {!isDesktop && (
@@ -143,10 +162,12 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
 
       <Box
         sx={{
+          bgcolor: 'gray1.light',
           flex: 1,
           overflow: 'auto',
           display: 'flex',
           flexDirection: 'column',
+          p: 4,
         }}
       >
         {children}
@@ -174,16 +195,30 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         onClose={() => setDrawerOpen(false)}
       >
         <Box sx={{ width: 250, pt: 2 }}>
-          <List>
-            {navigationLinks.map((link) => (
-              <ListItem key={link.name}>
-                <ListItemButton>
-                  <ListItemIcon>{link.icon}</ListItemIcon>
-                  <ListItemText primary={link.name} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+          <Stack spacing={3}>
+            <Box
+              sx={{
+                display: { xs: 'block', md: 'none' },
+                px: { xs: 2, md: 0 },
+              }}
+            >
+              <UserInformation
+                variant="light"
+                user={user}
+                onStudioMenuClick={(e) => setStudioMenuAnchor(e.currentTarget)}
+              />
+            </Box>
+            <List>
+              {navigationLinks.map((link) => (
+                <ListItem key={link.name}>
+                  <ListItemButton>
+                    <ListItemIcon>{link.icon}</ListItemIcon>
+                    <ListItemText primary={link.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Stack>
         </Box>
       </Drawer>
 

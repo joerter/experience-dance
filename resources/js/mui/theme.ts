@@ -1,6 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-// Color palette
 const orange = '#E2481C';
 const black = '#000000';
 const white = '#FFFFFF';
@@ -28,8 +27,8 @@ const theme = createTheme({
   palette: {
     primary: {
       main: orange,
-      light: '#ff6942', // Lighter shade of orange
-      dark: '#b13816', // Darker shade of orange
+      light: '#ff6942',
+      dark: '#b13816',
     },
     secondary: {
       main: black,
