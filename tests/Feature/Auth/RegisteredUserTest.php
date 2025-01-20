@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\RegisterToken;
 use Illuminate\Support\Facades\Mail;
 
 describe('register show', function () {
@@ -12,18 +13,18 @@ describe('register show', function () {
 
 describe('register create', function () {
     test('creates user, responds with 302 and sends registration link', function () {
-        Mail::shouldReceive('send')->once()->andReturnUsing(function ($view, $data, $callback) {
-            $this->assertEquals('emails.register-link', $view);
-            $this->assertEquals(route('register.verify', ['token' => $data['token']]), $data['url']);
-            $this->assertEquals($data['token'], $data['token']);
-        });
+        $email = 'test@example.com';
+        Mail::fake();
 
-        $this->post('/register', [
+        $response = $this->post('/register', [
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => $email,
         ]);
 
-        $this->assertRedirect('register.await.token');
+        Mail::assertSent(RegisterToken::class, function ($mail) use ($email) {
+            return $mail->hasTo($email);
+        });
+        $response->assertRedirect(route('register.await.token'));
     });
 });
 
