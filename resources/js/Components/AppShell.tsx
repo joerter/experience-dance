@@ -12,7 +12,9 @@ import {
   Drawer,
   IconButton,
   List,
+  ListItem,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
@@ -166,7 +168,6 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         </Typography>
       </Box>
 
-      {/* Mobile Navigation Drawer */}
       <Drawer
         anchor="right"
         open={drawerOpen}
@@ -175,15 +176,17 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         <Box sx={{ width: 250, pt: 2 }}>
           <List>
             {navigationLinks.map((link) => (
-              <ListItemButton key={link}>
-                <ListItemText primary={link} />
-              </ListItemButton>
+              <ListItem key={link.name}>
+                <ListItemButton>
+                  <ListItemIcon>{link.icon}</ListItemIcon>
+                  <ListItemText primary={link.name} />
+                </ListItemButton>
+              </ListItem>
             ))}
           </List>
         </Box>
       </Drawer>
 
-      {/* Studio Selection Menu */}
       <Menu
         anchorEl={studioMenuAnchor}
         open={Boolean(studioMenuAnchor)}
