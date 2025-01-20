@@ -15,7 +15,7 @@ class LoginToken extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public string $url, public string $token)
+    public function __construct(public string $url, public string $code)
     {
     }
 
@@ -35,7 +35,7 @@ class LoginToken extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.login.token',
+            view: 'emails.token.login',
         );
     }
 

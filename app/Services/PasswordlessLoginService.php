@@ -31,7 +31,7 @@ class PasswordlessLoginService
 
             Mail::to($user)->send(new MailLoginToken(route('login.verify.token', ['token' => $token->token]), $token->code));
         } catch (\Exception $e) {
-            Log::error('handleLoginRequest error', ['error' => $e->getMessage()]);
+            report($e);
             return;
         }
     }
@@ -102,7 +102,7 @@ class PasswordlessLoginService
             $token->delete();
             return true;
         } catch (\Exception $e) {
-            Log::error('isValidLoginCode error', ['error' => $e->getMessage()]);
+            report($e);
             return false;
         }
     }

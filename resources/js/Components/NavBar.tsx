@@ -77,7 +77,7 @@ function HamburgerIcon({ sideNavIsOpen }: { sideNavIsOpen: boolean }) {
 
 function SideNav({ onToggleSideNav }: { onToggleSideNav: () => void }) {
   return (
-    <Box onClick={onToggleSideNav} sx={{ px: 6 }}>
+    <Stack spacing={2} onClick={onToggleSideNav} sx={{ px: 6 }}>
       <List>
         {navItems.map((item, i) => (
           <ListItem
@@ -91,7 +91,16 @@ function SideNav({ onToggleSideNav }: { onToggleSideNav: () => void }) {
           </ListItem>
         ))}
       </List>
-    </Box>
+      <Button
+        color="primary"
+        variant="contained"
+        sx={{ fontWeight: '600' }}
+        component={Link}
+        href={route('login')}
+      >
+        Sign In
+      </Button>
+    </Stack>
   );
 }
 
