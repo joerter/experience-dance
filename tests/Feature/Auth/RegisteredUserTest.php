@@ -5,8 +5,9 @@ use App\Mail\RegisterToken;
 use App\Models\LoginToken;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
-describe('register show', function () {
+describe('GET /register', function () {
     test('registration screen can be rendered', function () {
         $response = $this->get('/register');
 
@@ -14,7 +15,7 @@ describe('register show', function () {
     });
 });
 
-describe('register create', function () {
+describe('POST /register', function () {
     test('creates user, responds with 302 and sends registration link', function () {
         $email = 'test@example.com';
         Mail::fake();
@@ -48,6 +49,29 @@ describe('register create', function () {
                 $mail->url === (route('login.verify.token', ['token' => $token->token]));
         });
         $response->assertRedirect(route('register.await.token'));
+    });
+});
+
+describe('GET /register/verify/{token}', function () {
+    test('redirects back to register with message when token does not exist', function () {
+        $response = $this->get(route('register.verify.token', ['token' => 'bad-token']));
+
+        $response->assertRedirect(route('register'));
+        $response->assertSessionHas('error', 'Sorry, the registration link you used is either invalid or expired. Please try again.');
+    });
+
+    test('redirects to dashboard when the token is successfully verified', function () {
+        $user = User::factory()->create();
+        $token = LoginToken::create([
+            'user_id' => $user->id,
+            'token' => Str::random(32),
+            'code' => '123456',
+            'created_at' => now(),
+            'expires_at' => now()->addMinutes(15),
+        ]);
+
+        $response = $this->get(route('register.verify.token', ['token' => $token->token]));
+        $response->assertRedirect(route('dashboard'));
     });
 });
 

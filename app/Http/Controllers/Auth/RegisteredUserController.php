@@ -53,4 +53,15 @@ class RegisteredUserController extends Controller
     {
         return Inertia::render('Auth/AwaitRegisterToken');
     }
+
+    public function verfiyToken(Request $request, $token): RedirectResponse
+    {
+        $isValid = $this->passwordlessLoginService->isValidLoginToken($token);
+        if (! $isValid) {
+            return redirect()->route('register')
+                ->with('error', 'Sorry, the registration link you used is either invalid or expired. Please try again.');
+        }
+
+        return to_route('dashboard');
+    }
 }
