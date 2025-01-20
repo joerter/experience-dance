@@ -1,8 +1,6 @@
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
-import GoogleIcon from '@mui/icons-material/Google';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import {
-  Box,
   Button,
   Container,
   Paper,
@@ -16,10 +14,10 @@ import {
   ReactElement,
   ReactNode,
 } from 'react';
+import { LoginMethods } from './LoginMethods';
 
-function Register() {
-  const { data, setData, post, processing, errors, reset } = useForm({
-    name: '',
+function EmailMethod() {
+  const { data, setData, post, processing, errors } = useForm({
     email: '',
   });
 
@@ -29,6 +27,76 @@ function Register() {
     post(route('register'));
   };
 
+  return (
+    <Stack spacing={4}>
+      <Stack>
+        <Typography
+          variant="h5"
+          align="center"
+          color="secondary"
+          sx={{ mb: 2 }}
+        >
+          Register with Email
+        </Typography>
+        <Typography variant="body1" align="center" color="secondary">
+          Please enter your name and email address below to create your account.
+        </Typography>
+      </Stack>
+      <Stack spacing={2}>
+        <form onSubmit={submit} noValidate>
+          <Stack spacing={2}>
+            <TextField
+              label="Email"
+              type="email"
+              variant="outlined"
+              fullWidth
+              autoFocus
+              required
+              value={data.email}
+              onChange={(e) => setData('email', e.target.value)}
+              error={!!errors.email}
+              helperText={errors.email}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              disabled={processing}
+            >
+              {processing ? 'Registering...' : 'Register'}
+            </Button>
+          </Stack>
+        </form>
+      </Stack>
+    </Stack>
+  );
+}
+
+function ChooseRegisterMethod() {
+  return (
+    <Stack spacing={4}>
+      <Typography variant="h5" align="center" color="secondary" sx={{ mb: 2 }}>
+        Choose Register Method
+      </Typography>
+      <Typography variant="body1" align="center" color="secondary">
+        Choose how you want to create your account on Experience Dance.
+      </Typography>
+      <Stack>
+        <LoginMethods
+          hrefs={{ email: route('register', { method: 'email' }) }}
+        />
+      </Stack>
+    </Stack>
+  );
+}
+
+function Register() {
+  const { url } = usePage();
+  const searchParams = new URLSearchParams(
+    new URL(url, window.location.origin).search,
+  );
+  const isEmailRegisterMethod = searchParams.get('method') === 'email';
+
   const handleGoogleLogin = () => {
     window.location.href = route('auth.google.redirect');
   };
@@ -37,62 +105,9 @@ function Register() {
     <Container maxWidth="sm" sx={{ pt: '140px', pb: 10 }}>
       <Head title="Register" />
 
-      <form onSubmit={submit}>
-        <Button
-          variant="contained"
-          startIcon={<GoogleIcon />}
-          fullWidth
-          sx={{ mt: 2, mb: 2 }}
-          onClick={handleGoogleLogin}
-        >
-          Sign in with Google
-        </Button>
-        <Stack>
-          <Paper sx={{ px: 4, py: 2 }}>
-            <Typography
-              variant="h4"
-              component="h1"
-              align="center"
-              color="textSecondary"
-            >
-              Register for Experience Dance
-            </Typography>
-            <Box>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="Full Name"
-                name="name"
-                autoComplete="name"
-                autoFocus
-                error={!!errors.name}
-                helperText={errors.name}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                error={!!errors.email}
-                helperText={errors.email}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Register
-              </Button>
-            </Box>
-          </Paper>
-        </Stack>
-      </form>
+      <Paper sx={{ width: '100%', px: 2, py: 4 }}>
+        {isEmailRegisterMethod ? <EmailMethod /> : <ChooseRegisterMethod />}
+      </Paper>
     </Container>
   );
 }

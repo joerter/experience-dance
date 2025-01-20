@@ -1,9 +1,8 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import EmailIcon from '@mui/icons-material/Email';
-import GoogleIcon from '@mui/icons-material/Google';
 import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { FormEventHandler } from 'react';
+import { LoginMethods } from './LoginMethods';
 
 function ChooseLoginMethod() {
   return (
@@ -27,26 +26,7 @@ function ChooseLoginMethod() {
           </Link>
         </Typography>
       </Stack>
-      <Stack spacing={2}>
-        <Button
-          fullWidth
-          color="secondary"
-          variant="contained"
-          startIcon={<EmailIcon />}
-          component={Link}
-          href={route('login', { method: 'email' })}
-        >
-          Email
-        </Button>
-        <Button
-          fullWidth
-          color="secondary"
-          variant="contained"
-          startIcon={<GoogleIcon />}
-        >
-          Google
-        </Button>
-      </Stack>
+      <LoginMethods hrefs={{ email: route('login', { method: 'email' }) }} />
     </Stack>
   );
 }
