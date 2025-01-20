@@ -1,6 +1,9 @@
 <?php
 
+use App\Mail\LoginToken as MailLoginToken;
 use App\Mail\RegisterToken;
+use App\Models\LoginToken;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 describe('register show', function () {
@@ -23,6 +26,26 @@ describe('register create', function () {
 
         Mail::assertSent(RegisterToken::class, function ($mail) use ($email) {
             return $mail->hasTo($email);
+        });
+        $response->assertRedirect(route('register.await.token'));
+    });
+
+    test('sends login token when an existing email tries to register', function () {
+        $existingEmail = 'existing@example.com';
+        Mail::fake();
+        $existingUser = User::factory()->create([
+            'email' => $existingEmail,
+        ]);
+
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => $existingEmail,
+        ]);
+
+        $token = LoginToken::where('user_id', $existingUser->id)->first();
+        Mail::assertSent(MailLoginToken::class, function ($mail) use ($existingEmail, $token) {
+            return $mail->hasTo($existingEmail) &&
+                $mail->url === (route('login.verify.token', ['token' => $token->token]));
         });
         $response->assertRedirect(route('register.await.token'));
     });

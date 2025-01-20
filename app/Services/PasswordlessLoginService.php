@@ -39,6 +39,12 @@ class PasswordlessLoginService
     public function handleRegisterRequest($name, $email)
     {
         try {
+            $existingUser = User::where('email', $email)->first();
+            if ($existingUser) {
+                Log::info('handleRegisterRequest existing user', ['email' => $email]);
+                $this->handleLoginRequest($email);
+                return;
+            }
             $user = User::create(['name' => $name, 'email' => $email]);
             $token = $this->createLoginToken($user->id);
 
