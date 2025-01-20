@@ -1,4 +1,4 @@
-import BaseLayout from '@/Layouts/BaseLayout';
+import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 import GoogleIcon from '@mui/icons-material/Google';
 import {
@@ -21,16 +21,12 @@ function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     email: '',
-    password: '',
-    password_confirmation: '',
   });
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
-    post(route('register'), {
-      onFinish: () => reset('password', 'password_confirmation'),
-    });
+    post(route('register'));
   };
 
   const handleGoogleLogin = () => {
@@ -85,29 +81,6 @@ function Register() {
                 error={!!errors.email}
                 helperText={errors.email}
               />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                error={!!errors.password}
-                helperText={errors.password}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                id="confirmPassword"
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword}
-              />
               <Button
                 type="submit"
                 fullWidth
@@ -128,6 +101,6 @@ Register.layout = (
   page:
     | ReactElement<any, string | JSXElementConstructor<any>>
     | Iterable<ReactNode>,
-) => <BaseLayout children={page}></BaseLayout>;
+) => <GuestLayout children={page}></GuestLayout>;
 
 export default Register;

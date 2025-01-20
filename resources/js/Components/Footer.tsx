@@ -22,7 +22,7 @@ export default function Footer() {
         <Stack sx={{ pl: 3, pt: 10 }}>
           <Stack spacing={6}>
             <img width="160px" height="44px" src="/images/logo-white.svg" />
-            <Typography variant="h3">
+            <Typography variant="h3" color="textSecondary">
               Find Your Next Dance Experience
             </Typography>
           </Stack>
@@ -41,8 +41,9 @@ export default function Footer() {
       >
         <Toolbar>
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body1">
-              ©{year} Simple Velocity, LLC DBA Experience Dance All rights reserved
+            <Typography variant="body1" color="textSecondary">
+              ©{year} Simple Velocity, LLC DBA Experience Dance All rights
+              reserved
             </Typography>
           </Stack>
         </Toolbar>
