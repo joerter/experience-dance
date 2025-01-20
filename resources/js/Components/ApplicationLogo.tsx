@@ -1,6 +1,8 @@
 export default function ApplicationLogo(props: {
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
 }) {
-  return <img width={props.width} height={props.height} src="/images/logo-white.svg" />;
+  const width = props.width ?? '160px';
+  const height = props.width ?? '44px';
+  return <img width={width} height={height} src="/images/logo-white.svg" />;
 }

@@ -9,17 +9,6 @@ const gray2 = '#2D2D2D';
 const gray3 = '#ECF0F1';
 const gray4 = '#525252';
 
-// Custom spacing units
-const spacing = {
-  xs: '0.25rem', // 4px
-  sm: '0.5rem', // 8px
-  md: '1rem', // 16px
-  lg: '1.5rem', // 24px
-  xl: '2rem', // 32px
-  xxl: '3rem', // 48px
-};
-
-// Extend the theme to include custom color properties
 declare module '@mui/material/styles' {
   interface Palette {
     gray1: Palette['primary'];
@@ -97,19 +86,19 @@ const theme = createTheme({
       fontSize: '2.5rem',
       fontWeight: 500,
       lineHeight: 1.2,
-      marginBottom: spacing.lg,
+      marginBottom: '1.5rem',
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 700,
       lineHeight: 1.3,
-      marginBottom: spacing.md,
+      marginBottom: '1rem',
     },
     h3: {
       fontSize: '1.75rem',
       fontWeight: 600,
       lineHeight: 1.3,
-      marginBottom: spacing.md,
+      marginBottom: '1rem',
     },
     h4: {
       fontSize: '1.5rem',
@@ -146,7 +135,7 @@ const theme = createTheme({
         root: {
           textTransform: 'none',
           borderRadius: '30px',
-          padding: `${spacing.xs} ${spacing.xl}`,
+          padding: `0.25rem 2rem`,
           transition: 'all 0.2s ease-in-out',
         },
         contained: {
@@ -165,16 +154,16 @@ const theme = createTheme({
           },
         },
         text: {
-          padding: `${spacing.xs} ${spacing.md}`,
+          padding: `0.25rem 1rem`,
           '&:hover': {
             backgroundColor: 'rgba(226, 72, 28, 0.04)',
           },
         },
         sizeLarge: {
-          padding: `${spacing.sm} ${spacing.xxl}`,
+          padding: `0.5rem 3rem`,
         },
         sizeSmall: {
-          padding: `${spacing.xs} ${spacing.lg}`,
+          padding: `0.25rem 1.5rem`,
         },
       },
     },
