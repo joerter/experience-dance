@@ -1,14 +1,17 @@
+import { Link } from '@inertiajs/react';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import ClassIcon from '@mui/icons-material/Class';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import FaceIcon from '@mui/icons-material/Face';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Logout from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Avatar,
   Box,
   Button,
+  Divider,
   Drawer,
   IconButton,
   List,
@@ -236,6 +239,17 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
             {studio.name}
           </MenuItem>
         ))}
+        <Divider />
+        <MenuItem
+          component={Link}
+          href={route('logout')}
+          onClick={() => setStudioMenuAnchor(null)}
+        >
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
       </Menu>
     </Box>
   );
