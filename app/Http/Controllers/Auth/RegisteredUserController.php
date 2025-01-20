@@ -40,13 +40,6 @@ class RegisteredUserController extends Controller
 
         $this->passwordlessLoginService->handleRegisterRequest($request->name, $request->email);
         return to_route('register.await.token');
-
-
-        /* event(new Registered($user)); */
-
-        /* Auth::login($user); */
-
-        /* return redirect(route('dashboard', absolute: false)); */
     }
 
     public function awaitToken(): Response

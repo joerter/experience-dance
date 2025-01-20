@@ -1,35 +1,34 @@
 <?php
 
+use App\Mail\LoginToken as MailLoginToken;
 use App\Models\LoginToken;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-describe('login.send-link', function () {
-    test('redirects back to login when the user is not found', function () {
-        $response = $this->post(route('login.send-link'), ['email' => 'test@user.com']);
-
-        $response->assertRedirect('login');
-        $response->assertSessionHas('status', 'We sent you a login link! Check your email.');
-    });
-
-    test('responds with 302 and sends magic link email when the user is found', function () {
+describe('POST login', function () {
+    test('redirects to login.verify.code.show and sends magic link email when the user is found', function () {
         $testEmail = 'test@user.come';
-        Mail::shouldReceive('send')->once()->andReturnUsing(function ($view, $data, $callback) {
-            $this->assertEquals('emails.magic-link', $view);
-            $this->assertEquals(route('login.verify', ['token' => $data['token']]), $data['url']);
-            $this->assertEquals($data['token'], $data['token']);
-        });
+        Mail::fake();
+
         User::factory()->create(['email' => $testEmail]);
 
         $response = $this->post(route('login.send-link'), ['email' => $testEmail]);
 
-        $response->assertRedirect('login');
-        $response->assertSessionHas('status', 'We sent you a login link! Check your email.');
+        Mail::assertSent(MailLoginToken::class, function ($mail) use ($testEmail) {
+            return $mail->hasTo($testEmail);
+        });
+        $response->assertRedirect(route('login.verify.code.show'));
+    });
+
+    test('still redirects to login.verify.code.show when the user is not found', function () {
+        $response = $this->post(route('login.send-link'), ['email' => 'test@user.com']);
+
+        $response->assertRedirect(route('login.verify.code.show'));
     });
 });
 
-describe('login.verify.token', function () {
+describe('GET login/verify/token/{token}', function () {
     test('redirects back to login with message when token does not exist', function () {
         $response = $this->get(route('login.verify.token', ['token' => 'bad-token']));
 
@@ -53,7 +52,7 @@ describe('login.verify.token', function () {
     });
 });
 
-describe('login.verify.code', function (){
+describe('POST login/verify/code', function () {
     test('redirects back to login with message when code does not exist', function () {
         $response = $this->post(route('login.verify.code'), ['code' => 'bad-token']);
 
