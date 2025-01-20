@@ -1,3 +1,7 @@
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import ClassIcon from '@mui/icons-material/Class';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import FaceIcon from '@mui/icons-material/Face';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -5,7 +9,6 @@ import {
   Avatar,
   Box,
   Button,
-  ButtonGroup,
   Drawer,
   IconButton,
   List,
@@ -34,13 +37,12 @@ interface User {
 
 const AppShell = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [studioMenuAnchor, setStudioMenuAnchor] = useState<null | HTMLElement>(
     null,
   );
 
-  // Mock user data - replace with actual user context/data
   const user: User = {
     name: 'Jane Smith',
     selectedStudio: { id: '1', name: 'Ballet Academy' },
@@ -50,7 +52,12 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
     ],
   };
 
-  const navigationLinks = ['Dashboard', 'Classes', 'Students', 'Events'];
+  const navigationLinks = [
+    { name: 'Dashboard', icon: <DashboardIcon /> },
+    { name: 'Classes', icon: <ClassIcon /> },
+    { name: 'Students', icon: <FaceIcon /> },
+    { name: 'Events', icon: <CalendarTodayIcon /> },
+  ];
 
   return (
     <Box
@@ -61,47 +68,45 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         bgcolor: 'background.default',
       }}
     >
-      {/* App Bar */}
       <AppBar
         position="sticky"
-        color="default"
         elevation={1}
         sx={{
-          bgcolor: 'background.paper',
-          borderBottom: 1,
-          borderColor: 'gray3.main',
+          bgcolor: 'common.black',
+          color: 'common.white',
         }}
       >
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          px={2}
-          py={1}
+          px={4}
+          py={2}
         >
-          {/* Left section - Logo */}
           <ApplicationLogo />
 
-          {/* Middle section - Navigation */}
-          {!isMobile && (
-            <ButtonGroup variant="text" sx={{ mx: 4 }}>
-              {navigationLinks.map((link) => (
+          <Stack direction="row" spacing={2}>
+            {isDesktop &&
+              navigationLinks.map((link) => (
                 <Button
-                  key={link}
+                  key={link.name}
+                  color="primary"
+                  variant="outlined"
+                  startIcon={link.icon}
                   sx={{
-                    color: 'text.primary',
+                    color: 'common.white',
+                    borderColor: 'gray1.light',
                     '&:hover': {
-                      bgcolor: 'gray3.light',
+                      bgcolor: 'primary.main',
+                      borderColor: 'primary.main',
                     },
                   }}
                 >
-                  {link}
+                  {link.name}
                 </Button>
               ))}
-            </ButtonGroup>
-          )}
+          </Stack>
 
-          {/* Right section - User info */}
           <Stack direction="row" spacing={2} alignItems="center">
             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
               <Stack direction="row" spacing={1} alignItems="center">
@@ -111,7 +116,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
                   size="small"
                   endIcon={<KeyboardArrowDownIcon />}
                   onClick={(e) => setStudioMenuAnchor(e.currentTarget)}
-                  sx={{ color: 'text.primary' }}
+                  sx={{ color: 'common.white' }}
                 >
                   {user.selectedStudio.name}
                 </Button>
@@ -121,11 +126,11 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
               </Stack>
             </Box>
 
-            {isMobile && (
+            {!isDesktop && (
               <IconButton
                 edge="end"
                 onClick={() => setDrawerOpen(true)}
-                sx={{ color: 'text.primary' }}
+                sx={{ color: 'common.white' }}
               >
                 <MenuIcon />
               </IconButton>
@@ -134,7 +139,6 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         </Stack>
       </AppBar>
 
-      {/* Main content */}
       <Box
         sx={{
           flex: 1,
@@ -146,20 +150,19 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         {children}
       </Box>
 
-      {/* Footer */}
       <Box
         component="footer"
         sx={{
           py: 2,
           px: 3,
           mt: 'auto',
-          bgcolor: 'background.paper',
-          borderTop: 1,
-          borderColor: 'gray3.main',
+          bgcolor: 'common.black',
+          color: 'common.white',
         }}
       >
-        <Typography variant="body2" color="text.secondary" align="center">
-          Copyright 2025 Simple Velocity DBA Experience Dance
+        <Typography variant="body2" align="center">
+          Copyright {new Date().getFullYear()} Simple Velocity DBA Experience
+          Dance
         </Typography>
       </Box>
 

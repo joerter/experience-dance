@@ -142,7 +142,14 @@ export default function NavBar() {
                 key={i}
                 color="primary"
                 variant={pathname === item.href ? 'contained' : 'outlined'}
-                sx={{ color: 'common.white', borderColor: 'gray1.light' }}
+                sx={{
+                  color: 'common.white',
+                  borderColor: 'gray1.light',
+                  '&:hover': {
+                    bgcolor: 'primary.main',
+                    borderColor: 'primary.main',
+                  },
+                }}
                 component={Link}
                 href={item.href}
               >
