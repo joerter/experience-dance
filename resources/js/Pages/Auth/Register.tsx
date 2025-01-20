@@ -47,11 +47,11 @@ function EmailMethod() {
         <form onSubmit={submit} noValidate>
           <Stack spacing={2}>
             <TextField
+              autoFocus
               label="Full Name"
               type="name"
               variant="outlined"
               fullWidth
-              autoFocus
               required
               value={data.name}
               onChange={(e) => setData('name', e.target.value)}
@@ -63,7 +63,6 @@ function EmailMethod() {
               type="email"
               variant="outlined"
               fullWidth
-              autoFocus
               required
               value={data.email}
               onChange={(e) => setData('email', e.target.value)}

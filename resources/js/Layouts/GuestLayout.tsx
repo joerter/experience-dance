@@ -6,12 +6,15 @@ import { PropsWithChildren } from 'react';
 
 export default function Guest({ children }: PropsWithChildren) {
   return (
-    <Stack flexDirection="column" sx={{ minHeight: '100vh' }}>
+    <Stack
+      flexDirection="column"
+      sx={{ minHeight: '100vh', bgcolor: 'common.black' }}
+    >
       <Container maxWidth="sm" sx={{ flex: 1 }}>
         <Stack
           flexDirection="column"
           alignItems="center"
-          sx={{ width: '100%', py: 8}}
+          sx={{ width: '100%', py: 8 }}
           spacing={4}
         >
           <Link href="/">

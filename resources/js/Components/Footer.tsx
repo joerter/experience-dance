@@ -11,7 +11,7 @@ const year = new Date().getFullYear();
 
 export default function Footer() {
   return (
-    <Box sx={{ bgcolor: 'background.default' }}>
+    <Box sx={{ bgcolor: 'common.black' }}>
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -22,7 +22,7 @@ export default function Footer() {
         <Stack sx={{ pl: 3, pt: 10 }}>
           <Stack spacing={6}>
             <img width="160px" height="44px" src="/images/logo-white.svg" />
-            <Typography variant="h3" color="textSecondary">
+            <Typography variant="h3" color="common.white">
               Find Your Next Dance Experience
             </Typography>
           </Stack>
@@ -41,7 +41,7 @@ export default function Footer() {
       >
         <Toolbar>
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="body1" color="textSecondary">
+            <Typography variant="body1" color="gray1.light">
               ©{year} Simple Velocity, LLC DBA Experience Dance All rights
               reserved
             </Typography>

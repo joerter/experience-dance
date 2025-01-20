@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
   AppBar,
   Box,
@@ -105,6 +105,8 @@ function SideNav({ onToggleSideNav }: { onToggleSideNav: () => void }) {
 }
 
 export default function NavBar() {
+  const { url } = usePage();
+  const pathname = new URL(url, window.location.origin).pathname;
   const [sideNavOpen, setSideNavOpen] = useState(false);
 
   const handleToggleSideNav = () => {
@@ -130,13 +132,20 @@ export default function NavBar() {
             spacing={2}
             sx={(theme) => ({
               p: 2,
-              border: `1px solid ${theme.palette.gray2.main}`,
+              border: `1px solid ${theme.palette.gray1.main}`,
               borderRadius: '30px',
               display: { xs: 'none', lg: 'flex' },
             })}
           >
             {navItems.map((item, i) => (
-              <Button key={i} color="inherit" variant="outlined">
+              <Button
+                key={i}
+                color="primary"
+                variant={pathname === item.href ? 'contained' : 'outlined'}
+                sx={{ color: 'common.white', borderColor: 'gray1.light' }}
+                component={Link}
+                href={item.href}
+              >
                 {item.text}
               </Button>
             ))}
