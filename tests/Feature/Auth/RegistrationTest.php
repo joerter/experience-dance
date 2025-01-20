@@ -1,26 +1,32 @@
 <?php
 
-use App\Constants\Permissions;
-use App\Models\Permission;
-use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
-test('registration screen can be rendered', function () {
-    $response = $this->get('/register');
+describe('register show', function () {
+    test('registration screen can be rendered', function () {
+        $response = $this->get('/register');
 
-    $response->assertStatus(200);
+        $response->assertStatus(200);
+    });
 });
 
-test('new users can register', function () {
-    $response = $this->post('/register', [
-        'name' => 'Test User',
-        'email' => 'test@example.com',
-        'password' => 'password',
-        'password_confirmation' => 'password',
-    ]);
+describe('register create', function () {
+    test('creates user, responds with 302 and sends registration link', function () {
+        Mail::shouldReceive('send')->once()->andReturnUsing(function ($view, $data, $callback) {
+            $this->assertEquals('emails.register-link', $view);
+            $this->assertEquals(route('register.verify', ['token' => $data['token']]), $data['url']);
+            $this->assertEquals($data['token'], $data['token']);
+        });
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+        $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        $this->assertRedirect('register.await.token');
+    });
 });
+
 
 /* test('registered users can create organizations', function () { */
 /*     $createOrganizationPermission = Permission::where('slug', Permissions::ORGANIZATION_CREATE)->first(); */

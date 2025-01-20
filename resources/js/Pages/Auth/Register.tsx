@@ -18,13 +18,14 @@ import { LoginMethods } from './LoginMethods';
 
 function EmailMethod() {
   const { data, setData, post, processing, errors } = useForm({
+    name: '',
     email: '',
   });
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
-    post(route('register'));
+    post(route('register.send-link'));
   };
 
   return (
@@ -45,6 +46,18 @@ function EmailMethod() {
       <Stack spacing={2}>
         <form onSubmit={submit} noValidate>
           <Stack spacing={2}>
+            <TextField
+              label="Full Name"
+              type="name"
+              variant="outlined"
+              fullWidth
+              autoFocus
+              required
+              value={data.name}
+              onChange={(e) => setData('name', e.target.value)}
+              error={!!errors.name}
+              helperText={errors.name}
+            />
             <TextField
               label="Email"
               type="email"

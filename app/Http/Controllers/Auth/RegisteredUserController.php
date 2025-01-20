@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Services\PasswordlessLoginService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+    protected $passwordlessLoginService;
+
+    public function __construct(PasswordlessLoginService $passwordlessLoginService)
+    {
+        $this->passwordlessLoginService = $passwordlessLoginService;
+    }
+
     /**
      * Display the registration view.
      */
@@ -32,20 +35,22 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => 'required|string|lowercase|email|max:255',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $this->passwordlessLoginService->handleRegisterRequest($request->name, $request->email);
+        return to_route('register.await.token');
 
-        event(new Registered($user));
 
-        Auth::login($user);
+        /* event(new Registered($user)); */
 
-        return redirect(route('dashboard', absolute: false));
+        /* Auth::login($user); */
+
+        /* return redirect(route('dashboard', absolute: false)); */
+    }
+
+    public function awaitToken(): Response
+    {
+        return Inertia::render('Auth/AwaitRegisterToken');
     }
 }

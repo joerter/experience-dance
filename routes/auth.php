@@ -9,8 +9,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
-
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store'])
+        ->name('register.send-link');
+    Route::get('register/await/token', [RegisteredUserController::class, 'awaitToken'])
+        ->name('register.await.token');
+    Route::get('register/verify/{token}', [RegisteredUserController::class, 'verfiyToken'])
+        ->name('register.verify.token');
 
     Route::get('login', [PasswordlessLoginController::class, 'show'])
         ->name('login');
@@ -24,7 +28,6 @@ Route::middleware('guest')->group(function () {
         ->name('login.verify.code.show');
     Route::post('login/verify/code', [PasswordlessLoginController::class, 'verifyCode'])
         ->name('login.verify.code');
-
 });
 
 Route::middleware('auth')->group(function () {

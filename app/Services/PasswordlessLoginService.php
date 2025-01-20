@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Mail\LoginToken as MailLoginToken;
+use App\Mail\RegisterToken;
 use App\Models\LoginToken;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -26,17 +27,24 @@ class PasswordlessLoginService
                 return;
             }
 
-            $token = LoginToken::create([
-                'user_id' => $user->id,
-                'token' => Str::random(32),
-                'code' => str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT),
-                'created_at' => now(),
-                'expires_at' => now()->addMinutes(15),
-            ]);
+            $token = $this->createLoginToken($user->id);
 
             Mail::to($user)->send(new MailLoginToken(route('login.verify.token', ['token' => $token->token]), $token->code));
         } catch (\Exception $e) {
             Log::error('handleLoginRequest error', ['error' => $e->getMessage()]);
+            return;
+        }
+    }
+
+    public function handleRegisterRequest($name, $email)
+    {
+        try {
+            $user = User::create(['name' => $name, 'email' => $email]);
+            $token = $this->createLoginToken($user->id);
+
+            Mail::to($user)->send(new RegisterToken(route('register.verify.token', ['token' => $token->token])));
+        } catch (\Exception $e) {
+            report($e);
             return;
         }
     }
@@ -91,5 +99,16 @@ class PasswordlessLoginService
             Log::error('isValidLoginCode error', ['error' => $e->getMessage()]);
             return false;
         }
+    }
+
+    private function createLoginToken($userId)
+    {
+        return LoginToken::create([
+            'user_id' => $userId,
+            'token' => Str::random(32),
+            'code' => str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT),
+            'created_at' => now(),
+            'expires_at' => now()->addMinutes(15),
+        ]);
     }
 }
