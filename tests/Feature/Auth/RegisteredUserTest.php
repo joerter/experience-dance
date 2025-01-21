@@ -93,4 +93,21 @@ describe('GET /register/verify/{token}', function () {
         $response = $this->get(route('register.verify.token', ['token' => $token->token]));
         $response->assertRedirect(route('dashboard'));
     });
+
+    test('sets the users email_verfied_at if necessary', function () {
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+        $token = LoginToken::create([
+            'user_id' => $user->id,
+            'token' => Str::random(32),
+            'code' => '123456',
+            'created_at' => now(),
+            'expires_at' => now()->addMinutes(15),
+        ]);
+
+        $this->get(route('register.verify.token', ['token' => $token->token]));
+        $user->refresh();
+        $this->assertNotNull($user->email_verified_at);
+    });
 });

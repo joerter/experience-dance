@@ -71,6 +71,11 @@ class PasswordlessLoginService
                 return false;
             }
 
+            if (! $user->email_verified_at) {
+                $user->email_verified_at = now();
+                $user->save();
+            }
+
             Auth::login($user);
 
             $token->delete();
