@@ -1,14 +1,16 @@
 <?php
 
+use App\Constants\Permissions;
 use App\Mail\LoginToken as MailLoginToken;
 use App\Mail\RegisterToken;
 use App\Models\LoginToken;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 describe('GET /register', function () {
-    test('registration screen can be rendered', function () {
+    it('registration screen can be rendered', function () {
         $response = $this->get('/register');
 
         $response->assertStatus(200);
@@ -16,7 +18,7 @@ describe('GET /register', function () {
 });
 
 describe('POST /register', function () {
-    test('creates user, responds with 302 and sends registration link', function () {
+    it('creates user, responds with 302 and sends registration link', function () {
         $email = 'test@example.com';
         Mail::fake();
 
@@ -31,7 +33,7 @@ describe('POST /register', function () {
         $response->assertRedirect(route('register.await.token'));
     });
 
-    test('sends login token when an existing email tries to register', function () {
+    it('sends login token when an existing email tries to register', function () {
         $existingEmail = 'existing@example.com';
         Mail::fake();
         $existingUser = User::factory()->create([
@@ -51,36 +53,32 @@ describe('POST /register', function () {
         $response->assertRedirect(route('register.await.token'));
     });
 
-    /* test('registered users can create organizations', function () { */
-    /*     $createOrganizationPermission = Permission::where('slug', Permissions::ORGANIZATION_CREATE)->first(); */
-    /*     $this->assertNotNull($createOrganizationPermission); */
+    it('registered studio owners can create organizations', function () {
+        $createOrganizationPermission = Permission::where('slug', Permissions::ORGANIZATION_CREATE)->first();
+        $this->assertNotNull($createOrganizationPermission);
 
-    /*     $response = $this->post('/register', [ */
-    /*         'name' => 'Test User', */
-    /*         'email' => 'test@myballetcompany.com', */
-    /*         'password' => 'password', */
-    /*         'password_confirmation' => 'password', */
-    /*     ]); */
-    /*     $this->assertAuthenticated(); */
-    /*     $response->assertRedirect(route('dashboard', absolute: false)); */
-    /*     $user = User::where('email', 'test@myballetcompany.com')->first(); */
-    /*     $this->assertNotNull($user); */
+        $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@myballetcompany.com',
+        ]);
+        $user = User::where('email', 'test@myballetcompany.com')->first();
+        $this->assertNotNull($user);
 
-    /*     $userPermissions = $user->permissions()->get(); */
-    /*     $this->assertTrue($userPermissions->contains($createOrganizationPermission)); */
-    /*     $this->assertTrue($userPermissions->pluck('slug')->contains(Permissions::ORGANIZATION_CREATE)); */
-    /* }); */
+        $userPermissions = $user->permissions()->get();
+        $this->assertTrue($userPermissions->contains($createOrganizationPermission));
+        $this->assertTrue($userPermissions->pluck('slug')->contains(Permissions::ORGANIZATION_CREATE));
+    });
 });
 
 describe('GET /register/verify/{token}', function () {
-    test('redirects back to register with message when token does not exist', function () {
+    it('redirects back to register with message when token does not exist', function () {
         $response = $this->get(route('register.verify.token', ['token' => 'bad-token']));
 
         $response->assertRedirect(route('register'));
         $response->assertSessionHas('error', 'Sorry, the registration link you used is either invalid or expired. Please try again.');
     });
 
-    test('redirects to dashboard when the token is successfully verified', function () {
+    it('redirects to dashboard when the token is successfully verified', function () {
         $user = User::factory()->create();
         $token = LoginToken::create([
             'user_id' => $user->id,
@@ -94,7 +92,7 @@ describe('GET /register/verify/{token}', function () {
         $response->assertRedirect(route('dashboard'));
     });
 
-    test('sets the users email_verfied_at if necessary', function () {
+    it('sets the users email_verfied_at if necessary', function () {
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
