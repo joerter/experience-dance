@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Organization;
+use Inertia\Inertia;
 
 class OrganizationController extends Controller
 {
@@ -21,7 +22,7 @@ class OrganizationController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Organizations/Create');
     }
 
     /**
