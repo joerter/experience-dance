@@ -43,12 +43,13 @@ class PasswordlessLoginService
             if ($existingUser) {
                 Log::info('handleRegisterRequest existing user', ['email' => $email]);
                 $this->handleLoginRequest($email);
-                return;
+                return $existingUser;
             }
             $user = User::create(['name' => $name, 'email' => $email]);
             $token = $this->createLoginToken($user->id);
 
             Mail::to($user)->send(new RegisterToken(route('register.verify.token', ['token' => $token->token])));
+            return $user;
         } catch (\Exception $e) {
             report($e);
             return;

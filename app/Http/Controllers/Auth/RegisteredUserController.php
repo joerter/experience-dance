@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Constants\Permissions;
 use App\Http\Controllers\Controller;
 use App\Services\PasswordlessLoginService;
+use App\Services\PermissionsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,10 +14,12 @@ use Inertia\Response;
 class RegisteredUserController extends Controller
 {
     protected $passwordlessLoginService;
+    protected $permissionsService;
 
-    public function __construct(PasswordlessLoginService $passwordlessLoginService)
+    public function __construct(PasswordlessLoginService $passwordlessLoginService, PermissionsService $permissionsService)
     {
         $this->passwordlessLoginService = $passwordlessLoginService;
+        $this->permissionsService = $permissionsService;
     }
 
     /**
@@ -38,7 +42,9 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255',
         ]);
 
-        $this->passwordlessLoginService->handleRegisterRequest($request->name, $request->email);
+        $user = $this->passwordlessLoginService->handleRegisterRequest($request->name, $request->email);
+        $this->permissionsService->grantPermission($user, Permissions::ORGANIZATION_CREATE);
+
         return to_route('register.await.token');
     }
 

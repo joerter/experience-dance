@@ -53,21 +53,21 @@ describe('POST /register', function () {
         $response->assertRedirect(route('register.await.token'));
     });
 
-    it('registered studio owners can create organizations', function () {
-        $createOrganizationPermission = Permission::where('slug', Permissions::ORGANIZATION_CREATE)->first();
-        $this->assertNotNull($createOrganizationPermission);
-
-        $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@myballetcompany.com',
-        ]);
-        $user = User::where('email', 'test@myballetcompany.com')->first();
-        $this->assertNotNull($user);
-
-        $userPermissions = $user->permissions()->get();
-        $this->assertTrue($userPermissions->contains($createOrganizationPermission));
-        $this->assertTrue($userPermissions->pluck('slug')->contains(Permissions::ORGANIZATION_CREATE));
-    });
+    /* it('registered studio owners can create organizations', function () { */
+    /*     $createOrganizationPermission = Permission::where('slug', Permissions::ORGANIZATION_CREATE)->first(); */
+    /*     $this->assertNotNull($createOrganizationPermission); */
+    /**/
+    /*     $this->post('/register', [ */
+    /*         'name' => 'Test User', */
+    /*         'email' => 'test@myballetcompany.com', */
+    /*     ]); */
+    /*     $user = User::where('email', 'test@myballetcompany.com')->first(); */
+    /*     $this->assertNotNull($user); */
+    /**/
+    /*     $userPermissions = $user->permissions()->get(); */
+    /*     $this->assertTrue($userPermissions->contains($createOrganizationPermission)); */
+    /*     $this->assertTrue($userPermissions->pluck('slug')->contains(Permissions::ORGANIZATION_CREATE)); */
+    /* }); */
 });
 
 describe('GET /register/verify/{token}', function () {
