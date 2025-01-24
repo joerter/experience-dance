@@ -1,10 +1,10 @@
 <?php
 
-use App\Constants\Permissions;
+use App\Constants\Roles;
 use App\Mail\LoginToken as MailLoginToken;
 use App\Mail\RegisterToken;
 use App\Models\LoginToken;
-use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -53,21 +53,22 @@ describe('POST /register', function () {
         $response->assertRedirect(route('register.await.token'));
     });
 
-    /* it('registered studio owners can create organizations', function () { */
-    /*     $createOrganizationPermission = Permission::where('slug', Permissions::ORGANIZATION_CREATE)->first(); */
-    /*     $this->assertNotNull($createOrganizationPermission); */
-    /**/
-    /*     $this->post('/register', [ */
-    /*         'name' => 'Test User', */
-    /*         'email' => 'test@myballetcompany.com', */
-    /*     ]); */
-    /*     $user = User::where('email', 'test@myballetcompany.com')->first(); */
-    /*     $this->assertNotNull($user); */
-    /**/
-    /*     $userPermissions = $user->permissions()->get(); */
-    /*     $this->assertTrue($userPermissions->contains($createOrganizationPermission)); */
-    /*     $this->assertTrue($userPermissions->pluck('slug')->contains(Permissions::ORGANIZATION_CREATE)); */
-    /* }); */
+    it('grants the studio_owner and user role to new users', function () {
+        $studioOwnerRole = Role::where('name', Roles::STUDIO_OWNER)->first();
+        $userRole = Role::where('name', Roles::USER)->first();
+        $this->assertNotNull($studioOwnerRole);
+        $this->assertNotNull($userRole);
+
+        $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@myballetcompany.com',
+        ]);
+        $user = User::where('email', 'test@myballetcompany.com')->first();
+        $this->assertNotNull($user);
+
+        $this->assertTrue($user->hasRole($studioOwnerRole->name, null));
+        $this->assertTrue($user->hasRole($userRole->name, null));
+    });
 });
 
 describe('GET /register/verify/{token}', function () {
