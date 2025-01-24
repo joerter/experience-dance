@@ -24,8 +24,8 @@ class Organization extends Model
         return $this->hasMany(Event::class);
     }
 
-    public function permissions()
+    public function teams()
     {
-        return $this->hasMany(Permission::class);
+        return $this->hasMany(Team::class);
     }
 }
