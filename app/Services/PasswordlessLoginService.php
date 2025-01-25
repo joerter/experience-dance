@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Constants\Roles;
 use App\Mail\LoginToken as MailLoginToken;
 use App\Mail\RegisterToken;
 use App\Models\LoginToken;
@@ -15,6 +14,13 @@ use Inertia\Inertia;
 
 class PasswordlessLoginService
 {
+    private RoleService $roleService;
+
+    public function __construct(RoleService $roleService)
+    {
+        $this->roleService = $roleService;
+    }
+
     public function show()
     {
         return Inertia::render('Login');
@@ -48,7 +54,7 @@ class PasswordlessLoginService
             }
 
             $user = User::create(['name' => $name, 'email' => $email]);
-            $this->grantStudioOwnerRole($user);
+            $this->roleService->grantStudioOwnerRole($user);
             $token = $this->createLoginToken($user->id);
 
             Mail::to($user)->send(new RegisterToken(route('register.verify.token', ['token' => $token->token])));
@@ -59,12 +65,6 @@ class PasswordlessLoginService
             return null;
         }
     }
-
-    public function grantStudioOwnerRole($user)
-    {
-        $user->addRoles([Roles::STUDIO_OWNER, Roles::USER]);
-    }
-
 
     public function isValidLoginToken($token)
     {

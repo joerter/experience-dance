@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\PasswordlessLoginService;
+use App\Services\RoleService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -12,11 +12,11 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleOauthController extends Controller
 {
-    private PasswordlessLoginService $passwordlessLoginService;
+    private RoleService $roleService;
 
-    public function __construct(PasswordlessLoginService $passwordlessLoginService)
+    public function __construct(RoleService $roleService)
     {
-        $this->passwordlessLoginService = $passwordlessLoginService;
+        $this->roleService = $roleService;
     }
 
     public function redirect()
@@ -39,7 +39,7 @@ class GoogleOauthController extends Controller
                 'oauth_token' => $googleUser->token,
                 'oauth_refresh_token' => $googleUser->refreshToken,
             ]);
-            $this->passwordlessLoginService->grantStudioOwnerRole($user);
+            $this->roleService->grantStudioOwnerRole($user);
 
             Auth::login($user);
 
