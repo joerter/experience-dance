@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\PasswordlessLoginService;
+use App\Services\EmailAuthenticationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredUserController extends Controller
+class EmailRegistrationController extends Controller
 {
-    protected $passwordlessLoginService;
+    protected EmailAuthenticationService $emailAuthenticationService;
 
-    public function __construct(PasswordlessLoginService $passwordlessLoginService)
+    public function __construct(EmailAuthenticationService $emailAuthenticationService)
     {
-        $this->passwordlessLoginService = $passwordlessLoginService;
+        $this->emailAuthenticationService = $emailAuthenticationService;
     }
 
     /**
@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255',
         ]);
 
-        $this->passwordlessLoginService->maybeRegisterNewUser($request->name, $request->email);
+        $this->emailAuthenticationService->maybeRegisterNewUser($request->name, $request->email);
 
         return to_route('register.await.token');
     }
@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
 
     public function verfiyToken(Request $request, $token): RedirectResponse
     {
-        $isValid = $this->passwordlessLoginService->isValidLoginToken($token);
+        $isValid = $this->emailAuthenticationService->isValidLoginToken($token);
         if (! $isValid) {
             return redirect()->route('register')
                 ->with('error', 'Sorry, the registration link you used is either invalid or expired. Please try again.');

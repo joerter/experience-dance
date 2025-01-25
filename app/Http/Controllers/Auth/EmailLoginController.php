@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\PasswordlessLoginService;
+use App\Services\EmailAuthenticationService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class PasswordlessLoginController extends Controller
+class EmailLoginController extends Controller
 {
-    protected $passwordlessLoginService;
+    protected $emailAuthenticationService;
 
-    public function __construct(PasswordlessLoginService $passwordlessLoginService)
+    public function __construct(EmailAuthenticationService $emailAuthenticationService)
     {
-        $this->passwordlessLoginService = $passwordlessLoginService;
+        $this->emailAuthenticationService = $emailAuthenticationService;
     }
 
     public function show()
@@ -32,14 +32,14 @@ class PasswordlessLoginController extends Controller
             'email' => 'required|email',
         ]);
 
-        $this->passwordlessLoginService->handleLoginRequest($request->email);
+        $this->emailAuthenticationService->handleLoginRequest($request->email);
 
         return redirect()->intended(route('login.verify.code.show'));
     }
 
     public function verifyToken(Request $request, $token)
     {
-        $isValid = $this->passwordlessLoginService->isValidLoginToken($token);
+        $isValid = $this->emailAuthenticationService->isValidLoginToken($token);
         if (! $isValid) {
             return redirect()->route('login')
                 ->with('error', 'Invalid or expired login link.');
@@ -51,7 +51,7 @@ class PasswordlessLoginController extends Controller
     {
         $request->validate(['code' => 'required']);
 
-        $isValid = $this->passwordlessLoginService->isValidLoginCode($request->code);
+        $isValid = $this->emailAuthenticationService->isValidLoginCode($request->code);
         if (! $isValid) {
             return redirect()->route('login')
                 ->with('error', 'Invalid or expired login code.');

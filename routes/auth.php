@@ -3,31 +3,31 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\GoogleOauthController;
-use App\Http\Controllers\Auth\PasswordlessLoginController;
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\EmailLoginController;
+use App\Http\Controllers\Auth\EmailRegistrationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
+    Route::get('register', [EmailRegistrationController::class, 'create'])
         ->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store'])
+    Route::post('register', [EmailRegistrationController::class, 'store'])
         ->name('register.send-link');
-    Route::get('register/await/token', [RegisteredUserController::class, 'awaitToken'])
+    Route::get('register/await/token', [EmailRegistrationController::class, 'awaitToken'])
         ->name('register.await.token');
-    Route::get('register/verify/{token}', [RegisteredUserController::class, 'verfiyToken'])
+    Route::get('register/verify/{token}', [EmailRegistrationController::class, 'verfiyToken'])
         ->name('register.verify.token');
 
-    Route::get('login', [PasswordlessLoginController::class, 'show'])
+    Route::get('login', [EmailLoginController::class, 'show'])
         ->name('login');
-    Route::post('login', [PasswordlessLoginController::class, 'sendLoginLink'])
+    Route::post('login', [EmailLoginController::class, 'sendLoginLink'])
         ->name('login.send-link');
 
-    Route::get('login/verify/token/{token}', [PasswordlessLoginController::class, 'verifyToken'])
+    Route::get('login/verify/token/{token}', [EmailLoginController::class, 'verifyToken'])
         ->name('login.verify.token');
 
-    Route::get('login/verify/code', [PasswordlessLoginController::class, 'showVefiyCode'])
+    Route::get('login/verify/code', [EmailLoginController::class, 'showVefiyCode'])
         ->name('login.verify.code.show');
-    Route::post('login/verify/code', [PasswordlessLoginController::class, 'verifyCode'])
+    Route::post('login/verify/code', [EmailLoginController::class, 'verifyCode'])
         ->name('login.verify.code');
 
     Route::get('/oauth/google/redirect', [GoogleOauthController::class, 'redirect'])->name('oauth.google.redirect');

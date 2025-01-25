@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
-class PasswordlessLoginService
+class EmailAuthenticationService
 {
     private RoleService $roleService;
 
