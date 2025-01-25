@@ -28,24 +28,35 @@ class GoogleOauthController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->user();
+            $oauthId = $googleUser->getId();
+            $existingUser = User::where('oauth_id', $oauthId)->first();
 
-            $user = User::updateOrCreate([
-                'oauth_id' => $googleUser->getId(),
-            ], [
+            $oauthMap = [
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
                 'avatar_url' => $googleUser->getAvatar(),
                 'oauth_provider' => 'google',
                 'oauth_token' => $googleUser->token,
                 'oauth_refresh_token' => $googleUser->refreshToken,
-            ]);
-            $this->roleService->grantStudioOwnerRole($user);
+            ];
 
-            Auth::login($user);
+            if ($existingUser) {
+                $existingUser->update($oauthMap);
+                Auth::login($existingUser);
+                return redirect(route('dashboard'));
+            }
+
+            $newUser = User::create([
+                'oauth_id' => $oauthId,
+                ...$oauthMap
+            ]);
+            $this->roleService->grantStudioOwnerRole($newUser);
+
+            Auth::login($newUser);
 
             return redirect(route('dashboard'));
         } catch (Exception $e) {
-            Log::error('Google OAuth failed', ['error' => $e->getMessage()]);
+            report($e);
             return redirect('/')->with('error', 'Unable to login with Google.');
         }
     }
