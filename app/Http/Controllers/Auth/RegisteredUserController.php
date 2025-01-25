@@ -39,8 +39,10 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255',
         ]);
 
-        $user = $this->passwordlessLoginService->handleRegisterRequest($request->name, $request->email);
-        $user->addRoles([ Roles::STUDIO_OWNER, Roles::USER ]);
+        $newUser = $this->passwordlessLoginService->maybeRegisterNewUser($request->name, $request->email);
+        if ($newUser) {
+            $newUser->addRoles([Roles::STUDIO_OWNER, Roles::USER]);
+        }
 
         return to_route('register.await.token');
     }

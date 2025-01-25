@@ -69,6 +69,21 @@ describe('POST /register', function () {
         $this->assertTrue($user->hasRole($studioOwnerRole->name, null));
         $this->assertTrue($user->hasRole($userRole->name, null));
     });
+
+    it('does not grant the studio_owner role when an existing user tries to register again', function () {
+        $existingEmail = 'existing@example.com';
+        Mail::fake();
+        $existingUser = User::factory()->create([
+            'email' => $existingEmail,
+        ]);
+
+        $this->post('/register', [
+            'name' => 'Test User',
+            'email' => $existingEmail,
+        ]);
+
+        $this->assertFalse($existingUser->hasRole(Roles::STUDIO_OWNER, null));
+    });
 });
 
 describe('GET /register/verify/{token}', function () {

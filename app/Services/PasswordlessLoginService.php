@@ -36,14 +36,14 @@ class PasswordlessLoginService
         }
     }
 
-    public function handleRegisterRequest($name, $email)
+    public function maybeRegisterNewUser($name, $email)
     {
         try {
             $existingUser = User::where('email', $email)->first();
             if ($existingUser) {
                 Log::info('handleRegisterRequest existing user', ['email' => $email]);
                 $this->handleLoginRequest($email);
-                return $existingUser;
+                return null;
             }
             $user = User::create(['name' => $name, 'email' => $email]);
             $token = $this->createLoginToken($user->id);
@@ -52,7 +52,7 @@ class PasswordlessLoginService
             return $user;
         } catch (\Exception $e) {
             report($e);
-            return;
+            return null;
         }
     }
 
