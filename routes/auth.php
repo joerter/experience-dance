@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\GoogleOauthController;
 use App\Http\Controllers\Auth\PasswordlessLoginController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,9 @@ Route::middleware('guest')->group(function () {
         ->name('login.verify.code.show');
     Route::post('login/verify/code', [PasswordlessLoginController::class, 'verifyCode'])
         ->name('login.verify.code');
+
+    Route::get('/oauth/google/redirect', [GoogleOauthController::class, 'redirect'])->name('oauth.google.redirect');
+    Route::get('/oauth/google/callback', [GoogleOauthController::class, 'callback'])->name('oauth.google.callback');
 });
 
 Route::middleware('auth')->group(function () {

@@ -47,7 +47,8 @@ class PasswordlessLoginService
                 return null;
             }
 
-            $user = $this->createStudioOwnerUser($name, $email);
+            $user = User::create(['name' => $name, 'email' => $email]);
+            $this->grantStudioOwnerRole($user);
             $token = $this->createLoginToken($user->id);
 
             Mail::to($user)->send(new RegisterToken(route('register.verify.token', ['token' => $token->token])));
@@ -58,6 +59,12 @@ class PasswordlessLoginService
             return null;
         }
     }
+
+    public function grantStudioOwnerRole($user)
+    {
+        $user->addRoles([Roles::STUDIO_OWNER, Roles::USER]);
+    }
+
 
     public function isValidLoginToken($token)
     {
@@ -126,13 +133,4 @@ class PasswordlessLoginService
             'expires_at' => now()->addMinutes(15),
         ]);
     }
-
-    private function createStudioOwnerUser($name, $email)
-    {
-
-        $user = User::create(['name' => $name, 'email' => $email]);
-        $user->addRoles([Roles::STUDIO_OWNER, Roles::USER]);
-        return $user;
-    }
-
 }
