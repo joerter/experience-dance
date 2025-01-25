@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventSearchController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
@@ -14,6 +15,8 @@ Route::get('/', [WelcomeController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('is-team-member')->name('dashboard');
+
+    Route::get('/onboarding/studio', [OnboardingController::class, 'studioOwner'])->name('onboarding.studio');
 
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
 
