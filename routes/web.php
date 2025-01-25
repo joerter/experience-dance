@@ -13,7 +13,7 @@ Route::get('/', [WelcomeController::class, 'index']);
 // Make it so that it redirects to organization create if the user doesn't have a studio and has the permissions
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('is-team-member')->name('dashboard');
 
     Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
 
