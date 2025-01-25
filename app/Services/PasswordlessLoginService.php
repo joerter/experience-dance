@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\Roles;
 use App\Mail\LoginToken as MailLoginToken;
 use App\Mail\RegisterToken;
 use App\Models\LoginToken;
@@ -45,10 +46,12 @@ class PasswordlessLoginService
                 $this->handleLoginRequest($email);
                 return null;
             }
-            $user = User::create(['name' => $name, 'email' => $email]);
+
+            $user = $this->createStudioOwnerUser($name, $email);
             $token = $this->createLoginToken($user->id);
 
             Mail::to($user)->send(new RegisterToken(route('register.verify.token', ['token' => $token->token])));
+
             return $user;
         } catch (\Exception $e) {
             report($e);
@@ -123,4 +126,13 @@ class PasswordlessLoginService
             'expires_at' => now()->addMinutes(15),
         ]);
     }
+
+    private function createStudioOwnerUser($name, $email)
+    {
+
+        $user = User::create(['name' => $name, 'email' => $email]);
+        $user->addRoles([Roles::STUDIO_OWNER, Roles::USER]);
+        return $user;
+    }
+
 }

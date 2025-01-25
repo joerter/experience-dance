@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Constants\Roles;
 use App\Http\Controllers\Controller;
 use App\Services\PasswordlessLoginService;
 use Illuminate\Http\RedirectResponse;
@@ -39,10 +38,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255',
         ]);
 
-        $newUser = $this->passwordlessLoginService->maybeRegisterNewUser($request->name, $request->email);
-        if ($newUser) {
-            $newUser->addRoles([Roles::STUDIO_OWNER, Roles::USER]);
-        }
+        $this->passwordlessLoginService->maybeRegisterNewUser($request->name, $request->email);
 
         return to_route('register.await.token');
     }
