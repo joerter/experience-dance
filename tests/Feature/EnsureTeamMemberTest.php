@@ -1,7 +1,7 @@
 <?php
 
 use App\Constants\Roles;
-use Tests\TestCase;
+use App\Models\Organization;
 use App\Models\Team;
 use App\Models\User;
 
@@ -17,7 +17,8 @@ describe('EnsureTeamMember', function () {
 
     test('user with team can access protected route', function () {
         $user = User::factory()->create();
-        $team = Team::factory()->create();
+        $organization = Organization::factory()->has(Team::factory()->count(1))->create();
+        $team = $organization->teams->first();
         $user->addRole(Roles::STUDIO_OWNER, $team);
 
         $this->actingAs($user)
