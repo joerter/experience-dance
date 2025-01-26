@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { Button, Grid2, Paper, TextField, Typography } from '@mui/material';
 
-const StudioOnboardingForm = () => {
+const StudioInformation = () => {
   const { data, setData, post, processing, errors } = useForm({
     studio_name: '',
     phone: '',
@@ -16,11 +16,11 @@ const StudioOnboardingForm = () => {
 
   function handleChange(e: any) {
     const key = e.target.name;
-    const value = e.target.value
-    setData(values => ({
-        ...values,
-        [key]: value,
-    }))
+    const value = e.target.value;
+    setData((values) => ({
+      ...values,
+      [key]: value,
+    }));
   }
 
   const handleSubmit = (e: any) => {
@@ -149,7 +149,7 @@ export default function StudioOwner() {
   return (
     <AuthenticatedLayout>
       <Head title="Studio Onboarding" />
-      <StudioOnboardingForm />
+      <StudioInformation />
     </AuthenticatedLayout>
   );
 }
