@@ -4,13 +4,13 @@ import { Button, Grid2, Paper, TextField, Typography } from '@mui/material';
 
 const StudioOnboardingForm = () => {
   const { data, setData, post, processing, errors } = useForm({
-    studioName: '',
+    studio_name: '',
     phone: '',
-    streetLine1: '',
-    streetLine2: '',
+    street_line_1: '',
+    street_line_2: '',
     city: '',
     state: '',
-    postalCode: '',
+    postal_code: '',
     website: '',
   });
 
@@ -46,8 +46,8 @@ const StudioOnboardingForm = () => {
               required
               fullWidth
               label="Studio Name"
-              name="studioName"
-              value={data.studioName}
+              name="studio_name"
+              value={data.studio_name}
               onChange={handleChange}
             />
           </Grid2>
@@ -77,8 +77,8 @@ const StudioOnboardingForm = () => {
               required
               fullWidth
               label="Street Address Line 1"
-              name="streetLine1"
-              value={data.streetLine1}
+              name="street_line_1"
+              value={data.street_line_1}
               onChange={handleChange}
             />
           </Grid2>
@@ -88,8 +88,8 @@ const StudioOnboardingForm = () => {
               required
               fullWidth
               label="Street Address Line 2"
-              name="streetLine2"
-              value={data.streetLine2}
+              name="street_line_2"
+              value={data.street_line_2}
               onChange={handleChange}
             />
           </Grid2>
@@ -121,8 +121,8 @@ const StudioOnboardingForm = () => {
               required
               fullWidth
               label="ZIP Code"
-              name="postalCode"
-              value={data.postalCode}
+              name="postal_code"
+              value={data.postal_code}
               onChange={handleChange}
             />
           </Grid2>

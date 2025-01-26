@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreStudioOwnerOnboardingRequest;
 use Inertia\Inertia;
 
 class OnboardingController extends Controller
@@ -12,8 +12,9 @@ class OnboardingController extends Controller
         return Inertia::render('Onboarding/StudioOwner');
     }
 
-    public function studioOwnerStore(Request $request)
+    public function studioOwnerStore(StoreStudioOwnerOnboardingRequest $request)
     {
-        dd($request->all());
+        $validated = $request->validated();
+        dd($validated);
     }
 }
