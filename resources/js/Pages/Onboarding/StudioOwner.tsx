@@ -26,7 +26,6 @@ const StudioInformation = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     post(route('onboarding.studio.store'));
-    //console.log(data);
   };
 
   return (
@@ -39,7 +38,7 @@ const StudioInformation = () => {
         about your studio.
       </Typography>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <Grid2 container spacing={3}>
           <Grid2 size={12}>
             <TextField
@@ -49,6 +48,8 @@ const StudioInformation = () => {
               name="studio_name"
               value={data.studio_name}
               onChange={handleChange}
+              error={!!errors.studio_name}
+              helperText={errors.studio_name}
             />
           </Grid2>
 
@@ -59,6 +60,8 @@ const StudioInformation = () => {
               name="phone"
               value={data.phone}
               onChange={handleChange}
+              error={!!errors.phone}
+              helperText={errors.phone}
             />
           </Grid2>
 
@@ -69,6 +72,8 @@ const StudioInformation = () => {
               name="website"
               value={data.website}
               onChange={handleChange}
+              error={!!errors.website}
+              helperText={errors.website}
             />
           </Grid2>
 
@@ -80,17 +85,20 @@ const StudioInformation = () => {
               name="street_line_1"
               value={data.street_line_1}
               onChange={handleChange}
+              error={!!errors.street_line_1}
+              helperText={errors.street_line_1}
             />
           </Grid2>
 
           <Grid2 size={12}>
             <TextField
-              required
               fullWidth
-              label="Street Address Line 2"
+              label="Street Address Line 2 (optional)"
               name="street_line_2"
               value={data.street_line_2}
               onChange={handleChange}
+              error={!!errors.street_line_2}
+              helperText={errors.street_line_2}
             />
           </Grid2>
 
@@ -102,6 +110,8 @@ const StudioInformation = () => {
               name="city"
               value={data.city}
               onChange={handleChange}
+              error={!!errors.city}
+              helperText={errors.city}
             />
           </Grid2>
 
@@ -113,6 +123,8 @@ const StudioInformation = () => {
               name="state"
               value={data.state}
               onChange={handleChange}
+              error={!!errors.state}
+              helperText={errors.state}
             />
           </Grid2>
 
@@ -124,6 +136,8 @@ const StudioInformation = () => {
               name="postal_code"
               value={data.postal_code}
               onChange={handleChange}
+              error={!!errors.postal_code}
+              helperText={errors.postal_code}
             />
           </Grid2>
 

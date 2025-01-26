@@ -33,4 +33,15 @@ class StoreStudioOwnerOnboardingRequest extends FormRequest
             'website' => 'nullable|url|max:255',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'studio_name.required' => 'Please provide your studios\'s name.',
+            'street_line_1.required' => 'Please provide a street address.',
+            'city' => 'Please provide a city.',
+            'state' => 'Please provide a state.',
+            'postal_code' => 'Please provide a zip code.',
+        ];
+    }
 }
