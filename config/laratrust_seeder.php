@@ -16,8 +16,9 @@ return [
             'users' => 'c,r,u,d',
             'teams' => 'c,r,u,d',
             'organizations' => 'c,r,u,d',
+            'events' => 'c,r,u,d',
         ],
-        'team_admin' => [
+        'studio_staff' => [
             'events' => 'c,r,u,d',
         ],
         'user' => [
