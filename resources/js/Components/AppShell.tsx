@@ -1,3 +1,4 @@
+import { User } from '@/types';
 import { Link } from '@inertiajs/react';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import ClassIcon from '@mui/icons-material/Class';
@@ -28,7 +29,6 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import ApplicationLogo from './ApplicationLogo';
-import { User } from '@/types';
 
 function UserInformation(props: {
   user: User;
@@ -110,6 +110,7 @@ const AppShell = ({
 
           <Stack direction="row" spacing={2}>
             {isDesktop &&
+              user.selectedStudio != null &&
               navigationLinks.map((link) => (
                 <Button
                   key={link.name}
@@ -200,16 +201,18 @@ const AppShell = ({
                 onStudioMenuClick={(e) => setStudioMenuAnchor(e.currentTarget)}
               />
             </Box>
-            <List>
-              {navigationLinks.map((link) => (
-                <ListItem key={link.name}>
-                  <ListItemButton>
-                    <ListItemIcon>{link.icon}</ListItemIcon>
-                    <ListItemText primary={link.name} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
+            {user.selectedStudio != null && (
+              <List>
+                {navigationLinks.map((link) => (
+                  <ListItem key={link.name}>
+                    <ListItemButton>
+                      <ListItemIcon>{link.icon}</ListItemIcon>
+                      <ListItemText primary={link.name} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Stack>
         </Box>
       </Drawer>

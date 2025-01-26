@@ -136,7 +136,7 @@ const StudioInformation = () => {
               fullWidth
               disabled={processing}
             >
-              Create Studio Profile
+              Submit
             </Button>
           </Grid2>
         </Grid2>
