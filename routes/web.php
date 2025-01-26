@@ -18,8 +18,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/onboarding/studio', [OnboardingController::class, 'studioOwner'])->name('onboarding.studio');
 
-    Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organizations.create');
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
