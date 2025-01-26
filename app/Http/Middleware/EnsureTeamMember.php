@@ -20,7 +20,7 @@ class EnsureTeamMember
 
         if (!$hasTeam) {
             if ($user->hasRole('studio_owner')) {
-                return redirect()->route('onboarding.studio');
+                return redirect()->route('onboarding.studio.create');
             }
             // Add other role redirects as needed
         }

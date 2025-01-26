@@ -12,7 +12,7 @@ describe('EnsureTeamMember', function () {
 
         $this->actingAs($user)
             ->get('/dashboard')
-            ->assertRedirect(route('onboarding.studio'));
+            ->assertRedirect(route('onboarding.studio.create'));
     });
 
     test('user with team can access protected route', function () {

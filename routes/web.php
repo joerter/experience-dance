@@ -16,7 +16,8 @@ Route::get('/', [WelcomeController::class, 'index']);
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('is-team-member')->name('dashboard');
 
-    Route::get('/onboarding/studio', [OnboardingController::class, 'studioOwner'])->name('onboarding.studio');
+    Route::get('/onboarding/studio', [OnboardingController::class, 'studioOwner'])->name('onboarding.studio.create');
+    Route::post('/onboarding/studio', [OnboardingController::class, 'studioOwnerStore'])->name('onboarding.studio.store');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

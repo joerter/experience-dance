@@ -1,6 +1,6 @@
 import AppShell from '@/Components/AppShell';
 import { usePage } from '@inertiajs/react';
-import { PropsWithChildren, ReactNode, useState } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
 export default function Authenticated({
   children,
