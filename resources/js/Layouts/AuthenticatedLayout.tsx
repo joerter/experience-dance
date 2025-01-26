@@ -8,8 +8,5 @@ export default function Authenticated({
 }: PropsWithChildren<{ header?: ReactNode }>) {
   const user = usePage().props.auth.user;
 
-  const [showingNavigationDropdown, setShowingNavigationDropdown] =
-    useState(false);
-
-  return <AppShell>{children}</AppShell>;
+  return <AppShell user={user}>{children}</AppShell>;
 }

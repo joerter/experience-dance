@@ -28,17 +28,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import ApplicationLogo from './ApplicationLogo';
-
-interface Studio {
-  id: string;
-  name: string;
-}
-
-interface User {
-  name: string;
-  selectedStudio: Studio;
-  studios: Studio[];
-}
+import { User } from '@/types';
 
 function UserInformation(props: {
   user: User;
@@ -52,39 +42,38 @@ function UserInformation(props: {
       </Avatar>
       <Stack direction="column" alignItems="flex-end">
         <Typography variant="body2">{props.user.name}</Typography>
-        <Button
-          variant="text"
-          size="small"
-          endIcon={<KeyboardArrowDownIcon />}
-          onClick={(e) => props.onStudioMenuClick(e)}
-          sx={{
-            color: props.variant === 'dark' ? 'common.white' : 'common.black',
-            pr: 0,
-          }}
-        >
-          {props.user.selectedStudio.name}
-        </Button>
+        {props.user.selectedStudio != null && (
+          <Button
+            variant="text"
+            size="small"
+            endIcon={<KeyboardArrowDownIcon />}
+            onClick={(e) => props.onStudioMenuClick(e)}
+            sx={{
+              color: props.variant === 'dark' ? 'common.white' : 'common.black',
+              pr: 0,
+            }}
+          >
+            {props.user.selectedStudio.name}
+          </Button>
+        )}
       </Stack>
     </Stack>
   );
 }
 
-const AppShell = ({ children }: { children: React.ReactNode }) => {
+const AppShell = ({
+  user,
+  children,
+}: {
+  user: User;
+  children: React.ReactNode;
+}) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [studioMenuAnchor, setStudioMenuAnchor] = useState<null | HTMLElement>(
     null,
   );
-
-  const user: User = {
-    name: 'Jane Smith',
-    selectedStudio: { id: '1', name: 'Ballet Academy' },
-    studios: [
-      { id: '1', name: 'Ballet Academy' },
-      { id: '2', name: 'Modern Dance Studio' },
-    ],
-  };
 
   const navigationLinks = [
     { name: 'Dashboard', icon: <DashboardIcon /> },
@@ -230,7 +219,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
         open={Boolean(studioMenuAnchor)}
         onClose={() => setStudioMenuAnchor(null)}
       >
-        {user.studios.map((studio) => (
+        {(user.studios ?? []).map((studio) => (
           <MenuItem
             key={studio.id}
             onClick={() => setStudioMenuAnchor(null)}
