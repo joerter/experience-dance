@@ -1,7 +1,9 @@
 <?php
 
 use App\Constants\Roles;
+use App\Models\Organization;
 use App\Models\Role;
+use App\Models\Team;
 use App\Models\User;
 
 describe('POST /onboarding/studio', function () {
@@ -22,5 +24,12 @@ describe('POST /onboarding/studio', function () {
         ]);
 
         $response->assertStatus(200);
+
+        $organization = Organization::where('name', 'Test Studio')->first();
+        $team = $organization->teams()->where('name', 'Test Studio')->first();
+        $address = $organization->address();
+        $this->assertNotNull($organization);
+        $this->assertNotNull($team);
+        $this->assertNotNull($address);
     });
 });
