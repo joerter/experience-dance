@@ -40,7 +40,7 @@ class UserFactory extends Factory
     public function studioOwner(): static
     {
         return $this->afterCreating(function ($user) {
-            $user->assignRole(Roles::STUDIO_OWNER);
+            $user->addRole(Roles::STUDIO_OWNER);
         });
     }
 }
