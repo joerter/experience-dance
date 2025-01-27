@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Constants\Roles;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -33,5 +34,13 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    // adds the studio_owner role to the list of roles
+    public function studioOwner(): static
+    {
+        return $this->afterCreating(function ($user) {
+            $user->assignRole(Roles::STUDIO_OWNER);
+        });
     }
 }
