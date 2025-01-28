@@ -21,6 +21,7 @@ class OnboardingService
             'city' => $studioOwnerOnboardingRequest['city'],
             'state' => $studioOwnerOnboardingRequest['state'],
             'postal_code' => $studioOwnerOnboardingRequest['postal_code'],
+            'timezone' => $studioOwnerOnboardingRequest['timezone'],
         ]);
         $organization->teams()->create([
             'name' => $studioOwnerOnboardingRequest['studio_name'],

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Address extends Model
 {
@@ -21,11 +20,6 @@ class Address extends Model
         'longitude',
         'location',
     ];
-
-    public function setLocationAttribute($value)
-    {
-        $this->attributes['location'] = DB::raw("POINT({$value['longitude']}, {$value['latitude']})");
-    }
 
     public function addressable()
     {

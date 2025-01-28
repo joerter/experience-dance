@@ -31,6 +31,7 @@ class StoreStudioOwnerOnboardingRequest extends FormRequest
             'state' => 'required|string|max:255',
             'postal_code' => 'required|string|max:10',
             'website' => 'nullable|url|max:255',
+            'timezone' => 'required|max:255',
         ];
     }
 
@@ -42,6 +43,7 @@ class StoreStudioOwnerOnboardingRequest extends FormRequest
             'city' => 'Please provide a city.',
             'state' => 'Please provide a state.',
             'postal_code' => 'Please provide a zip code.',
+            'timezone' => 'Please provide a timezone.',
         ];
     }
 }
