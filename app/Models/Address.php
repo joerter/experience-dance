@@ -16,9 +16,7 @@ class Address extends Model
         'state',
         'postal_code',
         'country',
-        'latitude',
-        'longitude',
-        'location',
+        'timezone',
     ];
 
     public function addressable()

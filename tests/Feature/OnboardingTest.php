@@ -16,7 +16,7 @@ describe('POST onboarding.studio.store', function () {
             'state' => 'NY',
             'postal_code' => '10001',
             'website' => 'https://teststudio.com',
-            'timezone' => 'America/New_York',
+            'timezone' => 'America/Chicago',
         ];
         $response = $this->actingAs($studioOwner)->post(route('onboarding.studio.store'), $studioOwnerOnboardingRequest);
 
