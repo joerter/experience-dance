@@ -4,7 +4,7 @@ use App\Models\Organization;
 use App\Models\User;
 
 describe('POST onboarding.studio.store', function () {
-    it('should create an organization and team', function () {
+    it('should create an organization and team and redirect to the dashboard', function () {
         $studioOwner = User::factory()->studioOwner()->create();
 
         $studioOwnerOnboardingRequest = [
@@ -20,7 +20,8 @@ describe('POST onboarding.studio.store', function () {
         ];
         $response = $this->actingAs($studioOwner)->post(route('onboarding.studio.store'), $studioOwnerOnboardingRequest);
 
-        $response->assertStatus(200);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('dashboard'));
 
         $organization = Organization::where('name', 'Test Studio')->first();
         $team = $organization->teams()->where('name', 'Test Studio')->first();

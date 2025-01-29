@@ -44,5 +44,7 @@ class OnboardingController extends Controller
     {
         $validated = $request->validated();
         $this->onboardingService->createStudio($validated);
+
+        return to_route('dashboard');
     }
 }
