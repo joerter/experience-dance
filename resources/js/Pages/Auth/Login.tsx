@@ -26,7 +26,7 @@ function ChooseLoginMethod() {
           </Link>
         </Typography>
       </Stack>
-      <LoginMethods hrefs={{ email: route('login', { method: 'email' }) }} />
+      <LoginMethods hrefs={{ email: route('login.show', { method: 'email' }) }} />
     </Stack>
   );
 }
