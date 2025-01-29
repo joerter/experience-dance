@@ -13,10 +13,12 @@ return [
 
     'roles_structure' => [
         'studio_owner' => [
-            'users' => 'c,r,u,d',
-            'teams' => 'c,r,u,d',
-            'organizations' => 'c,r,u,d',
+            'teams' => 'c,r,u',
+            'organizations' => 'c,r,u',
+        ],
+        'studio_admin' => [
             'events' => 'c,r,u,d',
+            'users' => 'c,r,u,d',
         ],
         'studio_staff' => [
             'events' => 'c,r,u,d',

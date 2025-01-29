@@ -4,7 +4,14 @@ use App\Models\Organization;
 use App\Models\User;
 
 describe('POST onboarding.studio.store', function () {
-    it('should create an organization and team and redirect to the dashboard', function () {
+    it('only allows studio owners', function () {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->post(route('onboarding.studio.store'));
+
+        $response->assertForbidden();
+    });
+
+    it('creates inserts data for the new studio, makes the user a studio_admin over the new team, and redirects to dashboard', function () {
         $studioOwner = User::factory()->studioOwner()->create();
 
         $studioOwnerOnboardingRequest = [
@@ -42,5 +49,7 @@ describe('POST onboarding.studio.store', function () {
 
         expect($team->name)->toBe($studioOwnerOnboardingRequest['studio_name']);
         expect($team->display_name)->toBe($studioOwnerOnboardingRequest['studio_name']);
+
+        $this->assertTrue($studioOwner->hasRole('studio_admin', $team));
     });
 });
