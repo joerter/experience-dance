@@ -96,7 +96,7 @@ function SideNav({ onToggleSideNav }: { onToggleSideNav: () => void }) {
         variant="contained"
         sx={{ fontWeight: '600' }}
         component={Link}
-        href={route('login')}
+        href={route('login.show')}
       >
         Sign In
       </Button>
@@ -163,7 +163,7 @@ export default function NavBar() {
               variant="contained"
               sx={{ fontWeight: '600' }}
               component={Link}
-              href={route('login')}
+              href={route('login.show')}
             >
               Sign In
             </Button>

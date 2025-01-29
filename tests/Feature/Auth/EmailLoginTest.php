@@ -13,26 +13,26 @@ describe('POST login', function () {
 
         User::factory()->create(['email' => $testEmail]);
 
-        $response = $this->post(route('login.send-link'), ['email' => $testEmail]);
+        $response = $this->post(route('login.sendLoginLink'), ['email' => $testEmail]);
 
         Mail::assertSent(MailLoginToken::class, function ($mail) use ($testEmail) {
             return $mail->hasTo($testEmail);
         });
-        $response->assertRedirect(route('login.verify.code.show'));
+        $response->assertRedirect(route('login.showVerifyCode'));
     });
 
     test('still redirects to login.verify.code.show when the user is not found', function () {
-        $response = $this->post(route('login.send-link'), ['email' => 'test@user.com']);
+        $response = $this->post(route('login.sendLoginLink'), ['email' => 'test@user.com']);
 
-        $response->assertRedirect(route('login.verify.code.show'));
+        $response->assertRedirect(route('login.showVerifyCode'));
     });
 });
 
 describe('GET login/verify/token/{token}', function () {
     test('redirects back to login with message when token does not exist', function () {
-        $response = $this->get(route('login.verify.token', ['token' => 'bad-token']));
+        $response = $this->get(route('login.verifyToken', ['token' => 'bad-token']));
 
-        $response->assertRedirect(route('login'));
+        $response->assertRedirect(route('login.show'));
         $response->assertSessionHas('error', 'Invalid or expired login link.');
     });
 
@@ -46,7 +46,7 @@ describe('GET login/verify/token/{token}', function () {
             'expires_at' => now()->addMinutes(15),
         ]);
 
-        $response = $this->get(route('login.verify.token', ['token' => $token->token]));
+        $response = $this->get(route('login.verifyToken', ['token' => $token->token]));
 
         $response->assertRedirect(route('dashboard'));
     });
@@ -54,9 +54,9 @@ describe('GET login/verify/token/{token}', function () {
 
 describe('POST login/verify/code', function () {
     test('redirects back to login with message when code does not exist', function () {
-        $response = $this->post(route('login.verify.code'), ['code' => 'bad-token']);
+        $response = $this->post(route('login.verifyCode'), ['code' => 'bad-token']);
 
-        $response->assertRedirect(route('login'));
+        $response->assertRedirect(route('login.show'));
         $response->assertSessionHas('error', 'Invalid or expired login code.');
     });
 
@@ -70,7 +70,7 @@ describe('POST login/verify/code', function () {
             'expires_at' => now()->addMinutes(15),
         ]);
 
-        $response = $this->post(route('login.verify.code', ['code' => $token->code]));
+        $response = $this->post(route('login.verifyCode', ['code' => $token->code]));
 
         $response->assertRedirect(route('dashboard'));
     });

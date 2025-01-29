@@ -21,7 +21,7 @@ class EmailLoginController extends Controller
         return Inertia::render('Auth/Login');
     }
 
-    public function showVefiyCode()
+    public function showVerifyCode()
     {
         return Inertia::render('Auth/VerifyCode');
     }
@@ -34,17 +34,17 @@ class EmailLoginController extends Controller
 
         $this->emailAuthenticationService->handleLoginRequest($request->email);
 
-        return redirect()->intended(route('login.verify.code.show'));
+        return to_route('login.showVerifyCode');
     }
 
     public function verifyToken(Request $request, $token)
     {
         $isValid = $this->emailAuthenticationService->isValidLoginToken($token);
         if (! $isValid) {
-            return redirect()->route('login')
+            return redirect()->route('login.show')
                 ->with('error', 'Invalid or expired login link.');
         }
-        return redirect()->intended(route('dashboard'));
+        return to_route('dashboard');
     }
 
     public function verifyCode(Request $request)
@@ -53,9 +53,9 @@ class EmailLoginController extends Controller
 
         $isValid = $this->emailAuthenticationService->isValidLoginCode($request->code);
         if (! $isValid) {
-            return redirect()->route('login')
+            return redirect()->route('login.show')
                 ->with('error', 'Invalid or expired login code.');
         }
-        return redirect()->intended(route('dashboard'));
+        return to_route('dashboard');
     }
 }

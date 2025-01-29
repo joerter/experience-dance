@@ -36,7 +36,7 @@ class EmailAuthenticationService
 
             $token = $this->createLoginToken($user->id);
 
-            Mail::to($user)->send(new MailLoginToken(route('login.verify.token', ['token' => $token->token]), $token->code));
+            Mail::to($user)->send(new MailLoginToken(route('login.verifyToken', ['token' => $token->token]), $token->code));
         } catch (\Exception $e) {
             report($e);
             return;
@@ -57,7 +57,7 @@ class EmailAuthenticationService
             $this->roleService->grantStudioOwnerRole($user);
             $token = $this->createLoginToken($user->id);
 
-            Mail::to($user)->send(new RegisterToken(route('register.verify.token', ['token' => $token->token])));
+            Mail::to($user)->send(new RegisterToken(route('register.verifyToken', ['token' => $token->token])));
 
             return $user;
         } catch (\Exception $e) {

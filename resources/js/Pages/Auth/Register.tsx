@@ -25,7 +25,7 @@ function EmailMethod() {
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
-    post(route('register.send-link'));
+    post(route('register.store'));
   };
 
   return (

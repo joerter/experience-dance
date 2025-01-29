@@ -16,7 +16,7 @@ export default function VerifyCode({
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
-    post(route('login.verify.code'));
+    post(route('login.verifyCode'));
   };
 
   return (
@@ -35,7 +35,7 @@ export default function VerifyCode({
             </Typography>
             <Typography variant="body1" align="center" color="secondary">
               Didn't receive the email?{' '}
-              <Link href={route('register')}>
+              <Link href={route('register.create')}>
                 Register for your free account here
               </Link>
             </Typography>

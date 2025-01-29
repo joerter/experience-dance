@@ -9,26 +9,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [EmailRegistrationController::class, 'create'])
-        ->name('register');
+        ->name('register.create');
     Route::post('register', [EmailRegistrationController::class, 'store'])
-        ->name('register.send-link');
+        ->name('register.store');
+
     Route::get('register/await/token', [EmailRegistrationController::class, 'awaitToken'])
-        ->name('register.await.token');
+        ->name('register.awaitToken');
     Route::get('register/verify/{token}', [EmailRegistrationController::class, 'verfiyToken'])
-        ->name('register.verify.token');
+        ->name('register.verifyToken');
 
     Route::get('login', [EmailLoginController::class, 'show'])
-        ->name('login');
+        ->name('login.show');
     Route::post('login', [EmailLoginController::class, 'sendLoginLink'])
-        ->name('login.send-link');
+        ->name('login.sendLoginLink');
 
     Route::get('login/verify/token/{token}', [EmailLoginController::class, 'verifyToken'])
-        ->name('login.verify.token');
+        ->name('login.verifyToken');
 
-    Route::get('login/verify/code', [EmailLoginController::class, 'showVefiyCode'])
-        ->name('login.verify.code.show');
+    Route::get('login/verify/code', [EmailLoginController::class, 'showVerifyCode'])
+        ->name('login.showVerifyCode');
     Route::post('login/verify/code', [EmailLoginController::class, 'verifyCode'])
-        ->name('login.verify.code');
+        ->name('login.verifyCode');
 
     Route::get('/oauth/google/redirect', [GoogleOauthController::class, 'redirect'])->name('oauth.google.redirect');
     Route::get('/oauth/google/callback', [GoogleOauthController::class, 'callback'])->name('oauth.google.callback');

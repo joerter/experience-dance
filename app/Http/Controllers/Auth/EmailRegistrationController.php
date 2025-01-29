@@ -40,7 +40,7 @@ class EmailRegistrationController extends Controller
 
         $this->emailAuthenticationService->maybeRegisterNewUser($request->name, $request->email);
 
-        return to_route('register.await.token');
+        return to_route('register.awaitToken');
     }
 
     public function awaitToken(): Response
@@ -52,7 +52,7 @@ class EmailRegistrationController extends Controller
     {
         $isValid = $this->emailAuthenticationService->isValidLoginToken($token);
         if (! $isValid) {
-            return redirect()->route('register')
+            return redirect()->route('register.create')
                 ->with('error', 'Sorry, the registration link you used is either invalid or expired. Please try again.');
         }
 

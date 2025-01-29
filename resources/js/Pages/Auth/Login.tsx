@@ -21,7 +21,7 @@ function ChooseLoginMethod() {
         </Typography>
         <Typography variant="body1" align="center" color="secondary">
           Don't have an account yet?{' '}
-          <Link href={route('register')}>
+          <Link href={route('register.create')}>
             Register for your free account here
           </Link>
         </Typography>
@@ -39,7 +39,7 @@ function EmailMethod() {
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
-    post(route('login'));
+    post(route('login.sendLoginLink'));
   };
 
   return (
@@ -58,7 +58,7 @@ function EmailMethod() {
         </Typography>
         <Typography variant="body1" align="center" color="secondary">
           Don't have an account yet?{' '}
-          <Link href={route('register')}>
+          <Link href={route('register.create')}>
             Register for your free account here
           </Link>
         </Typography>

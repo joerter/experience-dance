@@ -30,7 +30,7 @@ describe('POST /register', function () {
         Mail::assertSent(RegisterToken::class, function ($mail) use ($email) {
             return $mail->hasTo($email);
         });
-        $response->assertRedirect(route('register.await.token'));
+        $response->assertRedirect(route('register.awaitToken'));
     });
 
     it('sends login token when an existing email tries to register', function () {
@@ -48,9 +48,9 @@ describe('POST /register', function () {
         $token = LoginToken::where('user_id', $existingUser->id)->first();
         Mail::assertSent(MailLoginToken::class, function ($mail) use ($existingEmail, $token) {
             return $mail->hasTo($existingEmail) &&
-                $mail->url === (route('login.verify.token', ['token' => $token->token]));
+                $mail->url === (route('login.verifyToken', ['token' => $token->token]));
         });
-        $response->assertRedirect(route('register.await.token'));
+        $response->assertRedirect(route('register.awaitToken'));
     });
 
     it('grants the studio_owner and user role to new users', function () {
@@ -85,9 +85,9 @@ describe('POST /register', function () {
 
 describe('GET /register/verify/{token}', function () {
     it('redirects back to register with message when token does not exist', function () {
-        $response = $this->get(route('register.verify.token', ['token' => 'bad-token']));
+        $response = $this->get(route('register.verifyToken', ['token' => 'bad-token']));
 
-        $response->assertRedirect(route('register'));
+        $response->assertRedirect(route('register.create'));
         $response->assertSessionHas('error', 'Sorry, the registration link you used is either invalid or expired. Please try again.');
     });
 
@@ -101,7 +101,7 @@ describe('GET /register/verify/{token}', function () {
             'expires_at' => now()->addMinutes(15),
         ]);
 
-        $response = $this->get(route('register.verify.token', ['token' => $token->token]));
+        $response = $this->get(route('register.verifyToken', ['token' => $token->token]));
         $response->assertRedirect(route('dashboard'));
     });
 
@@ -117,7 +117,7 @@ describe('GET /register/verify/{token}', function () {
             'expires_at' => now()->addMinutes(15),
         ]);
 
-        $this->get(route('register.verify.token', ['token' => $token->token]));
+        $this->get(route('register.verifyToken', ['token' => $token->token]));
         $user->refresh();
         $this->assertNotNull($user->email_verified_at);
     });

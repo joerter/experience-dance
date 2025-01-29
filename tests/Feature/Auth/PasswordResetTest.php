@@ -55,7 +55,7 @@ describe('PasswordReset Test', function () {
 
             $response
                 ->assertSessionHasNoErrors()
-                ->assertRedirect(route('login'));
+                ->assertRedirect(route('login.show'));
 
             return true;
         });
