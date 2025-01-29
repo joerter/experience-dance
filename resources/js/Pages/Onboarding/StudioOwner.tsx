@@ -1,8 +1,23 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { PageProps } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { Button, Grid2, Paper, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  Grid2,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material';
 
-const StudioInformation = () => {
+const StudioInformation = ({
+  timezones,
+}: {
+  timezones: Record<string, string>;
+}) => {
   const { data, setData, post, processing, errors } = useForm({
     studio_name: '',
     phone: '',
@@ -12,6 +27,7 @@ const StudioInformation = () => {
     state: '',
     postal_code: '',
     website: '',
+    timezone: 'America/New_York',
   });
 
   function handleChange(e: any) {
@@ -140,6 +156,25 @@ const StudioInformation = () => {
               helperText={errors.postal_code}
             />
           </Grid2>
+          <Grid2 size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel id="timezone-select-label">Time Zone</InputLabel>
+              <Select
+                labelId="timezone-select-label"
+                id="timezone-select"
+                name="timezone"
+                value={data.timezone}
+                label="Time Zone"
+                onChange={handleChange}
+              >
+                {Object.entries(timezones).map(([value, label]) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid2>
 
           <Grid2 size={12}>
             <Button
@@ -159,11 +194,13 @@ const StudioInformation = () => {
   );
 };
 
-export default function StudioOwner() {
+export default function StudioOwner({
+  timezones,
+}: PageProps<{ timezones: Record<string, string> }>) {
   return (
     <AuthenticatedLayout>
       <Head title="Studio Onboarding" />
-      <StudioInformation />
+      <StudioInformation timezones={timezones} />
     </AuthenticatedLayout>
   );
 }
