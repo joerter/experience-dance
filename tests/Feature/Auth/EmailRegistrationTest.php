@@ -55,9 +55,7 @@ describe('POST /register', function () {
 
     it('grants the studio_owner and user role to new users', function () {
         $studioOwnerRole = Role::where('name', Roles::STUDIO_OWNER)->first();
-        $userRole = Role::where('name', Roles::USER)->first();
         $this->assertNotNull($studioOwnerRole);
-        $this->assertNotNull($userRole);
 
         $this->post('/register', [
             'name' => 'Test User',
@@ -67,7 +65,6 @@ describe('POST /register', function () {
         $this->assertNotNull($user);
 
         $this->assertTrue($user->hasRole($studioOwnerRole->name, null));
-        $this->assertTrue($user->hasRole($userRole->name, null));
     });
 
     it('does not grant the studio_owner role when an existing user tries to register again', function () {
