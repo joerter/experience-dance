@@ -52,5 +52,6 @@ describe('POST onboarding.studio.store', function () {
         expect($team->display_name)->toBe($studioOwnerOnboardingRequest['studio_name']);
 
         $this->assertTrue($studioOwner->hasRole(Roles::STUDIO_ADMIN, $team));
+        $response->assertSessionHas('team_id', $team->id);
     });
 });
