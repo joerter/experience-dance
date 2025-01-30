@@ -43,7 +43,7 @@ class OnboardingController extends Controller
     public function studioOwnerStore(StoreStudioOwnerOnboardingRequest $request)
     {
         $validated = $request->validated();
-        $this->onboardingService->createStudio($validated);
+        $this->onboardingService->createStudio($request->user(), $validated);
 
         return to_route('dashboard');
     }

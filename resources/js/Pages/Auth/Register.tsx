@@ -95,7 +95,7 @@ function ChooseRegisterMethod() {
       </Typography>
       <Stack>
         <LoginMethods
-          hrefs={{ email: route('register', { method: 'email' }) }}
+          hrefs={{ email: route('register.create', { method: 'email' }) }}
         />
       </Stack>
     </Stack>
@@ -114,7 +114,7 @@ function Register() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ pt: '140px', pb: 10 }}>
+    <Container maxWidth="sm" sx={{ pt: 4, pb: 10 }}>
       <Head title="Register" />
 
       <Paper sx={{ width: '100%', px: 2, py: 4 }}>

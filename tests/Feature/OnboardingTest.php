@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\Roles;
 use App\Models\Organization;
 use App\Models\User;
 
@@ -50,6 +51,6 @@ describe('POST onboarding.studio.store', function () {
         expect($team->name)->toBe($studioOwnerOnboardingRequest['studio_name']);
         expect($team->display_name)->toBe($studioOwnerOnboardingRequest['studio_name']);
 
-        $this->assertTrue($studioOwner->hasRole('studio_admin', $team));
+        $this->assertTrue($studioOwner->hasRole(Roles::STUDIO_ADMIN, $team));
     });
 });

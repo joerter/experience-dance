@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
+use App\Constants\Roles;
 use App\Models\Address;
 use App\Models\Organization;
 
 class OnboardingService
 {
 
-    public function createStudio($studioOwnerOnboardingRequest)
+    public function createStudio($user, $studioOwnerOnboardingRequest)
     {
-        // TODO: Add timezone
         $organization = Organization::create([
             'name' => $studioOwnerOnboardingRequest['studio_name'],
             'website' => $studioOwnerOnboardingRequest['website'],
@@ -23,9 +23,11 @@ class OnboardingService
             'postal_code' => $studioOwnerOnboardingRequest['postal_code'],
             'timezone' => $studioOwnerOnboardingRequest['timezone'],
         ]);
-        $organization->teams()->create([
+        $team = $organization->teams()->create([
             'name' => $studioOwnerOnboardingRequest['studio_name'],
             'display_name' => $studioOwnerOnboardingRequest['studio_name'],
         ]);
+
+        $user->addRole(Roles::STUDIO_ADMIN, $team);
     }
 }
