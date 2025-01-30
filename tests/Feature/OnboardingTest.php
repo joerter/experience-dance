@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\Roles;
+use App\Constants\SessionKeys;
 use App\Models\Organization;
 use App\Models\User;
 
@@ -52,6 +53,6 @@ describe('POST onboarding.studio.store', function () {
         expect($team->display_name)->toBe($studioOwnerOnboardingRequest['studio_name']);
 
         $this->assertTrue($studioOwner->hasRole(Roles::STUDIO_ADMIN, $team));
-        $response->assertSessionHas('team_id', $team->id);
+        $response->assertSessionHas(SessionKeys::TEAM_ID, $team->id);
     });
 });

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Constants\Roles;
+use App\Constants\SessionKeys;
 use App\Models\Organization;
 
 class OnboardingService
@@ -39,7 +40,7 @@ class OnboardingService
     {
         try {
             $user->addRole(Roles::STUDIO_ADMIN, $team);
-            session(['team_id' => $team->id]);
+            session([SessionKeys::TEAM_ID => $team->id]);
         } catch (\Exception $e) {
             report($e);
             throw $e;
