@@ -61,7 +61,7 @@ export default function VerifyCode({
                   color="secondary"
                   disabled={processing}
                 >
-                  {processing ? 'Sending...' : 'Send Login Link'}
+                  {processing ? 'Verifying...' : 'Verify Code'}
                 </Button>
               </Stack>
             </form>
