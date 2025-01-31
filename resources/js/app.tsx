@@ -1,12 +1,11 @@
 import './bootstrap';
 
 import { createInertiaApp } from '@inertiajs/react';
-import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
-import theme from './mui/theme';
+import { ThemeProvider } from './theme';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -22,8 +21,7 @@ createInertiaApp({
 
     root.render(
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
+        <ThemeProvider>
           <App {...props} />
         </ThemeProvider>
       </LocalizationProvider>,

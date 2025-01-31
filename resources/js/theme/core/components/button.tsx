@@ -1,10 +1,14 @@
 import type { ButtonProps } from '@mui/material/Button';
-import type { Theme, CSSObject, Components, ComponentsVariants } from '@mui/material/styles';
+import type {
+  CSSObject,
+  Components,
+  ComponentsVariants,
+  Theme,
+} from '@mui/material/styles';
 
 import { varAlpha } from 'minimal-shared/utils';
 
 import { buttonClasses } from '@mui/material/Button';
-import { loadingButtonClasses } from '@mui/lab/LoadingButton';
 
 // ----------------------------------------------------------------------
 
@@ -19,13 +23,23 @@ export type ButtonExtendVariant = {
 
 // ----------------------------------------------------------------------
 
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'error',
+] as const;
 
 type PaletteColor = (typeof COLORS)[number];
 
 // ----------------------------------------------------------------------
 
-function styleColors(ownerState: ButtonProps, styles: (val: PaletteColor) => CSSObject) {
+function styleColors(
+  ownerState: ButtonProps,
+  styles: (val: PaletteColor) => CSSObject,
+) {
   const outputStyle = COLORS.reduce((acc, color) => {
     if (!ownerState.disabled && ownerState.color === color) {
       acc = styles(color);
@@ -42,7 +56,9 @@ const MuiButtonBase: Components<Theme>['MuiButtonBase'] = {
   /** **************************************
    * STYLE
    *************************************** */
-  styleOverrides: { root: ({ theme }) => ({ fontFamily: theme.typography.fontFamily }) },
+  styleOverrides: {
+    root: ({ theme }) => ({ fontFamily: theme.typography.fontFamily }),
+  },
 };
 
 // ----------------------------------------------------------------------
@@ -50,11 +66,15 @@ const MuiButtonBase: Components<Theme>['MuiButtonBase'] = {
 const softVariant: Record<string, ComponentsVariants<Theme>['MuiButton']> = {
   colors: COLORS.map((color) => ({
     props: ({ ownerState }) =>
-      !ownerState.disabled && ownerState.variant === 'soft' && ownerState.color === color,
+      !ownerState.disabled &&
+      ownerState.variant === 'soft' &&
+      ownerState.color === color,
     style: ({ theme }) => ({
       color: theme.vars.palette[color].dark,
       backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.16),
-      '&:hover': { backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.32) },
+      '&:hover': {
+        backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.32),
+      },
       ...theme.applyStyles('dark', {
         color: theme.vars.palette[color].light,
       }),
@@ -65,15 +85,20 @@ const softVariant: Record<string, ComponentsVariants<Theme>['MuiButton']> = {
       props: ({ ownerState }) => ownerState.variant === 'soft',
       style: ({ theme }) => ({
         backgroundColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.08),
-        '&:hover': { backgroundColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.24) },
+        '&:hover': {
+          backgroundColor: varAlpha(
+            theme.vars.palette.grey['500Channel'],
+            0.24,
+          ),
+        },
         [`&.${buttonClasses.disabled}`]: {
           backgroundColor: theme.vars.palette.action.disabledBackground,
         },
-        [`& .${loadingButtonClasses.loadingIndicatorStart}`]: { left: 14 },
-        [`& .${loadingButtonClasses.loadingIndicatorEnd}`]: { right: 14 },
+        [`& .${buttonClasses.loadingPositionStart}`]: { left: 14 },
+        [`& .${buttonClasses.loadingPositionEnd}`]: { right: 14 },
         [`&.${buttonClasses.sizeSmall}`]: {
-          [`& .${loadingButtonClasses.loadingIndicatorStart}`]: { left: 10 },
-          [`& .${loadingButtonClasses.loadingIndicatorEnd}`]: { right: 10 },
+          [`& .${buttonClasses.loadingPositionStart}`]: { left: 10 },
+          [`& .${buttonClasses.loadingPositionEnd}`]: { right: 10 },
         },
       }),
     },
@@ -102,18 +127,18 @@ const MuiButton: Components<Theme>['MuiButton'] = {
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              color: theme.vars.palette.common.white,
-              backgroundColor: theme.vars.palette.grey[800],
-              '&:hover': {
-                boxShadow: theme.vars.customShadows.z8,
-                backgroundColor: theme.vars.palette.grey[700],
-              },
-              ...theme.applyStyles('dark', {
-                color: theme.vars.palette.grey[800],
-                backgroundColor: theme.vars.palette.common.white,
-                '&:hover': { backgroundColor: theme.vars.palette.grey[400] },
-              }),
+            color: theme.vars.palette.common.white,
+            backgroundColor: theme.vars.palette.grey[800],
+            '&:hover': {
+              boxShadow: theme.vars.customShadows.z8,
+              backgroundColor: theme.vars.palette.grey[700],
+            },
+            ...theme.applyStyles('dark', {
+              color: theme.vars.palette.grey[800],
+              backgroundColor: theme.vars.palette.common.white,
+              '&:hover': { backgroundColor: theme.vars.palette.grey[400] },
             }),
+          }),
         },
       };
       return { ...styled.inheritColor, ...styled.colors };
@@ -129,12 +154,18 @@ const MuiButton: Components<Theme>['MuiButton'] = {
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32),
-              '&:hover': { backgroundColor: theme.vars.palette.action.hover },
-            }),
+            borderColor: varAlpha(
+              theme.vars.palette.grey['500Channel'],
+              0.32,
+            ),
+            '&:hover': { backgroundColor: theme.vars.palette.action.hover },
+          }),
         },
         base: {
-          '&:hover': { borderColor: 'currentColor', boxShadow: '0 0 0 0.75px currentColor' },
+          '&:hover': {
+            borderColor: 'currentColor',
+            boxShadow: '0 0 0 0.75px currentColor',
+          },
         },
       };
       return { ...styled.base, ...styled.inheritColor, ...styled.colors };
@@ -147,8 +178,8 @@ const MuiButton: Components<Theme>['MuiButton'] = {
         inheritColor: {
           ...(ownerState.color === 'inherit' &&
             !ownerState.disabled && {
-              '&:hover': { backgroundColor: theme.vars.palette.action.hover },
-            }),
+            '&:hover': { backgroundColor: theme.vars.palette.action.hover },
+          }),
         },
       };
       return { ...styled.inheritColor };

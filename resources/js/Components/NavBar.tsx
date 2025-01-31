@@ -132,7 +132,6 @@ export default function NavBar() {
             spacing={2}
             sx={(theme) => ({
               p: 2,
-              border: `1px solid ${theme.palette.gray1.main}`,
               borderRadius: '30px',
               display: { xs: 'none', lg: 'flex' },
             })}
