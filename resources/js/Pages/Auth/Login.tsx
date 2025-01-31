@@ -1,4 +1,4 @@
-import GuestLayout from '@/Layouts/GuestLayout';
+import { AuthSplitLayout } from '@/Layouts/auth-split';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { FormEventHandler } from 'react';
@@ -26,7 +26,9 @@ function ChooseLoginMethod() {
           </Link>
         </Typography>
       </Stack>
-      <LoginMethods hrefs={{ email: route('login.show', { method: 'email' }) }} />
+      <LoginMethods
+        hrefs={{ email: route('login.show', { method: 'email' }) }}
+      />
     </Stack>
   );
 }
@@ -106,7 +108,7 @@ export default function Login({
   const isEmailLoginMethod = searchParams.get('method') === 'email';
 
   return (
-    <GuestLayout>
+    <AuthSplitLayout slotProps={{ section: { title: 'Welcome Back!' } }}>
       <Head title="Log in" />
 
       {status && (
@@ -118,6 +120,6 @@ export default function Login({
       <Paper sx={{ width: '100%', px: 2, py: 4 }}>
         {isEmailLoginMethod ? <EmailMethod /> : <ChooseLoginMethod />}
       </Paper>
-    </GuestLayout>
+    </AuthSplitLayout>
   );
 }

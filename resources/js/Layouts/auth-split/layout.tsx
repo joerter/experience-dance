@@ -2,29 +2,25 @@ import type { Breakpoint } from '@mui/material/styles';
 
 import { merge } from 'es-toolkit';
 
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import Alert from '@mui/material/Alert';
 
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
+import EmailIcon from '@mui/icons-material/Email';
+import GoogleIcon from '@mui/icons-material/Google';
 
-import { CONFIG } from 'src/global-config';
-
-import { Logo } from 'src/components/logo';
-
-import { AuthSplitSection } from './section';
-import { AuthSplitContent } from './content';
-import { MainSection } from '../core/main-section';
-import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
-import { SettingsButton } from '../components/settings-button';
+import { LayoutSection } from '../core/layout-section';
+import { MainSection } from '../core/main-section';
+import { AuthSplitContent } from './content';
+import { AuthSplitSection } from './section';
 
-import type { AuthSplitSectionProps } from './section';
-import type { AuthSplitContentProps } from './content';
-import type { MainSectionProps } from '../core/main-section';
+import ApplicationLogo from '@/Components/ApplicationLogo';
 import type { HeaderSectionProps } from '../core/header-section';
 import type { LayoutSectionProps } from '../core/layout-section';
+import type { MainSectionProps } from '../core/main-section';
+import type { AuthSplitContentProps } from './content';
+import type { AuthSplitSectionProps } from './section';
 
 // ----------------------------------------------------------------------
 
@@ -60,24 +56,21 @@ export function AuthSplitLayout({
       ),
       leftArea: (
         <>
-          {/** @slot Logo */}
-          <Logo />
+          <ApplicationLogo />
         </>
       ),
       rightArea: (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 1.5 } }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: { xs: 1, sm: 1.5 },
+          }}
+        >
           {/** @slot Help link */}
-          <Link
-            href={paths.faqs}
-            component={RouterLink}
-            color="inherit"
-            sx={{ typography: 'subtitle2' }}
-          >
+          <Link color="inherit" sx={{ typography: 'subtitle2' }}>
             Need help?
           </Link>
-
-          {/** @slot Settings button */}
-          <SettingsButton />
         </Box>
       ),
     };
@@ -105,7 +98,9 @@ export function AuthSplitLayout({
     <MainSection
       {...slotProps?.main}
       sx={[
-        (theme) => ({ [theme.breakpoints.up(layoutQuery)]: { flexDirection: 'row' } }),
+        (theme) => ({
+          [theme.breakpoints.up(layoutQuery)]: { flexDirection: 'row' },
+        }),
         ...(Array.isArray(slotProps?.main?.sx)
           ? (slotProps?.main?.sx ?? [])
           : [slotProps?.main?.sx]),
@@ -113,33 +108,18 @@ export function AuthSplitLayout({
     >
       <AuthSplitSection
         layoutQuery={layoutQuery}
-        method={CONFIG.auth.method}
+        method={'Email'}
         {...slotProps?.section}
         methods={[
           {
-            label: 'Jwt',
-            path: paths.auth.jwt.signIn,
-            icon: `${CONFIG.assetsDir}/assets/icons/platforms/ic-jwt.svg`,
+            label: 'Email',
+            path: '',
+            icon: <EmailIcon />,
           },
           {
-            label: 'Firebase',
-            path: paths.auth.firebase.signIn,
-            icon: `${CONFIG.assetsDir}/assets/icons/platforms/ic-firebase.svg`,
-          },
-          {
-            label: 'Amplify',
-            path: paths.auth.amplify.signIn,
-            icon: `${CONFIG.assetsDir}/assets/icons/platforms/ic-amplify.svg`,
-          },
-          {
-            label: 'Auth0',
-            path: paths.auth.auth0.signIn,
-            icon: `${CONFIG.assetsDir}/assets/icons/platforms/ic-auth0.svg`,
-          },
-          {
-            label: 'Supabase',
-            path: paths.auth.supabase.signIn,
-            icon: `${CONFIG.assetsDir}/assets/icons/platforms/ic-supabase.svg`,
+            label: 'Google',
+            path: '',
+            icon: <GoogleIcon />,
           },
         ]}
       />

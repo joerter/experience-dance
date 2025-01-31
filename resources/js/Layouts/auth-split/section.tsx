@@ -8,12 +8,6 @@ import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-import { RouterLink } from 'src/routes/components';
-
-import { CONFIG } from 'src/global-config';
-
-// ----------------------------------------------------------------------
-
 export type AuthSplitSectionProps = BoxProps & {
   title?: string;
   method?: string;
@@ -22,7 +16,7 @@ export type AuthSplitSectionProps = BoxProps & {
   layoutQuery?: Breakpoint;
   methods?: {
     path: string;
-    icon: string;
+    icon: React.ReactNode;
     label: string;
   }[];
 };
@@ -33,7 +27,7 @@ export function AuthSplitSection({
   methods,
   layoutQuery = 'md',
   title = 'Manage the job',
-  imgUrl = `${CONFIG.assetsDir}/assets/illustrations/illustration-dashboard.webp`,
+  imgUrl = ``,
   subtitle = 'More effectively with optimized workflows.',
   ...other
 }: AuthSplitSectionProps) {
@@ -44,7 +38,7 @@ export function AuthSplitSection({
           ...theme.mixins.bgGradient({
             images: [
               `linear-gradient(0deg, ${varAlpha(theme.vars.palette.background.defaultChannel, 0.92)}, ${varAlpha(theme.vars.palette.background.defaultChannel, 0.92)})`,
-              `url(${CONFIG.assetsDir}/assets/background/background-3-blur.webp)`,
+              `url(assets/background/background-3-blur.webp)`,
             ],
           }),
           px: 3,
@@ -72,7 +66,9 @@ export function AuthSplitSection({
         </Typography>
 
         {subtitle && (
-          <Typography sx={{ color: 'text.secondary', textAlign: 'center', mt: 2 }}>
+          <Typography
+            sx={{ color: 'text.secondary', textAlign: 'center', mt: 2 }}
+          >
             {subtitle}
           </Typography>
         )}
@@ -103,16 +99,10 @@ export function AuthSplitSection({
               >
                 <Tooltip title={option.label} placement="top">
                   <Link
-                    component={RouterLink}
                     href={option.path}
                     sx={{ ...(!selected && { pointerEvents: 'none' }) }}
                   >
-                    <Box
-                      component="img"
-                      alt={option.label}
-                      src={option.icon}
-                      sx={{ width: 32, height: 32 }}
-                    />
+                    <Box sx={{ width: 32, height: 32 }}>{option.icon}</Box>
                   </Link>
                 </Tooltip>
               </Box>
