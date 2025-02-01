@@ -9,13 +9,13 @@ import Link from '@mui/material/Link';
 import EmailIcon from '@mui/icons-material/Email';
 import GoogleIcon from '@mui/icons-material/Google';
 
+import { Logo } from '@/Components/logo';
 import { HeaderSection } from '../core/header-section';
 import { LayoutSection } from '../core/layout-section';
 import { MainSection } from '../core/main-section';
 import { AuthSplitContent } from './content';
 import { AuthSplitSection } from './section';
 
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import type { HeaderSectionProps } from '../core/header-section';
 import type { LayoutSectionProps } from '../core/layout-section';
 import type { MainSectionProps } from '../core/main-section';
@@ -56,7 +56,7 @@ export function AuthSplitLayout({
       ),
       leftArea: (
         <>
-          <ApplicationLogo />
+          <Logo />
         </>
       ),
       rightArea: (
