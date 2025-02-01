@@ -6,6 +6,7 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        @vite('resources/css/app.css')
         <link rel="stylesheet" href="{{ asset('leaflet.css') }}" />
         <script src="{{ asset('leaflet.js') }}"></script>
 
