@@ -108,7 +108,15 @@ export default function Login({
   const isEmailLoginMethod = searchParams.get('method') === 'email';
 
   return (
-    <AuthSplitLayout slotProps={{ section: { title: 'Welcome Back!' } }}>
+    <AuthSplitLayout
+      slotProps={{
+        section: {
+          title: 'Hi, Welcome back',
+          subtitle:
+            'Time to put on your dancing shoes and get down to business! 💃',
+        },
+      }}
+    >
       <Head title="Log in" />
 
       {status && (

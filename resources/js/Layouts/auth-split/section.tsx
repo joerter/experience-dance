@@ -74,12 +74,7 @@ export function AuthSplitSection({
         )}
       </div>
 
-      <Box
-        component="img"
-        alt="Dashboard illustration"
-        src={imgUrl}
-        sx={{ width: 1, aspectRatio: '4/3', objectFit: 'cover' }}
-      />
+      <Box component="img" alt="exp-arrow" src="/images/arrow-large.svg" />
 
       {!!methods?.length && method && (
         <Box component="ul" sx={{ gap: 2, display: 'flex' }}>
