@@ -27,6 +27,8 @@ export function ThemeProvider({
     themeOverrides,
   });
 
+  console.log('final theme', theme);
+
   return (
     <ThemeVarsProvider disableTransitionOnChange theme={theme} {...other}>
       <CssBaseline />
